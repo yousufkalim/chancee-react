@@ -5,12 +5,14 @@ export default function Login(props) {
   const useStyles = makeStyles((theme) => ({
     root: {
       width: "100%",
+      padding: "0 12px",
       backgroundColor: "#4C4686",
       borderRadius: 4,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
+      color: "#fff",
       overflow: "hidden",
       transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
       boxShadow:
@@ -19,7 +21,7 @@ export default function Login(props) {
     input: {
       width: "100%",
       height: "100%",
-      padding: 12,
+      padding: "12px 0",
       color: "#fff",
       backgroundColor: "transparent",
       border: 0,

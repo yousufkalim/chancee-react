@@ -10,7 +10,7 @@ export default function Button(props) {
       alignItems: "center",
       justifyContent: "center",
       overflow: "hidden",
-      backgroundColor: theme.palette.primary.main,
+      backgroundColor: "#4DA1FF",
       borderRadius: 4,
       transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
       padding: 12,
