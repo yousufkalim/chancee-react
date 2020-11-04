@@ -6,7 +6,6 @@ import Typography from "@material-ui/core/Typography";
 import SvgIcon from "@material-ui/core/SvgIcon";
 
 import * as actionTypes from "../store/actions/actionTypes";
-import LoginBG from "../assets/images/login.png";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
@@ -14,12 +13,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
     width: "100vw",
-    backgroundImage: `url(${LoginBG})`,
-    backgroundRepeat: "no-repeat",
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.grey[50]
-        : theme.palette.grey[900],
+    backgroundColor: "#634294",
     backgroundSize: "cover",
     backgroundPosition: "center",
     display: "flex",
@@ -40,12 +34,23 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
   },
+  formRow: {
+    width: "100%",
+    margin: "6px 0",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  formRowItem: {
+    width: "47%",
+  },
   formItem: {
     width: "100%",
-    margin: "10px 0",
+    margin: "6px 0",
   },
   icon: {
-    color: "#fff",
+    color: "#ffd012",
     height: 20,
     display: "flex",
     flexDirection: "row",
@@ -54,7 +59,12 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     width: "100%",
-    margin: "30px 0 20px 0",
+    marginTop: 10,
+    marginBottom: 40,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   forgotText: {
     color: "#7D76BA",
@@ -66,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFF",
     fontSize: 10,
     margin: "5px 0",
+    textDecoration: "none",
   },
   forgotRow: {
     display: "flex",
@@ -93,23 +104,47 @@ export default function Register(props) {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.header}>Connexion à Chancee</Typography>
+      <Typography className={classes.header}>
+        Créer un compte Chancee
+      </Typography>
       <div className={classes.form}>
+        <div className={classes.formRow}>
+          <div className={classes.formRowItem}>
+            <Input
+              type="text"
+              name="firstName"
+              placeholder="Pr nom"
+              value={values.firstName}
+              onChange={handleChange("firstName")}
+            />
+          </div>
+          <div className={classes.formRowItem}>
+            <Input
+              type="text"
+              name="lastName"
+              placeholder="Nom"
+              value={values.lastName}
+              onChange={handleChange("lastName")}
+            />
+          </div>
+        </div>
         <div className={classes.formItem}>
           <Input
+            type="email"
             name="email"
             placeholder="Nom d’utilisateur"
             value={values.email}
             onChange={handleChange("email")}
-            type="text"
-          >
-            <SvgIcon className={classes.icon}>
-              <path
-                d="M17,17.147a.833.833,0,1,1-1.665,0A6.444,6.444,0,0,0,9,10.617a6.444,6.444,0,0,0-6.341,6.53A.846.846,0,0,1,1.825,18a.845.845,0,0,1-.832-.858A8.222,8.222,0,0,1,6.815,9.221,4.441,4.441,0,0,1,4.7,5.426,4.373,4.373,0,0,1,9,1a4.372,4.372,0,0,1,4.3,4.43,4.443,4.443,0,0,1-2.117,3.795A8.222,8.222,0,0,1,17,17.147ZM9,2.712A2.678,2.678,0,0,0,6.363,5.426a2.637,2.637,0,1,0,5.271,0A2.678,2.678,0,0,0,9,2.712Z"
-                fill="currentColor"
-              />
-            </SvgIcon>
-          </Input>
+          />
+        </div>
+        <div className={classes.formItem}>
+          <Input
+            type="date"
+            name="date"
+            placeholder="Date de naissance"
+            value={values.date}
+            onChange={handleChange("date")}
+          />
         </div>
         <div className={classes.formItem}>
           <Input
@@ -118,28 +153,91 @@ export default function Register(props) {
             value={values.password}
             onChange={handleChange("password")}
             type="password"
+          />
+        </div>
+        <div className={classes.formItem}>
+          <Input
+            type="password"
+            name="confirmPassword"
+            placeholder="Con rmation du mot de passe"
+            value={values.confirmPassword}
+            onChange={handleChange("confirmPassword")}
+          />
+        </div>
+        <div className={classes.submitButton}>
+          <Button
+            type="submit"
+            text="ENREGISTREMENT"
+            onClick={onSubmit}
+            style={{ width: "70%" }}
           >
             <SvgIcon className={classes.icon}>
               <path
-                d="M16.173,20H1.819a.809.809,0,0,1-.825-.793V8.224a.809.809,0,0,1,.825-.793H4.741V4.1A4.18,4.18,0,0,1,9,.007,4.179,4.179,0,0,1,13.25,4.1V7.431h2.923A.81.81,0,0,1,17,8.224V19.21a.81.81,0,0,1-.825.793ZM11.6,4.1A2.558,2.558,0,0,0,9,1.593,2.558,2.558,0,0,0,6.391,4.1V7.431H11.6V4.1Zm3.748,4.921H2.644v9.4h12.7v-9.4Zm-6.471,2.43a.809.809,0,0,1,.825.793v3.032a.826.826,0,0,1-1.65,0V12.24a.809.809,0,0,1,.825-.793Z"
+                id="Path_750"
+                data-name="Path 750"
+                d="M76.072,294.676a.615.615,0,0,0,.114.71l.15.15c.434-.514.939-1.072,1.552-1.685.043-.043.088-.064.131-.1l-.966-.966C76.493,293.8,76.165,294.49,76.072,294.676Zm0,0"
+                transform="translate(-73.013 -281.248)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_751"
+                data-name="Path 751"
+                d="M170.936,404.912c-.615.615-1.171,1.121-1.682,1.555l.2.2a.614.614,0,0,0,.715.112c.318-.164.818-.4,1.88-.99l-1.011-1.011C171,404.824,170.979,404.868,170.936,404.912Zm0,0"
+                transform="translate(-162.587 -388.836)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_752"
+                data-name="Path 752"
+                d="M67.5,323.652c-.444-.444-1.691-.046-2.277.54a16.327,16.327,0,0,0-3.244,4.172.614.614,0,0,0,.821.82,16.447,16.447,0,0,0,4.16-3.255c.644-.645.962-1.855.541-2.276Zm0,0"
+                transform="translate(-59.477 -310.721)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_753"
+                data-name="Path 753"
+                d="M1.917,171.652.181,173.388a.614.614,0,0,0,.593,1.027,5.045,5.045,0,0,1,2.32-.215,32.944,32.944,0,0,1,2.541-3.877C5.115,169.989,3.394,170.175,1.917,171.652Zm0,0"
+                transform="translate(-0.001 -163.478)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_754"
+                data-name="Path 754"
+                d="M255.573,396.68a.613.613,0,0,0,.71-.114l1.737-1.736c1.344-1.345,1.581-3.08,1.276-3.63a35.037,35.037,0,0,1-3.88,2.522,7.523,7.523,0,0,1-.174,2.32A.613.613,0,0,0,255.573,396.68Zm0,0"
+                transform="translate(-245.182 -375.79)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_755"
+                data-name="Path 755"
+                d="M296.3,143.211a1.842,1.842,0,1,0,2.6,0A1.844,1.844,0,0,0,296.3,143.211Zm0,0"
+                transform="translate(-284.113 -137.053)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_756"
+                data-name="Path 756"
+                d="M407.97.6A.613.613,0,0,0,407.4.034a12.137,12.137,0,0,0-4.482.522,5.154,5.154,0,0,0,1.527,3,5.138,5.138,0,0,0,3.057,1.524A12.7,12.7,0,0,0,407.97.6Zm0,0"
+                transform="translate(-387.05 -0.001)"
+                fill="currentColor"
+              />
+              <path
+                id="Path_757"
+                data-name="Path 757"
+                d="M130.656,28.373a6.45,6.45,0,0,1-1.846-3.44c-3.687,1.512-7.216,4.814-10,9.452l1.385,1.385a2.585,2.585,0,0,1,2.825.243,2.583,2.583,0,0,1,.242,2.824l1.431,1.431c3.569-2.151,7.724-5.539,9.49-10.048A6.419,6.419,0,0,1,130.656,28.373Zm-.868,5.209a3.07,3.07,0,1,1,0-4.341A3.073,3.073,0,0,1,129.788,33.583Zm0,0"
+                transform="translate(-114.127 -23.951)"
                 fill="currentColor"
               />
             </SvgIcon>
-          </Input>
-        </div>
-        <div className={classes.submitButton}>
-          <Button type="submit" text="Connexion" onClick={onSubmit} />
+          </Button>
         </div>
       </div>
-      <Link to="/" className={classes.forgotText}>
-        Mot de passe oublié ?
-      </Link>
       <div className={classes.forgotRow}>
-        <Link to="/" className={classes.forgotText}>
-          Pas encore de compte ?
-        </Link>
+        <div className={classes.forgotText}>Vous ave d j un compte ?</div>
         &nbsp;&nbsp;&nbsp;
-        <div className={classes.forgotTextWhite}>Je m’inscris !</div>
+        <Link to="/" className={classes.forgotTextWhite}>
+          Conne ion
+        </Link>
       </div>
     </div>
   );

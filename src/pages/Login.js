@@ -66,6 +66,7 @@ const useStyles = makeStyles((theme) => ({
     color: "#FFF",
     fontSize: 10,
     margin: "5px 0",
+    textDecoration: "none",
   },
   forgotRow: {
     display: "flex",
@@ -97,11 +98,12 @@ export default function Login(props) {
       <div className={classes.form}>
         <div className={classes.formItem}>
           <Input
+            type="email"
             name="email"
+            color="#4C4686"
             placeholder="Nom d’utilisateur"
             value={values.email}
             onChange={handleChange("email")}
-            type="text"
           >
             <SvgIcon className={classes.icon}>
               <path
@@ -113,11 +115,12 @@ export default function Login(props) {
         </div>
         <div className={classes.formItem}>
           <Input
+            type="password"
             name="password"
+            color="#4C4686"
             placeholder="Mot de passe"
             value={values.password}
             onChange={handleChange("password")}
-            type="password"
           >
             <SvgIcon className={classes.icon}>
               <path
@@ -135,11 +138,11 @@ export default function Login(props) {
         Mot de passe oublié ?
       </Link>
       <div className={classes.forgotRow}>
-        <Link to="/" className={classes.forgotText}>
-          Pas encore de compte ?
-        </Link>
+        <div className={classes.forgotText}>Pas encore de compte ?</div>
         &nbsp;&nbsp;&nbsp;
-        <div className={classes.forgotTextWhite}>Je m’inscris !</div>
+        <Link to="/register" className={classes.forgotTextWhite}>
+          Je m’inscris !
+        </Link>
       </div>
     </div>
   );

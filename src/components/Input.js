@@ -6,13 +6,12 @@ export default function Login(props) {
     root: {
       width: "100%",
       padding: "0 12px",
-      backgroundColor: "#4C4686",
+      backgroundColor: props.color ? props.color : "#fff",
       borderRadius: 4,
       display: "flex",
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "center",
-      color: "#fff",
       overflow: "hidden",
       transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
       boxShadow:
@@ -22,12 +21,12 @@ export default function Login(props) {
       width: "100%",
       height: "100%",
       padding: "12px 0",
-      color: "#fff",
+      color: props.color ? "#fff" : "#6a6b6d",
       backgroundColor: "transparent",
       border: 0,
       outline: 0,
       "&::placeholder": {
-        color: "#fff",
+        color: props.color ? "#fff" : "#6a6b6d",
       },
     },
   }));

@@ -30,7 +30,7 @@ export default function Button(props) {
   const classes = useStyles();
 
   return (
-    <button className={classes.button} type={props.type}>
+    <button className={classes.button} type={props.type} style={props.style}>
       {props.children}
       {props.text}
     </button>

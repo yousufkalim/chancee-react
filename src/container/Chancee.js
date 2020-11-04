@@ -7,6 +7,7 @@ import {
 
 // import * as actionTypes from "../store/actions/actionTypes";
 import Login from "../pages/Login";
+import Register from "../pages/Register";
 
 const LFS = () => {
   const store = useSelector((state) => state);
@@ -60,6 +61,7 @@ const LFS = () => {
   ) : (
     <Switch>
       <Route exact path="/" component={Login} />
+      <Route exact path="/register" component={Register} />
       <Redirect from="*" to="/" />
     </Switch>
   );
