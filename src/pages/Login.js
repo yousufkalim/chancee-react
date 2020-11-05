@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   icon: {
     color: "#fff",
     height: 20,
+    marginLeft: 12,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -79,17 +80,30 @@ const useStyles = makeStyles((theme) => ({
 export default function Login(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
     email: "",
     password: "",
   });
+  const [errors, setErrors] = React.useState({
+    email: false,
+    password: false,
+  });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const onSubmit = () => {
-    dispatch({ type: actionTypes.LOGIN, user: "user", token: "" });
+  const onSubmit = async () => {
+    try {
+      if (values.email === "") {
+        setErrors({ ...errors, email: true });
+      } else if (values.password === "") {
+        setErrors({ ...errors, password: true });
+      } else {
+        setLoading(true);
+        setLoading(false);
+        dispatch({ type: actionTypes.LOGIN, user: "user", token: "" });
+      }
+    } catch (err) {
+      console.log("Error Login", err);
+    }
   };
 
   return (
@@ -103,7 +117,16 @@ export default function Login(props) {
             color="#4C4686"
             placeholder="Nom d’utilisateur"
             value={values.email}
-            onChange={handleChange("email")}
+            onChange={(event) => {
+              const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
+              if (!re.test(String(event.target.value).toLowerCase())) {
+                setErrors({ ...errors, email: true });
+              } else {
+                setErrors({ ...errors, email: false });
+              }
+              setValues({ ...values, email: event.target.value });
+            }}
+            error={errors.email && "Something"}
           >
             <SvgIcon className={classes.icon}>
               <path
@@ -120,7 +143,15 @@ export default function Login(props) {
             color="#4C4686"
             placeholder="Mot de passe"
             value={values.password}
-            onChange={handleChange("password")}
+            onChange={(event) => {
+              if (event.target.value.length < 8) {
+                setErrors({ ...errors, password: true });
+              } else {
+                setErrors({ ...errors, password: false });
+              }
+              setValues({ ...values, password: event.target.value });
+            }}
+            error={errors.password && "Something"}
           >
             <SvgIcon className={classes.icon}>
               <path
@@ -131,10 +162,15 @@ export default function Login(props) {
           </Input>
         </div>
         <div className={classes.submitButton}>
-          <Button type="submit" text="Connexion" onClick={onSubmit} />
+          <Button
+            type="submit"
+            text={loading ? "Loading..." : "Connexion"}
+            onClick={onSubmit}
+            disabled={loading}
+          />
         </div>
       </div>
-      <Link to="/" className={classes.forgotText}>
+      <Link to="/password-forgot" className={classes.forgotText}>
         Mot de passe oublié ?
       </Link>
       <div className={classes.forgotRow}>
@@ -142,6 +178,11 @@ export default function Login(props) {
         &nbsp;&nbsp;&nbsp;
         <Link to="/register" className={classes.forgotTextWhite}>
           Je m’inscris !
+        </Link>
+      </div>
+      <div className={classes.forgotRow}>
+        <Link to="/register-company" className={classes.forgotTextWhite}>
+          Register as a company
         </Link>
       </div>
     </div>

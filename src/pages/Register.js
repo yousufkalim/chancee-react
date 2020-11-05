@@ -1,11 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import SvgIcon from "@material-ui/core/SvgIcon";
 
-import * as actionTypes from "../store/actions/actionTypes";
 import Input from "../components/Input";
 import Button from "../components/Button";
 
@@ -28,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
   },
   form: {
-    width: 280,
+    width: 350,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -43,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   formRowItem: {
-    width: "47%",
+    width: "48%",
   },
   formItem: {
     width: "100%",
@@ -87,19 +85,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Register(props) {
-  const dispatch = useDispatch();
   const classes = useStyles();
+  const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
+    firstName: "",
+    lastName: "",
     email: "",
+    date: "",
     password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = React.useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    date: false,
+    password: false,
+    confirmPassword: false,
   });
 
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const onSubmit = () => {
-    dispatch({ type: actionTypes.LOGIN, user: "user", token: "" });
+  const onSubmit = async () => {
+    try {
+      if (values.firstName === "") {
+        setErrors({ ...errors, firstName: true });
+      } else if (values.lastName === "") {
+        setErrors({ ...errors, lastName: true });
+      } else if (values.email === "") {
+        setErrors({ ...errors, email: true });
+      } else if (values.date === "") {
+        setErrors({ ...errors, date: true });
+      } else if (values.password === "") {
+        setErrors({ ...errors, password: true });
+      } else if (values.confirmPassword === "") {
+        setErrors({ ...errors, confirmPassword: true });
+      } else {
+        setLoading(true);
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log("Error Login", err);
+    }
   };
 
   return (
@@ -115,7 +140,18 @@ export default function Register(props) {
               name="firstName"
               placeholder="Pr nom"
               value={values.firstName}
-              onChange={handleChange("firstName")}
+              onChange={(event) => {
+                if (
+                  event.target.value.length <= 0 ||
+                  event.target.value.length > 30
+                ) {
+                  setErrors({ ...errors, firstName: true });
+                } else {
+                  setErrors({ ...errors, firstName: false });
+                }
+                setValues({ ...values, firstName: event.target.value });
+              }}
+              error={errors.firstName && "Something"}
             />
           </div>
           <div className={classes.formRowItem}>
@@ -124,7 +160,18 @@ export default function Register(props) {
               name="lastName"
               placeholder="Nom"
               value={values.lastName}
-              onChange={handleChange("lastName")}
+              onChange={(event) => {
+                if (
+                  event.target.value.length <= 0 ||
+                  event.target.value.length > 30
+                ) {
+                  setErrors({ ...errors, lastName: true });
+                } else {
+                  setErrors({ ...errors, lastName: false });
+                }
+                setValues({ ...values, lastName: event.target.value });
+              }}
+              error={errors.lastName && "Something"}
             />
           </div>
         </div>
@@ -134,25 +181,51 @@ export default function Register(props) {
             name="email"
             placeholder="Nom d’utilisateur"
             value={values.email}
-            onChange={handleChange("email")}
+            onChange={(event) => {
+              const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
+              if (!re.test(String(event.target.value).toLowerCase())) {
+                setErrors({ ...errors, email: true });
+              } else {
+                setErrors({ ...errors, email: false });
+              }
+              setValues({ ...values, email: event.target.value });
+            }}
+            error={errors.email && "Something"}
           />
         </div>
         <div className={classes.formItem}>
           <Input
-            type="date"
+            type="text"
             name="date"
             placeholder="Date de naissance"
             value={values.date}
-            onChange={handleChange("date")}
+            onChange={(event) => {
+              console.log("value", event.target.value);
+              setValues({ ...values, date: event.target.value });
+            }}
+            onFocus={(e) => (e.target.type = "date")}
+            onBlur={(e) => {
+              if (e.target.value === "") {
+                e.target.type = "text";
+              }
+            }}
           />
         </div>
         <div className={classes.formItem}>
           <Input
+            type="password"
             name="password"
             placeholder="Mot de passe"
             value={values.password}
-            onChange={handleChange("password")}
-            type="password"
+            onChange={(event) => {
+              if (event.target.value.length < 8) {
+                setErrors({ ...errors, password: true });
+              } else {
+                setErrors({ ...errors, password: false });
+              }
+              setValues({ ...values, password: event.target.value });
+            }}
+            error={errors.password && "Something"}
           />
         </div>
         <div className={classes.formItem}>
@@ -161,13 +234,22 @@ export default function Register(props) {
             name="confirmPassword"
             placeholder="Con rmation du mot de passe"
             value={values.confirmPassword}
-            onChange={handleChange("confirmPassword")}
+            onChange={(event) => {
+              if (event.target.value !== values.password) {
+                setErrors({ ...errors, confirmPassword: true });
+              } else {
+                setErrors({ ...errors, confirmPassword: false });
+              }
+              setValues({ ...values, confirmPassword: event.target.value });
+            }}
+            error={errors.confirmPassword && "Something"}
           />
         </div>
         <div className={classes.submitButton}>
           <Button
             type="submit"
-            text="ENREGISTREMENT"
+            text={loading ? "Loading..." : "ENREGISTREMENT"}
+            disabled={loading}
             onClick={onSubmit}
             style={{ width: "70%" }}
           >

@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import {
-  useSelector,
-  // useDispatch
-} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-// import * as actionTypes from "../store/actions/actionTypes";
+import * as actionTypes from "../store/actions/actionTypes";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import RegisterCompany from "../pages/RegisterCompany";
+import PasswordForgot from "../pages/PasswordForgot";
+
+// User
+import UProfile from "../pages/User/Profile";
 
 const LFS = () => {
   const store = useSelector((state) => state);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
@@ -21,12 +23,12 @@ const LFS = () => {
 
   const checkLogin = async () => {
     try {
-      // const token = localStorage.getItem("token");
-      // const userId = localStorage.getItem("userId");
-      // if (!userId || !token) {
-      //   setLoading(false);
-      //   return;
-      // }
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      if (!userId || !token) {
+        setLoading(false);
+        return;
+      }
       // const response = await fetch(
       //   `${process.env.REACT_APP_SERVER_URL}/profile`,
       //   {
@@ -38,11 +40,11 @@ const LFS = () => {
       // );
       // if (!response.ok) throw response;
       // const data = await response.json();
-      // dispatch({
-      //   type: actionTypes.LOGIN,
-      //   user: data.user,
-      //   token: data.token || token,
-      // });
+      dispatch({
+        type: actionTypes.LOGIN,
+        user: "",
+        token: "",
+      });
       setLoading(false);
     } catch (err) {
       localStorage.removeItem("token");
@@ -55,13 +57,15 @@ const LFS = () => {
     <div>Loading...</div>
   ) : store.auth ? (
     <Switch>
-      <Route exact path="/" component={Login} />
+      <Route exact path="/" component={UProfile} />
       <Redirect from="*" to="/" />
     </Switch>
   ) : (
     <Switch>
       <Route exact path="/" component={Login} />
       <Route exact path="/register" component={Register} />
+      <Route exact path="/register-company" component={RegisterCompany} />
+      <Route exact path="/password-forgot" component={PasswordForgot} />
       <Redirect from="*" to="/" />
     </Switch>
   );
