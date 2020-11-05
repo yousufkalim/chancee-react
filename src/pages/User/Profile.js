@@ -1,10 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 
-import * as actionTypes from "../../store/actions/actionTypes";
+import Header from "../../components/Header";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,9 +12,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Profile(props) {
-  const dispatch = useDispatch();
   const classes = useStyles();
-  const [loading, setLoading] = React.useState(false);
 
-  return <div className={classes.root}>Profile</div>;
+  return (
+    <div className={classes.root}>
+      <Header />
+      Profile
+    </div>
+  );
 }
