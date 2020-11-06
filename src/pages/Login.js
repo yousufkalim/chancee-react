@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "10px 0",
   },
   icon: {
-    color: "#fff",
     height: 20,
     marginLeft: 12,
     display: "flex",

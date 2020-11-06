@@ -4,12 +4,12 @@ import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
 import * as actionTypes from "../store/actions/actionTypes";
 import ProfileImage from "../assets/images/login.png";
+import { ReactComponent as Logo } from "../assets/images/Logo.svg";
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  logo: {
+    height: 35,
   },
   link: {
     color: "#000",
@@ -61,9 +64,7 @@ export default function Login(props) {
   return (
     <Container maxWidth="xl">
       <Toolbar className={classes.toolBar}>
-        <Typography variant="h6" className={classes.logo}>
-          News
-        </Typography>
+        <Logo className={classes.logo} />
         <nav>
           <Link className={classes.link} to="/">
             Product
