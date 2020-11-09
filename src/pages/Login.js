@@ -114,7 +114,7 @@ export default function Login(props) {
             type="email"
             name="email"
             color="#4C4686"
-            placeholder="Nom d’utilisateur"
+            placeholder="E-mail address"
             value={values.email}
             onChange={(event) => {
               const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
@@ -140,7 +140,7 @@ export default function Login(props) {
             type="password"
             name="password"
             color="#4C4686"
-            placeholder="Mot de passe"
+            placeholder="Password"
             value={values.password}
             onChange={(event) => {
               if (event.target.value.length < 8) {

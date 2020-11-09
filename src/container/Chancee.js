@@ -9,7 +9,8 @@ import RegisterCompany from "../pages/RegisterCompany";
 import PasswordForgot from "../pages/PasswordForgot";
 
 // User
-import UProfile from "../pages/User/Profile";
+import UStep1 from "../pages/User/Step1";
+import UStep2 from "../pages/User/Step2";
 
 const LFS = () => {
   const store = useSelector((state) => state);
@@ -57,7 +58,8 @@ const LFS = () => {
     <div>Loading...</div>
   ) : store.auth ? (
     <Switch>
-      <Route exact path="/" component={UProfile} />
+      <Route exact path="/" component={UStep2} />
+      <Route exact path="/step-1" component={UStep1} />
       <Redirect from="*" to="/" />
     </Switch>
   ) : (

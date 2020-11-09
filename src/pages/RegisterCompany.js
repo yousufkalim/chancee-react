@@ -372,10 +372,10 @@ export default function Register(props) {
         </div>
       </div>
       <div className={classes.forgotRow}>
-        <div className={classes.forgotText}>Vous ave d j un compte ?</div>
+        <div className={classes.forgotText}>Vous avez déjà un compte ?</div>
         &nbsp;&nbsp;&nbsp;
         <Link to="/" className={classes.forgotTextWhite}>
-          Conne ion
+          Connexion
         </Link>
       </div>
     </div>

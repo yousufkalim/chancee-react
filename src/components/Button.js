@@ -13,15 +13,15 @@ export default function Button(props) {
       backgroundColor: "#4DA1FF",
       borderRadius: 4,
       transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
-      padding: 12,
+      padding: 14,
       color: "#fff",
       fontSize: 10,
       fontWeight: "bold",
       border: 0,
       outline: 0,
       cursor: "pointer",
-      boxShadow:
-        "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+      // boxShadow:
+      //   "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
       "&:hover": {
         opacity: 0.8,
       },
@@ -31,7 +31,7 @@ export default function Button(props) {
 
   return (
     <button
-      className={classes.button}
+      className={classes.button + " " + props.className}
       type={props.type}
       style={props.style}
       disabled={props.disabled}

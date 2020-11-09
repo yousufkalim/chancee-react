@@ -15,8 +15,8 @@ export default function Login(props) {
       overflow: "hidden",
       color: props.error ? "red" : props.color ? "#fff" : "#6a6b6d",
       transition: "background-color 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms",
-      boxShadow:
-        "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
+      // boxShadow:
+      //   "0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)",
       borderWidth: 1,
       borderStyle: "solid",
       borderColor: props.error ? "red" : props.color ? props.color : "#fff",

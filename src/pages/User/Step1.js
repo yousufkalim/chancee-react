@@ -10,20 +10,28 @@ import { ReactComponent as Point } from "../../assets/images/Point.svg";
 import { ReactComponent as Attach } from "../../assets/images/Attach.svg";
 import { ReactComponent as Flash } from "../../assets/images/flash.svg";
 import { ReactComponent as FileUpload } from "../../assets/images/FileUpload.svg";
+import { ReactComponent as Tick } from "../../assets/images/tick.svg";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import Flag from "../../assets/images/flag.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#fff",
   },
-  // steps
+  // jumbotron
   jumbo: {
     alignItems: "center",
   },
   jumboImage: {
-    width: "90%",
+    width: "100%",
+    [theme.breakpoints.down("md")]: {
+      height: 200,
+    },
+  },
+  jumboDetails: {
+    padding: 40,
   },
   jumboTexts: {
     marginBottom: 20,
@@ -71,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   },
   steps: {
     position: "relative",
-    width: 818,
+    width: "80%",
     height: 35,
     display: "flex",
     flexDirection: "row",
@@ -80,26 +88,44 @@ const useStyles = makeStyles((theme) => ({
   },
   stepLine: {
     position: "absolute",
-    width: "502.996px",
     height: "0.999px",
     backgroundColor: "rgba(208,215,221,1)",
+    [theme.breakpoints.down("md")]: {
+      width: "80%",
+    },
+    [theme.breakpoints.up("md")]: {
+      width: "60%",
+    },
   },
   step: {
-    whiteSpace: "nowrap",
-    padding: "0 20px",
-    height: "35px",
     backgroundColor: "#fff",
     border: "1px solid rgba(208,215,221,1)",
     borderRadius: 20,
     zIndex: 2,
-    margin: "0 20px",
-    fontSize: 12,
     color: "rgba(50,60,71,1)",
     fontFamily: "Roboto",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.between("xs", "md")]: {
+      fontSize: 8,
+      margin: "0 10px",
+      padding: "0 10px",
+      height: "45px",
+    },
+    [theme.breakpoints.between("md", "lg")]: {
+      fontSize: 8,
+      margin: "0 20px",
+      padding: "0 20px",
+      height: "35px",
+    },
+    [theme.breakpoints.up("xl")]: {
+      fontSize: 12,
+      margin: "0 20px",
+      padding: "0 20px",
+      height: "35px",
+    },
   },
   stepActive: {
     backgroundColor: "#00A1FF",
@@ -112,17 +138,13 @@ const useStyles = makeStyles((theme) => ({
   },
   // formHeader
   formHeader: {
-    whiteSpace: "nowrap",
-    textAlign: "left",
     fontFamily: "Catamaran",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    fontSize: "30px",
+    fontSize: "2em",
     color: "rgba(50,60,71,1)",
   },
   // formStepHeader
   formStepHeader: {
-    margin: "20px 20px 0 0",
+    margin: "40px 20px 0 0",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -136,8 +158,8 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   formStepIcon: {
-    width: "18.489px",
-    height: "25.108px",
+    width: "40%",
+    height: "50%",
     color: "rgba(122,204,40,1)",
   },
   formStepText: {
@@ -148,13 +170,10 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: 0.35,
     marginLeft: 10,
   },
-  form: {
-    margin: "20px 20px 0 0",
-  },
+  form: {},
   formItem: {
     display: "flex",
     flexDirection: "column",
-    marginBottom: 15,
   },
   // form Input
   inputLabel: {
@@ -163,10 +182,10 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "12px",
     color: "rgba(186,197,205,1)",
     letterSpacing: 0.4,
+    marginTop: 15,
     marginBottom: 5,
   },
   inputContainer: {
-    width: "80%",
     maxHeight: 52,
     backgroundColor: "#fff",
     borderRadius: 4,
@@ -179,7 +198,24 @@ const useStyles = makeStyles((theme) => ({
     borderWidth: 1,
     borderStyle: "solid",
     borderColor: "rgba(233,239,244,1)",
+    [theme.breakpoints.up("md")]: {
+      width: "80%",
+    },
   },
+  inputSIRET: {
+    [theme.breakpoints.up("md")]: {
+      width: "50%",
+    },
+  },
+  flagIcon: {
+    backgroundColor: "rgba(233,239,244,1)",
+    width: "12%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  flagIconImg: {},
   input: {
     width: "100%",
     height: "100%",
@@ -192,34 +228,54 @@ const useStyles = makeStyles((theme) => ({
       color: "rgba(50,60,71,1)",
     },
   },
-  inputIcon: {},
+  inputIcon: {
+    marginRight: 20,
+  },
   // steppers
   stepperContainer: {
     marginTop: 40,
   },
   stepperInput: {
-    border: "1px dotted rgba(208,215,221,1)",
+    border: "1px dashed rgba(208,215,221,1)",
     borderRadius: 4,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    marginBottom: 20,
+  },
+  stepperInputContent: {
+    width: "60%",
+    height: "60%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stepperInputIcon: {},
+  stepperInputTexts: {
+    marginTop: 10,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  stepperInputText: {
+    fontSize: 20,
+    fontWeight: "light",
+    color: "#000",
   },
   steppers: {
     display: "flex",
     flexDirection: "column",
   },
   stepper: {
-    paddingLeft: 20,
-    paddingTop: 10,
-    paddingBottom: 10,
-  },
-  stepperActive: {
+    paddingBottom: 20,
     backgroundColor: "#fff",
-    border: "1px dotted rgba(208,215,221,1)",
-    borderLeft: 0,
     borderRadius: 4,
     zIndex: 2,
-    marginLeft: -1,
+    [theme.breakpoints.up("md")]: {
+      paddingLeft: 20,
+    },
   },
   stepperRow: {
     display: "flex",
@@ -233,15 +289,19 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     border: "1px solid rgba(208,215,221,1)",
     borderRadius: 4,
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
+    color: "rgba(166,229,15,1)",
   },
-  stepperIcon: {},
+  stepperIcon: {
+    width: 18,
+    height: 18,
+  },
   stepperTitle: {
     marginLeft: 15,
+    color: "rgba(166,229,15,1)",
     fontFamily: "Roboto",
     fontSize: "16px",
-    color: "rgba(166,229,15,1)",
   },
   stepperTitleDone: {
     color: "#000",
@@ -252,21 +312,68 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px",
     color: "rgba(152,152,152,1)",
   },
-  stepperDescDone: {
-    color: "#000",
-  },
   buttonContainer: {
-    paddingTop: 50,
+    paddingTop: 20,
     paddingBottom: 50,
     width: "100%",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    [theme.breakpoints.up("md")]: {
+      paddingTop: 50,
+    },
+  },
+  submitButton: {
+    maxWidth: "20%",
+    [theme.breakpoints.down("sm")]: {
+      maxWidth: "100%",
+    },
   },
 }));
 
 export default function Profile(props) {
   const classes = useStyles();
+  const [step, setStep] = React.useState(2);
+
+  const steps = [
+    {
+      id: 1,
+      title: "Justificatif d’identité en cours de validité *",
+      description: "CNI Recto/Verso, Passeport ou titre de séjour",
+    },
+    {
+      id: 2,
+      title:
+        "Justificatif d’identité en cours de validité (complément si nécéssaire)",
+      description: "CNI Recto/Verso, Passeport ou titre de séjour",
+    },
+    {
+      id: 3,
+      title: "Kbis de moins de 3 mois",
+      description:
+        "Kbis version électronique ou version papier numérisée (300dpi minimum)",
+    },
+    {
+      id: 4,
+      title: "Selfie",
+      description: "Prenez un selfie où l’on voit clairement votre visage",
+    },
+    {
+      id: 5,
+      title: "Preuve de diplôme",
+      description: "Facultatif",
+    },
+    {
+      id: 6,
+      title: "Certificat de formation à l’Academie des livreurs",
+      description: "Facultatif",
+    },
+    {
+      id: 7,
+      title: "Certificat d’assurance",
+      description: "Facultatif",
+    },
+  ];
 
   return (
     <div className={classes.root}>
@@ -276,14 +383,14 @@ export default function Profile(props) {
           <Grid item xs={12} md={6}>
             <JumboImage className={classes.jumboImage} />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} className={classes.jumboDetails}>
             <div className={classes.jumboTexts}>
               <span className={classes.jumboText}>Bienvenue sur</span>
               <br />
               <span className={classes.jumboTextBold}>Chancee !</span>
             </div>
             <div className={classes.jumboButton}>
-              <Button text="DEMARRER" />
+              <Button text="DÉMARRER" />
             </div>
             <div className={classes.jumboDescription}>
               Nous configurons votre espace personnel, plus que quelques étapes
@@ -327,9 +434,11 @@ export default function Profile(props) {
                 <input
                   className={classes.input}
                   type="text"
-                  placeholder="Street Address"
+                  placeholder="71 rue du Faubourg Poissonnière "
                 />
-                <div className={classes.inputIcon}></div>
+                <div className={classes.inputIcon}>
+                  <Tick className={classes.stepperIcon} />
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6} className={classes.formItem}>
@@ -340,7 +449,9 @@ export default function Profile(props) {
                   type="text"
                   placeholder="75009"
                 />
-                <div className={classes.inputIcon}></div>
+                <div className={classes.inputIcon}>
+                  <Tick className={classes.stepperIcon} />
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6} className={classes.formItem}>
@@ -351,7 +462,9 @@ export default function Profile(props) {
                   type="text"
                   placeholder="5ème étage"
                 />
-                <div className={classes.inputIcon}></div>
+                <div className={classes.inputIcon}>
+                  <Tick className={classes.stepperIcon} />
+                </div>
               </div>
             </Grid>
             <Grid item xs={12} md={6} className={classes.formItem}>
@@ -362,24 +475,25 @@ export default function Profile(props) {
                   type="text"
                   placeholder="Paris"
                 />
-                <div className={classes.inputIcon}></div>
+                <div className={classes.inputIcon}>
+                  <Tick className={classes.stepperIcon} />
+                </div>
               </div>
             </Grid>
-            <Grid
-              item
-              xs={12}
-              md={6}
-              className={classes.formItem}
-              style={{ marginTop: 20 }}
-            >
+            <Grid item xs={12} md={6} className={classes.formItem}>
               <div className={classes.inputLabel}>NUMÉRO DE TÉLÉPHONE</div>
               <div className={classes.inputContainer}>
+                <div className={classes.flagIcon}>
+                  <img src={Flag} className={classes.flagIconImg} alt="flag" />
+                </div>
                 <input
                   className={classes.input}
-                  type="text"
+                  type="number"
                   placeholder="07 88 45 20 12"
                 />
-                <div className={classes.inputIcon}></div>
+                <div className={classes.inputIcon}>
+                  <Tick className={classes.stepperIcon} />
+                </div>
               </div>
             </Grid>
           </Grid>
@@ -389,79 +503,60 @@ export default function Profile(props) {
             </div>
             <div className={classes.formStepText}>JUSTIFICATIFS</div>
           </div>
+          <div className={classes.inputSIRET}>
+            <div className={classes.inputLabel}>N° DE RUE ET RUE</div>
+            <div className={classes.inputContainer}>
+              <input
+                className={classes.input}
+                type="text"
+                placeholder="71 rue du Faubourg Poissonnière "
+              />
+              <div className={classes.inputIcon}>
+                <Tick className={classes.stepperIcon} />
+              </div>
+            </div>
+          </div>
           <Grid container className={classes.stepperContainer}>
             <Grid item xs={12} md={6} className={classes.stepperInput}>
-              <FileUpload />
+              <div className={classes.stepperInputContent}>
+                <FileUpload className={classes.stepperInputIcon} />
+                <div className={classes.stepperInputTexts}>
+                  <span className={classes.stepperInputText}>
+                    Cliquez sur le justificatif
+                  </span>
+                  <span className={classes.stepperInputText}>
+                    pour ajouter votre document
+                  </span>
+                </div>
+              </div>
             </Grid>
             <Grid item xs={12} md={6} className={classes.steppers}>
-              <div className={classes.stepper}>
-                <div className={classes.stepperRow}>
-                  <div className={classes.stepperIconWrapper}>
-                    <Point className={classes.stepperIcon} />
+              {steps.map((item) => (
+                <div key={item.id} className={classes.stepper}>
+                  <div className={classes.stepperRow}>
+                    <div className={classes.stepperIconWrapper}>
+                      {item.id < step && (
+                        <Tick className={classes.stepperIcon} />
+                      )}
+                    </div>
+                    <div
+                      className={`${classes.stepperTitle} ${
+                        item.id >= step ? classes.stepperTitleDone : ""
+                      }`}
+                    >
+                      {item.title}
+                    </div>
                   </div>
-                  <div className={classes.stepperTitle}>
-                    Justificatif d’identité en cours de validité *
-                  </div>
+                  <div className={classes.stepperDesc}>{item.description}</div>
                 </div>
-                <div className={classes.stepperDesc}>
-                  CNI Recto/Verso, Passeport ou titre de séjour
-                </div>
-              </div>
-              <div className={classes.stepper}>
-                <div className={classes.stepperRow}>
-                  <div className={classes.stepperIconWrapper}>
-                    <Point className={classes.stepperIcon} />
-                  </div>
-                  <div className={classes.stepperTitle}>
-                    Justificatif d’identité en cours de validité (complément si
-                    nécéssaire)
-                  </div>
-                </div>
-                <div className={classes.stepperDesc}>
-                  CNI Recto/Verso, Passeport ou titre de séjour
-                </div>
-              </div>
-              <div className={classes.stepper}>
-                <div className={classes.stepperRow}>
-                  <div className={classes.stepperIconWrapper}>
-                    <Point className={classes.stepperIcon} />
-                  </div>
-                  <div className={classes.stepperTitle}>
-                    Kbis de moins de 3 mois
-                  </div>
-                </div>
-                <div className={classes.stepperDesc}>
-                  Kbis version électronique ou version papier numérisée (300dpi
-                  minimum)
-                </div>
-              </div>
-              <div className={classes.stepper + " " + classes.stepperActive}>
-                <div className={classes.stepperRow}>
-                  <div className={classes.stepperIconWrapper}></div>
-                  <div
-                    className={
-                      classes.stepperTitle + " " + classes.stepperTitleDone
-                    }
-                  >
-                    Preuve d’achat du véhicule
-                  </div>
-                </div>
-                <div
-                  className={
-                    classes.stepperDesc + " " + classes.stepperDescDone
-                  }
-                >
-                  Facture d’achat ou contrat de location du véhicule avec lequel
-                  vous travaillerez dans vos missions Chancee
-                </div>
-              </div>
+              ))}
             </Grid>
           </Grid>
           <div className={classes.buttonContainer}>
             <Button
               type="submit"
               text={"Soumettre mon dossier"}
-              style={{ width: "20%" }}
+              className={classes.submitButton}
             >
               <Flash style={{ marginRight: 10 }} />
             </Button>

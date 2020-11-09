@@ -138,7 +138,7 @@ export default function Register(props) {
             <Input
               type="text"
               name="firstName"
-              placeholder="Pr nom"
+              placeholder="Prénom"
               value={values.firstName}
               onChange={(event) => {
                 if (
@@ -179,7 +179,7 @@ export default function Register(props) {
           <Input
             type="email"
             name="email"
-            placeholder="Nom d’utilisateur"
+            placeholder="Email"
             value={values.email}
             onChange={(event) => {
               const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
@@ -232,7 +232,7 @@ export default function Register(props) {
           <Input
             type="password"
             name="confirmPassword"
-            placeholder="Con rmation du mot de passe"
+            placeholder="Confirmation du mot de pass"
             value={values.confirmPassword}
             onChange={(event) => {
               if (event.target.value !== values.password) {
@@ -315,10 +315,10 @@ export default function Register(props) {
         </div>
       </div>
       <div className={classes.forgotRow}>
-        <div className={classes.forgotText}>Vous ave d j un compte ?</div>
+        <div className={classes.forgotText}>Vous avez déjà un compte ?</div>
         &nbsp;&nbsp;&nbsp;
         <Link to="/" className={classes.forgotTextWhite}>
-          Conne ion
+          Connexion
         </Link>
       </div>
     </div>

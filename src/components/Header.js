@@ -3,13 +3,18 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 import Toolbar from "@material-ui/core/Toolbar";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Hidden from "@material-ui/core/Hidden";
+import MenuIcon from "@material-ui/icons/Menu";
 
 import * as actionTypes from "../store/actions/actionTypes";
-import ProfileImage from "../assets/images/login.png";
-import { ReactComponent as Logo } from "../assets/images/Logo.svg";
+import ProfileImage from "../assets/images/avatar.svg";
+import Logo from "../assets/images/Logo.png";
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -46,12 +51,27 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textDecoration: "none",
   },
+  drawer: {
+    width: 250,
+  },
+  logoDrawerContainer: {
+    height: 70,
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 }));
 
 export default function Login(props) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [drawer, setDrawer] = React.useState(false);
+
+  const toggleDrawer = () => {
+    setDrawer((dr) => !dr);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -64,21 +84,54 @@ export default function Login(props) {
   return (
     <Container maxWidth="xl">
       <Toolbar className={classes.toolBar}>
-        <Logo className={classes.logo} />
-        <nav>
-          <Link className={classes.link} to="/">
-            Product
+        <Hidden smDown>
+          <Link to="/">
+            <img src={Logo} className={classes.logo} alt="Logo" />
           </Link>
-          <Link className={classes.link} to="/">
-            Pricing
-          </Link>
-          <Link className={classes.link} to="/">
-            Contacts
-          </Link>
-          <Link className={classes.link} to="/">
-            Team
-          </Link>
-        </nav>
+          <nav>
+            <Link className={classes.link} to="/product">
+              Product
+            </Link>
+            <Link className={classes.link} to="/pricing">
+              Pricing
+            </Link>
+            <Link className={classes.link} to="/contacts">
+              Contacts
+            </Link>
+            <Link className={classes.link} to="/team">
+              Team
+            </Link>
+          </nav>
+        </Hidden>
+        <Hidden mdUp>
+          <MenuIcon onClick={toggleDrawer} style={{ cursor: "pointer" }} />
+          <Drawer anchor={"left"} open={drawer} onClose={toggleDrawer}>
+            <div
+              className={classes.drawer}
+              role="presentation"
+              onClick={toggleDrawer}
+              onKeyDown={toggleDrawer}
+            >
+              <div className={classes.logoDrawerContainer}>
+                <Link to="/">
+                  <img src={Logo} className={classes.logo} alt="Logo" />
+                </Link>
+              </div>
+              <List>
+                {["Product", "Pricing", "Contacts", "Team"].map((text) => (
+                  <ListItem key={text}>
+                    <Link
+                      className={classes.link}
+                      to={`/${text.toLowerCase()}`}
+                    >
+                      {text}
+                    </Link>
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+          </Drawer>
+        </Hidden>
         <div>
           <div className={classes.profile} onClick={handleClick}>
             <img
