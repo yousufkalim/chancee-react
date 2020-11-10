@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
+import Slider from "@material-ui/core/Slider";
 
 import { ReactComponent as JumboImage } from "../../assets/images/Fusee.svg";
 import { ReactComponent as Cycle } from "../../assets/images/cycle.svg";
@@ -17,6 +18,9 @@ import { ReactComponent as Automobile } from "../../assets/images/automobile.svg
 import { ReactComponent as OK } from "../../assets/images/Ok.svg";
 import { ReactComponent as Checked } from "../../assets/images/checked.svg";
 import { ReactComponent as Unchecked } from "../../assets/images/unchecked.svg";
+import { ReactComponent as User2step21 } from "../../assets/images/user2step21.svg";
+import { ReactComponent as User2step22 } from "../../assets/images/user2step22.svg";
+import { ReactComponent as User2step23 } from "../../assets/images/user2step23.svg";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
@@ -139,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(50,60,71,1)",
   },
   formStepHeader: {
-    margin: "30px 0",
+    margin: "30px 0 10px 0",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -172,10 +176,11 @@ const useStyles = makeStyles((theme) => ({
     color: "rgba(186,197,205,1)",
     letterSpacing: "0.41666671752929685px",
     textTransform: "uppercase",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   // Step 1
   step1: {
+    marginTop: 10,
     "& :nth-child(1)": {
       borderTopLeftRadius: 6,
     },
@@ -264,6 +269,55 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   // step2
+  step2Slider1: {
+    width: "2%",
+    color: "#89ED4A",
+    height: 60,
+    "& .MuiSlider-thumb": {
+      display: "none",
+    },
+    "& .MuiSlider-track": {
+      height: 48,
+      borderTopLeftRadius: 4,
+      borderBottomLeftRadius: 4,
+    },
+    "&.Mui-disabled": {
+      color: "#89ED4A",
+    },
+  },
+  step2Slider2: {
+    width: "98%",
+    color: "#89ED4A",
+    height: 60,
+    "& .MuiSlider-thumb": {
+      display: "none",
+    },
+    active: {},
+    valueLabel: {
+      left: "calc(-50% + 4px)",
+    },
+    "& .MuiSlider-track": {
+      height: 48,
+      borderTopLeftRadius: 0,
+      borderBottomLeftRadius: 0,
+    },
+    "& .MuiSlider-rail": {
+      height: 47,
+      borderTopRightRadius: 0,
+      borderBottomRightRadius: 0,
+      backgroundColor: "#fff",
+      border: "1px solid #89ED4A",
+    },
+  },
+  step2Icons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  step2Icon: {
+    cursor: "pointer",
+  },
   buttonContainer: {
     paddingTop: 20,
     paddingBottom: 50,
@@ -276,12 +330,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
 export default function Profile(props) {
   const classes = useStyles();
   const [vehicle, setVehicle] = useState(4);
-  const [vehicleCheck1, setvehicleCheck1] = React.useState(false);
-  const [vehicleCheck2, setvehicleCheck2] = React.useState(false);
+  const [vehicleCheck1, setvehicleCheck1] = useState(false);
+  const [vehicleCheck2, setvehicleCheck2] = useState(false);
+  const [volume, setVolume] = useState(2);
 
   let step1s = [
     {
@@ -479,6 +533,40 @@ export default function Profile(props) {
               </div>
               <div className={classes.formStepText}>VOLUME DE LIVRAISON</div>
             </div>
+            <div className={classes.formStepSubHeader}>
+              QUEL EST TON VOLUME POSSIBLE DE LIVRAISON ?
+            </div>
+            <Grid container>
+              <Grid item xs={12}>
+                <Slider
+                  value={1}
+                  min={0}
+                  step={1}
+                  max={1}
+                  className={classes.step2Slider1}
+                  disabled={true}
+                />
+                <Slider
+                  value={volume}
+                  min={1}
+                  step={1}
+                  max={3}
+                  className={classes.step2Slider2}
+                  onChange={(e, value) => setVolume(value)}
+                />
+              </Grid>
+              <Grid item xs={12} className={classes.step2Icons}>
+                <div className={classes.step2Icon}>
+                  <User2step21 onClick={() => setVolume(1)} />
+                </div>
+                <div className={classes.step2Icon} style={{ marginLeft: "6%" }}>
+                  <User2step22 onClick={() => setVolume(2)} />
+                </div>
+                <div className={classes.step2Icon}>
+                  <User2step23 onClick={() => setVolume(3)} />
+                </div>
+              </Grid>
+            </Grid>
           </section>
           <section>
             <div className={classes.formStepHeader}>

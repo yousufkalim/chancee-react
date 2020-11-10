@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="184" height="103.531" viewBox="0 0 184 103.531">
+  <g id="Group_643" data-name="Group 643" transform="translate(-102.008 -1758.469)">
+    <g id="Group_492" data-name="Group 492" transform="translate(147.042 1715.743)">
+      <rect id="Rectangle_57" data-name="Rectangle 57" width="36.43" height="21.765" transform="translate(19.688 67.39)" fill="#f0aa81"/>
+      <rect id="Rectangle_58" data-name="Rectangle 58" width="9.73" height="21.765" transform="translate(19.688 89.156) rotate(180)" fill="#664737"/>
+      <path id="Path_3025" data-name="Path 3025" d="M14.446,61.664,12.971,45.432H44.578l6.3,16.232Z" transform="translate(5.243 5.726)" fill="#f0aa81"/>
+      <path id="Path_3026" data-name="Path 3026" d="M9.958,61.664l6.016-16.232h2.24l1.475,16.232Z" transform="translate(0 5.726)" fill="#664737"/>
+      <path id="Path_3027" data-name="Path 3027" d="M42.95,42.726H12.719l.691,8.433H45.016Zm-6.732,5.385a1.586,1.586,0,0,1-1.2.564H22.652a1.823,1.823,0,0,1-1.7-1.929,2.063,2.063,0,0,1,.5-1.362,1.6,1.6,0,0,1,1.2-.564H35.021a1.82,1.82,0,0,1,1.693,1.926A2.065,2.065,0,0,1,36.218,48.111Z" transform="translate(4.804 0)" fill="#d58960"/>
+      <path id="Path_3028" data-name="Path 3028" d="M24.029,45.324a2.065,2.065,0,0,1-.5,1.365,1.586,1.586,0,0,1-1.2.564H20.009a1.6,1.6,0,0,0,1.2-.564,2.065,2.065,0,0,0,.5-1.365,1.822,1.822,0,0,0-1.7-1.926h2.326A1.82,1.82,0,0,1,24.029,45.324Z" transform="translate(17.49 1.422)" fill="#d56122"/>
+      <path id="Path_3029" data-name="Path 3029" d="M13.3,42.726l-1.142,8.432h2.24l-.69-8.432Z" transform="translate(3.82 0)" fill="#d56122"/>
+    </g>
+    <text id="COOL_DESIGN" data-name="COOL DESIGN" transform="translate(129.008 1839)" fill="#323c47" font-size="14" font-family="Roboto-Bold, Roboto" font-weight="700" letter-spacing="0.036em"><tspan x="0" y="0">PETIT VOLUME</tspan></text>
+    <text id="Sublattice_of_electronsthat_point_in" data-name="Sublattice of electronsthat point in" transform="translate(102.008 1859)" fill="#989898" font-size="12" font-family="Roboto-Regular, Roboto"><tspan x="0" y="0">Moins de 5 plats, documents, etc…</tspan></text>
+  </g>
+</svg>
