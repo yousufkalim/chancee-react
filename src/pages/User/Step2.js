@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
+import Checkbox from "@material-ui/core/Checkbox";
 
-import { ReactComponent as JumboImage } from "../../assets/images/ProfileStep1.svg";
-import { ReactComponent as Microphone } from "../../assets/images/microphone.svg";
-import { ReactComponent as Chat } from "../../assets/images/chatIcon.svg";
-import { ReactComponent as Point } from "../../assets/images/Point.svg";
-import { ReactComponent as Attach } from "../../assets/images/Attach.svg";
+import { ReactComponent as JumboImage } from "../../assets/images/Fusee.svg";
+import { ReactComponent as Cycle } from "../../assets/images/cycle.svg";
 import { ReactComponent as Flash } from "../../assets/images/flash.svg";
-import { ReactComponent as FileUpload } from "../../assets/images/FileUpload.svg";
-import { ReactComponent as Tick } from "../../assets/images/tick.svg";
+import { ReactComponent as GPS } from "../../assets/images/gps.svg";
+import { ReactComponent as Calendar } from "../../assets/images/event.svg";
+import { ReactComponent as CoinStack } from "../../assets/images/coinStack.svg";
+import { ReactComponent as StepCycle } from "../../assets/images/stepCycle.svg";
+import { ReactComponent as Scooter } from "../../assets/images/scooter.svg";
+import { ReactComponent as StepECycle } from "../../assets/images/stepECycle.svg";
+import { ReactComponent as Automobile } from "../../assets/images/automobile.svg";
+import { ReactComponent as OK } from "../../assets/images/Ok.svg";
+import { ReactComponent as Checked } from "../../assets/images/checked.svg";
+import { ReactComponent as Unchecked } from "../../assets/images/unchecked.svg";
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
-import Flag from "../../assets/images/flag.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
   // jumbotron
   jumbo: {
     alignItems: "center",
+    margin: "50px 0",
   },
   jumboImage: {
     width: "100%",
@@ -60,15 +66,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     color: "rgba(152,152,152,1)",
     marginBottom: 20,
-  },
-  jumboIcons: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  jumboIcon: {
-    height: 30,
-    marginRight: 10,
   },
   // steps
   stepsContainer: {
@@ -136,15 +133,13 @@ const useStyles = makeStyles((theme) => ({
   formContainer: {
     marginTop: 50,
   },
-  // formHeader
   formHeader: {
     fontFamily: "Catamaran",
     fontSize: "2em",
     color: "rgba(50,60,71,1)",
   },
-  // formStepHeader
   formStepHeader: {
-    margin: "40px 20px 0 0",
+    margin: "30px 0",
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -170,148 +165,105 @@ const useStyles = makeStyles((theme) => ({
     letterSpacing: 0.35,
     marginLeft: 10,
   },
-  form: {},
-  formItem: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  // form Input
-  inputLabel: {
+  formStepSubHeader: {
     fontFamily: "Roboto",
     fontWeight: "bold",
     fontSize: "12px",
     color: "rgba(186,197,205,1)",
-    letterSpacing: 0.4,
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  inputContainer: {
-    maxHeight: 52,
-    backgroundColor: "#fff",
-    borderRadius: 4,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    overflow: "hidden",
-    color: "rgba(233,239,244,1)",
-    borderWidth: 1,
-    borderStyle: "solid",
-    borderColor: "rgba(233,239,244,1)",
-    [theme.breakpoints.up("md")]: {
-      width: "80%",
-    },
-  },
-  inputSIRET: {
-    [theme.breakpoints.up("md")]: {
-      width: "50%",
-    },
-  },
-  flagIcon: {
-    backgroundColor: "rgba(233,239,244,1)",
-    width: "12%",
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  flagIconImg: {},
-  input: {
-    width: "100%",
-    height: "100%",
-    padding: "14px 12px",
-    color: "rgba(50,60,71,1)",
-    backgroundColor: "transparent",
-    border: 0,
-    outline: 0,
-    "&::placeholder": {
-      color: "rgba(50,60,71,1)",
-    },
-  },
-  inputIcon: {
-    marginRight: 20,
-  },
-  // steppers
-  stepperContainer: {
-    marginTop: 40,
-  },
-  stepperInput: {
-    border: "1px dashed rgba(208,215,221,1)",
-    borderRadius: 4,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    letterSpacing: "0.41666671752929685px",
+    textTransform: "uppercase",
     marginBottom: 20,
   },
-  stepperInputContent: {
-    width: "60%",
-    height: "60%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  stepperInputIcon: {},
-  stepperInputTexts: {
-    marginTop: 10,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  stepperInputText: {
-    fontSize: 20,
-    fontWeight: "light",
-    color: "#000",
-  },
-  steppers: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  stepper: {
-    paddingBottom: 20,
-    backgroundColor: "#fff",
-    borderRadius: 4,
-    zIndex: 2,
-    [theme.breakpoints.up("md")]: {
-      paddingLeft: 20,
+  // Step 1
+  step1: {
+    "& :nth-child(1)": {
+      borderTopLeftRadius: 6,
+    },
+    "& :nth-child(2)": {
+      borderTopRightRadius: 6,
+      borderLeft: 0,
+    },
+    "& :nth-child(3)": {
+      borderTop: 0,
+      borderBottom: 0,
+    },
+    "& :nth-child(4)": {
+      borderTop: 0,
+      borderBottom: 0,
+      borderLeft: 0,
+    },
+    "& :nth-child(5)": {
+      borderBottomLeftRadius: 6,
+    },
+    "& :nth-child(6)": {
+      borderBottomRightRadius: 6,
+      borderLeft: 0,
     },
   },
-  stepperRow: {
+  step1Section: {
+    padding: "35px 20px",
+    width: "100%",
+    border: "1px solid rgba(186,197,205,1)",
+    backgroundColor: "#FAFBFB",
+    cursor: "pointer",
+  },
+  step1SectionTexts: {
     display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
   },
-  stepperIconWrapper: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    border: "1px solid rgba(208,215,221,1)",
-    borderRadius: 4,
-    width: 30,
-    height: 30,
-    color: "rgba(166,229,15,1)",
-  },
-  stepperIcon: {
-    width: 18,
-    height: 18,
-  },
-  stepperTitle: {
-    marginLeft: 15,
-    color: "rgba(166,229,15,1)",
+  step1SectionText1: {
     fontFamily: "Roboto",
-    fontSize: "16px",
-  },
-  stepperTitleDone: {
-    color: "#000",
-  },
-  stepperDesc: {
-    marginTop: 4,
-    fontFamily: "Roboto",
+    fontWeight: "bold",
     fontSize: "14px",
     color: "rgba(152,152,152,1)",
+    letterSpacing: "0.3571429061889648px",
+    textTransform: "uppercase",
   },
+  step1SectionText1Active: {
+    color: "rgba(122,204,40,1)",
+  },
+  step1SectionText2: {
+    fontFamily: "Roboto",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    fontSize: "12px",
+    color: "rgba(152,152,152,1)",
+  },
+  step1SectionText2Active: {
+    color: "rgba(122,204,40,1)",
+  },
+  step1SectionIcon: {
+    color: "rgba(152,152,152,1)",
+    display: "grid",
+    placeItems: "center",
+  },
+  step1SectionIconActive: {
+    color: "rgba(122,204,40,1)",
+  },
+  step1Section2: {
+    flexDirection: "column",
+  },
+  step1Section2step: {
+    marginTop: 10,
+    marginBottom: 30,
+  },
+  step1Section2stepText1: {
+    fontWeight: "500",
+    fontSize: "14px",
+    color: "#000",
+  },
+  step1Section2stepText2: {
+    fontSize: "10px",
+    color: "rgba(152,152,152,1)",
+  },
+  step1Section2Checkbox: {
+    padding: 0,
+    marginRight: 10,
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+  },
+  // step2
   buttonContainer: {
     paddingTop: 20,
     paddingBottom: 50,
@@ -323,55 +275,50 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 50,
     },
   },
-  submitButton: {
-    maxWidth: "20%",
-    [theme.breakpoints.down("sm")]: {
-      maxWidth: "100%",
-    },
-  },
 }));
 
 export default function Profile(props) {
   const classes = useStyles();
-  const [step, setStep] = React.useState(2);
+  const [vehicle, setVehicle] = useState(4);
+  const [vehicleCheck1, setvehicleCheck1] = React.useState(false);
+  const [vehicleCheck2, setvehicleCheck2] = React.useState(false);
 
-  const steps = [
+  let step1s = [
     {
       id: 1,
-      title: "Justificatif d’identité en cours de validité *",
-      description: "CNI Recto/Verso, Passeport ou titre de séjour",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <StepCycle />,
     },
     {
       id: 2,
-      title:
-        "Justificatif d’identité en cours de validité (complément si nécéssaire)",
-      description: "CNI Recto/Verso, Passeport ou titre de séjour",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <Scooter />,
     },
     {
       id: 3,
-      title: "Kbis de moins de 3 mois",
-      description:
-        "Kbis version électronique ou version papier numérisée (300dpi minimum)",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <StepECycle />,
     },
     {
       id: 4,
-      title: "Selfie",
-      description: "Prenez un selfie où l’on voit clairement votre visage",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <Automobile />,
     },
     {
       id: 5,
-      title: "Preuve de diplôme",
-      description: "Facultatif",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <StepCycle />,
     },
     {
       id: 6,
-      title: "Certificat de formation à l’Academie des livreurs",
-      description: "Facultatif",
-    },
-    {
-      id: 7,
-      title: "Certificat d’assurance",
-      description: "Facultatif",
+      title: "VÉLO",
+      description: "Seuls les vrais savent",
+      image: <StepCycle />,
     },
   ];
 
@@ -386,23 +333,18 @@ export default function Profile(props) {
           <Grid item xs={12} md={6} className={classes.jumboDetails}>
             <div className={classes.jumboTexts}>
               <span className={classes.jumboText}>
-                Votre profil a été
+                Votre profil a été <br />
                 <span className={classes.jumboTextBold}>validé</span>{" "}
                 Anne-Gabrielle !
               </span>
               <br />
             </div>
             <div className={classes.jumboButton}>
-              <Button text="DÉMARRER" />
+              <Button text="JE ME LANCE" />
             </div>
             <div className={classes.jumboDescription}>
-              Nous configurons votre espace personnel, plus que quelques étapes
-              et votre profil sera disponible auprès de nos 2300+ restaurants
-              partenaires
-            </div>
-            <div className={classes.jumboIcons}>
-              <Chat className={classes.jumboIcon} />
-              <Microphone className={classes.jumboIcon} />
+              Votre espace personnel a été activé, encore quelques informations
+              et vous recevrez les offres de nos 2300+ restaurants partenaires
             </div>
           </Grid>
         </Grid>
@@ -411,10 +353,8 @@ export default function Profile(props) {
         <section id="Steps" className={classes.stepsContainer}>
           <div className={classes.steps}>
             <div className={classes.stepLine}></div>
+            <div className={classes.step}>1. SAISIE DE VOS INFORMATIONS</div>
             <div className={classes.step + " " + classes.stepActive}>
-              1. SAISIE DE VOS INFORMATIONS
-            </div>
-            <div className={classes.step}>
               2. VALIDATION DE VOS INFORMATIONS
             </div>
             <div className={classes.step}>3. ACTIVATION DU COMPTE</div>
@@ -422,145 +362,150 @@ export default function Profile(props) {
         </section>
         <section id="form" className={classes.formContainer}>
           <div className={classes.formHeader}>
-            Validons ensemble vos informations
+            Plus qu’une étape avant de démarrer !
           </div>
-          <div className={classes.formStepHeader}>
-            <div className={classes.formStepIconWrapper}>
-              <Point className={classes.formStepIcon} />
+          <section>
+            <div className={classes.formStepHeader}>
+              <div className={classes.formStepIconWrapper}>
+                <Cycle className={classes.formStepIcon} />
+              </div>
+              <div className={classes.formStepText}>TYPE DE VÉHICULE</div>
             </div>
-            <div className={classes.formStepText}>ADRESSE POSTALE</div>
-          </div>
-          <Grid container className={classes.form}>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>N° DE RUE ET RUE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="71 rue du Faubourg Poissonnière "
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>CODE POSTAL</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="75009"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>COMPLÉMENT D’ADRESSE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="5ème étage"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>VILLE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="Paris"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>NUMÉRO DE TÉLÉPHONE</div>
-              <div className={classes.inputContainer}>
-                <div className={classes.flagIcon}>
-                  <img src={Flag} className={classes.flagIconImg} alt="flag" />
-                </div>
-                <input
-                  className={classes.input}
-                  type="number"
-                  placeholder="07 88 45 20 12"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-          </Grid>
-          <div className={classes.formStepHeader}>
-            <div className={classes.formStepIconWrapper}>
-              <Attach className={classes.formStepIcon} />
+            <div className={classes.formStepSubHeader}>
+              DANS QUEL(S) TYPE(S) DE VÉHICULE(S) LIVREZ-VOUS ?
             </div>
-            <div className={classes.formStepText}>JUSTIFICATIFS</div>
-          </div>
-          <div className={classes.inputSIRET}>
-            <div className={classes.inputLabel}>N° DE RUE ET RUE</div>
-            <div className={classes.inputContainer}>
-              <input
-                className={classes.input}
-                type="text"
-                placeholder="71 rue du Faubourg Poissonnière "
-              />
-              <div className={classes.inputIcon}>
-                <Tick className={classes.stepperIcon} />
-              </div>
-            </div>
-          </div>
-          <Grid container className={classes.stepperContainer}>
-            <Grid item xs={12} md={6} className={classes.stepperInput}>
-              <div className={classes.stepperInputContent}>
-                <FileUpload className={classes.stepperInputIcon} />
-                <div className={classes.stepperInputTexts}>
-                  <span className={classes.stepperInputText}>
-                    Cliquez sur le justificatif
-                  </span>
-                  <span className={classes.stepperInputText}>
-                    pour ajouter votre document
-                  </span>
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.steppers}>
-              {steps.map((item) => (
-                <div key={item.id} className={classes.stepper}>
-                  <div className={classes.stepperRow}>
-                    <div className={classes.stepperIconWrapper}>
-                      {item.id < step && (
-                        <Tick className={classes.stepperIcon} />
-                      )}
-                    </div>
-                    <div
-                      className={`${classes.stepperTitle} ${
-                        item.id >= step ? classes.stepperTitleDone : ""
+            <Grid container spacing={6}>
+              <Grid item xs={12} lg={8} container className={classes.step1}>
+                {step1s.map((item, index) => (
+                  <Grid
+                    key={item.id}
+                    item
+                    xs={12}
+                    md={6}
+                    container
+                    className={classes.step1Section}
+                    onClick={() => setVehicle(item.id)}
+                  >
+                    <Grid item xs={3}>
+                      {item.image}
+                    </Grid>
+                    <Grid item xs={7}>
+                      <span
+                        className={`${classes.step1SectionText1} ${
+                          vehicle === item.id && classes.step1SectionText1Active
+                        }`}
+                      >
+                        {item.title}
+                      </span>
+                      <br />
+                      <span
+                        className={`${classes.step1SectionText2} ${
+                          vehicle === item.id && classes.step1SectionText2Active
+                        }`}
+                      >
+                        {item.description}
+                      </span>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={2}
+                      className={`${classes.step1SectionIcon} ${
+                        vehicle === item.id && classes.step1SectionIconActive
                       }`}
                     >
-                      {item.title}
+                      <OK />
+                    </Grid>
+                  </Grid>
+                ))}
+              </Grid>
+              {vehicle !== 1 && vehicle !== 3 && (
+                <Grid
+                  item
+                  xs={12}
+                  lg={4}
+                  container
+                  className={classes.step1Section2}
+                >
+                  <div className={classes.step1Section2step}>
+                    <div>
+                      <Checkbox
+                        checked={vehicleCheck1}
+                        onChange={(event) =>
+                          setvehicleCheck1(event.target.checked)
+                        }
+                        disableRipple
+                        color="default"
+                        checkedIcon={<Checked />}
+                        icon={<Unchecked />}
+                        className={classes.step1Section2Checkbox}
+                      />
+                      <span className={classes.step1Section2stepText1}>
+                        Permis de conduire
+                      </span>
                     </div>
+                    <span className={classes.step1Section2stepText2}>
+                      Obligatoire si sélection d’un véhicule motorisé.
+                    </span>
                   </div>
-                  <div className={classes.stepperDesc}>{item.description}</div>
-                </div>
-              ))}
+                  <div className={classes.step1Section2step}>
+                    <div>
+                      <Checkbox
+                        checked={vehicleCheck2}
+                        onChange={(event) =>
+                          setvehicleCheck2(event.target.checked)
+                        }
+                        disableRipple
+                        color="default"
+                        checkedIcon={<Checked />}
+                        icon={<Unchecked />}
+                        className={classes.step1Section2Checkbox}
+                      />
+                      <span className={classes.step1Section2stepText1}>
+                        Preuve d’achat du véhicule
+                      </span>
+                    </div>
+                    <span className={classes.step1Section2stepText2}>
+                      Obligatoire si sélection d’un véhicule motorisé.
+                    </span>
+                  </div>
+                </Grid>
+              )}
             </Grid>
-          </Grid>
+          </section>
+          <section>
+            <div className={classes.formStepHeader}>
+              <div className={classes.formStepIconWrapper}>
+                <Cycle className={classes.formStepIcon} />
+              </div>
+              <div className={classes.formStepText}>VOLUME DE LIVRAISON</div>
+            </div>
+          </section>
+          <section>
+            <div className={classes.formStepHeader}>
+              <div className={classes.formStepIconWrapper}>
+                <GPS className={classes.formStepIcon} />
+              </div>
+              <div className={classes.formStepText}>TON RAYON D’ACTION</div>
+            </div>
+          </section>
+          <section>
+            <div className={classes.formStepHeader}>
+              <div className={classes.formStepIconWrapper}>
+                <Calendar className={classes.formStepIcon} />
+              </div>
+              <div className={classes.formStepText}>T’ES DISPO ? ;)</div>
+            </div>
+          </section>
+          <section>
+            <div className={classes.formStepHeader}>
+              <div className={classes.formStepIconWrapper}>
+                <CoinStack className={classes.formStepIcon} />
+              </div>
+              <div className={classes.formStepText}>FIXE TES TARIFS</div>
+            </div>
+          </section>
           <div className={classes.buttonContainer}>
-            <Button
-              type="submit"
-              text={"Soumettre mon dossier"}
-              className={classes.submitButton}
-            >
+            <Button type="submit" text={"Soumettre mon dossier"}>
               <Flash style={{ marginRight: 10 }} />
             </Button>
           </div>
