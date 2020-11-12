@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 
-export default function Login(props) {
+export default function Input(props) {
   const useStyles = makeStyles((theme) => ({
     row: {
       width: "100%",

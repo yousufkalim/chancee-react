@@ -1,14 +1,16 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Checkbox from "@material-ui/core/Checkbox";
 import Slider from "@material-ui/core/Slider";
+import Dialog from "@material-ui/core/Dialog";
+import CloseIcon from "@material-ui/icons/Close";
 
 import { ReactComponent as JumboImage } from "../../assets/images/Fusee.svg";
 import { ReactComponent as Cycle } from "../../assets/images/cycle.svg";
 import { ReactComponent as Flash } from "../../assets/images/flash.svg";
-import { ReactComponent as GPS } from "../../assets/images/gps.svg";
 import { ReactComponent as Calendar } from "../../assets/images/event.svg";
 import { ReactComponent as CoinStack } from "../../assets/images/coinStack.svg";
 import { ReactComponent as StepCycle } from "../../assets/images/stepCycle.svg";
@@ -24,6 +26,7 @@ import { ReactComponent as User2step23 } from "../../assets/images/user2step23.s
 
 import Header from "../../components/Header";
 import Button from "../../components/Button";
+import Input from "../../components/Input";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -152,6 +155,7 @@ const useStyles = makeStyles((theme) => ({
     height: 50,
     width: 50,
     backgroundColor: "rgba(250,251,252,1)",
+    borderRadius: 6,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -268,6 +272,13 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "transparent",
     },
   },
+  //
+  sliderWidth: {
+    width: "70%",
+    [theme.breakpoints.down("md")]: {
+      width: "100%",
+    },
+  },
   // step2
   step2Slider1: {
     width: "2%",
@@ -278,8 +289,15 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiSlider-track": {
       height: 48,
-      borderTopLeftRadius: 4,
-      borderBottomLeftRadius: 4,
+      borderTopLeftRadius: 6,
+      borderBottomLeftRadius: 6,
+    },
+    "& .MuiSlider-rail": {
+      height: 47,
+      borderTopLeftRadius: 6,
+      borderBottomLeftRadius: 6,
+      backgroundColor: "#fff",
+      border: "1px solid #89ED4A",
     },
     "&.Mui-disabled": {
       color: "#89ED4A",
@@ -298,13 +316,13 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiSlider-track": {
       height: 48,
-      borderTopLeftRadius: 0,
-      borderBottomLeftRadius: 0,
+      borderTopRightRadius: 6,
+      borderBottomRightRadius: 6,
     },
     "& .MuiSlider-rail": {
       height: 47,
-      borderTopRightRadius: 0,
-      borderBottomRightRadius: 0,
+      borderTopRightRadius: 6,
+      borderBottomRightRadius: 6,
       backgroundColor: "#fff",
       border: "1px solid #89ED4A",
     },
@@ -317,6 +335,259 @@ const useStyles = makeStyles((theme) => ({
   },
   step2Icon: {
     cursor: "pointer",
+    [theme.breakpoints.down("sm")]: {
+      height: 40,
+      width: 70,
+    },
+  },
+  //
+  step3Slider: {
+    width: "98%",
+    color: "#8B9AFC",
+    height: 60,
+    "& .MuiSlider-track": {
+      height: 48,
+      borderRadius: 6,
+    },
+    "& .MuiSlider-rail": {
+      height: 47,
+      backgroundColor: "#fff",
+      borderRadius: 6,
+      border: "1px solid #8B9AFC",
+    },
+    "& .MuiSlider-mark": {
+      height: 5,
+      marginTop: 55,
+      backgroundColor: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markActive": {
+      height: 5,
+      marginTop: 55,
+      backgroundColor: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markLabel": {
+      marginTop: 47,
+      color: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markLabelActive": {
+      marginTop: 47,
+      color: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-thumb.MuiSlider-active": {
+      boxShadow: "none",
+    },
+    "& .MuiSlider-thumb.Mui-focusVisible": {
+      boxShadow: "none",
+    },
+    "& .MuiSlider-thumb": {
+      marginTop: 14,
+      width: 20,
+      height: 20,
+      borderRadius: 4,
+      backgroundColor: "#323C47",
+      "&::after": {
+        fontSize: 9,
+        color: "#fff",
+        display: "flex",
+        content: "'< >'",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      "&:hover": {
+        boxShadow: "none",
+      },
+      "&:active": {
+        boxShadow: "none",
+      },
+    },
+    "& .MuiSlider-valueLabel": {
+      marginTop: 38,
+      marginLeft: -46,
+      // borderRadius: 4,
+      color: "transparent",
+      fontSize: 20,
+      // position: 'absolute'
+      "&::after": {
+        content: "'km'",
+        position: "absolute",
+        top: 10,
+        left: 35,
+        color: "#FFF",
+        fontSize: 14,
+      },
+    },
+  },
+  step3Icons: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  step3Icon: {
+    cursor: "pointer",
+  },
+  //
+  step5SliderContainer: {
+    border: "1px dashed rgba(186,197,205,1)",
+    padding: 20,
+    borderRadius: 6,
+  },
+  step5Slider: {
+    width: "98%",
+    color: "#FC917C",
+    height: 54,
+    "& .MuiSlider-track": {
+      height: 65,
+      borderRadius: 6,
+      border: "1px solid #FC917C",
+    },
+    "& .MuiSlider-rail": {
+      height: 65,
+      backgroundColor: "#fff",
+      borderRadius: 6,
+      border: "1px solid #FC917C",
+    },
+    "& .MuiSlider-mark": {
+      height: 5,
+      marginTop: 72,
+      backgroundColor: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markActive": {
+      height: 5,
+      marginTop: 72,
+      backgroundColor: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markLabel": {
+      marginTop: 64,
+      color: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-markLabelActive": {
+      marginTop: 64,
+      color: "rgba(0, 0, 0, 0.54)",
+    },
+    "& .MuiSlider-thumb.MuiSlider-active": {
+      boxShadow: "none",
+    },
+    "& .MuiSlider-thumb.Mui-focusVisible": {
+      boxShadow: "none",
+    },
+    "& .MuiSlider-thumb": {
+      marginTop: 24,
+      width: 20,
+      height: 20,
+      borderRadius: 4,
+      backgroundColor: "#323C47",
+      "&::after": {
+        fontSize: 9,
+        color: "#fff",
+        display: "flex",
+        content: "'< >'",
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      "&:hover": {
+        boxShadow: "none",
+      },
+      "&:active": {
+        boxShadow: "none",
+      },
+    },
+    "& .MuiSlider-valueLabel": {
+      marginTop: 38,
+      marginLeft: -82,
+      color: "transparent",
+      fontSize: 20,
+      "&::after": {
+        content: "'€ / heure'",
+        position: "absolute",
+        top: 10,
+        left: 30,
+        whiteSpace: "nowrap",
+        color: "#FFF",
+        fontSize: 14,
+      },
+    },
+  },
+  step5Details: {
+    padding: "20px",
+  },
+  step5Detail: {
+    color: "red",
+    fontSize: 10,
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: "8px 0",
+  },
+  step5Checkbox: {
+    width: 25,
+    padding: 0,
+    marginRight: 10,
+    "&:hover": {
+      backgroundColor: "transparent",
+    },
+  },
+  step5CheckboxText: {
+    fontWeight: "500",
+    fontSize: "14px",
+    color: "rgba(186,197,205,1)",
+  },
+  link: {
+    color: "#00A1FF",
+    textDecoration: "none",
+  },
+  incrementText: {
+    color: "#000",
+    marginTop: 10,
+    fontSize: "14px",
+    display: "block",
+    fontWeight: "500",
+    marginLeft: 10,
+  },
+  //
+  modalHeaderContainer: {
+    padding: "20px",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  modalHeader: {
+    color: "rgba(0, 0, 0, 0.54)",
+    margin: 0,
+  },
+  modalIcon: {
+    cursor: "pointer",
+    color: "rgba(0, 0, 0, 0.54)",
+  },
+  modalContent: {
+    padding: "0 20px",
+  },
+  modalChip: {
+    padding: "0 10px",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderRadius: 10,
+    backgroundColor: "#FC917C",
+    color: "#fff",
+  },
+  modalForm: {
+    "& > *": {
+      padding: "10px 20px",
+    },
+  },
+  modalActions: {
+    padding: "10px 20px",
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    "& > *": {
+      marginLeft: 20,
+    },
   },
   buttonContainer: {
     paddingTop: 20,
@@ -330,12 +601,31 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 export default function Profile(props) {
   const classes = useStyles();
   const [vehicle, setVehicle] = useState(4);
   const [vehicleCheck1, setvehicleCheck1] = useState(false);
   const [vehicleCheck2, setvehicleCheck2] = useState(false);
   const [volume, setVolume] = useState(2);
+  const [KM, setKM] = useState(60);
+  const [selectedDay, setSelectedDay] = useState(1);
+  const [timeslots, setTimeSlots] = useState([
+    { day: 1, checked: false, slots: [] },
+    { day: 2, checked: false, slots: [] },
+    { day: 3, checked: false, slots: [] },
+    { day: 4, checked: false, slots: [] },
+    { day: 5, checked: false, slots: [] },
+    { day: 6, checked: false, slots: [] },
+    { day: 7, checked: false, slots: [] },
+  ]);
+  const [dayModal, setDayModal] = React.useState(false);
+  const [rate, setRate] = useState(18);
+  const [rateCheckbox, setRateCheckbox] = useState(false);
+  const [conditions, setConditions] = useState(false);
+  const [startHour, setStartHour] = useState("");
+  const [endHour, setEndHour] = useState("");
+  const [udpate, setUpdate] = useState(false);
 
   let step1s = [
     {
@@ -373,6 +663,43 @@ export default function Profile(props) {
       title: "VÉLO",
       description: "Seuls les vrais savent",
       image: <StepCycle />,
+    },
+  ];
+  const days = [
+    {
+      id: 1,
+      name: "Lundi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 2,
+      name: "Mardi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 3,
+      name: "Mercredi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 4,
+      name: "Jeudi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 5,
+      name: "Vendredi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 6,
+      name: "Samedi",
+      description: "A partir de 8h00, pendant 10 heures",
+    },
+    {
+      id: 7,
+      name: "Dimanche",
+      description: "A partir de 8h00, pendant 10 heures",
     },
   ];
 
@@ -536,7 +863,7 @@ export default function Profile(props) {
             <div className={classes.formStepSubHeader}>
               QUEL EST TON VOLUME POSSIBLE DE LIVRAISON ?
             </div>
-            <Grid container>
+            <Grid container className={classes.sliderWidth}>
               <Grid item xs={12}>
                 <Slider
                   value={1}
@@ -556,33 +883,98 @@ export default function Profile(props) {
                 />
               </Grid>
               <Grid item xs={12} className={classes.step2Icons}>
-                <div className={classes.step2Icon}>
-                  <User2step21 onClick={() => setVolume(1)} />
-                </div>
-                <div className={classes.step2Icon} style={{ marginLeft: "6%" }}>
-                  <User2step22 onClick={() => setVolume(2)} />
-                </div>
-                <div className={classes.step2Icon}>
-                  <User2step23 onClick={() => setVolume(3)} />
-                </div>
+                <User2step21
+                  onClick={() => setVolume(1)}
+                  className={classes.step2Icon}
+                />
+                <User2step22
+                  onClick={() => setVolume(2)}
+                  className={classes.step2Icon}
+                />
+                <User2step23
+                  onClick={() => setVolume(3)}
+                  className={classes.step2Icon}
+                />
               </Grid>
             </Grid>
           </section>
           <section>
             <div className={classes.formStepHeader}>
               <div className={classes.formStepIconWrapper}>
-                <GPS className={classes.formStepIcon} />
+                <Cycle className={classes.formStepIcon} />
               </div>
               <div className={classes.formStepText}>TON RAYON D’ACTION</div>
             </div>
+            <div className={classes.formStepSubHeader}>
+              QUEL EST VOTRE RAYON D’ACTION, EN KM ?
+            </div>
+            <Grid container className={classes.sliderWidth}>
+              <Grid item xs={12}>
+                <Slider
+                  min={0}
+                  step={1}
+                  max={100}
+                  value={KM}
+                  marks={[
+                    {
+                      value: 2,
+                      label: "2 km",
+                    },
+                    {
+                      value: 100,
+                      label: "100 km",
+                    },
+                  ]}
+                  valueLabelDisplay="on"
+                  className={classes.step3Slider}
+                  onChange={(e, value) => value >= 2 && setKM(value)}
+                />
+              </Grid>
+            </Grid>
           </section>
           <section>
             <div className={classes.formStepHeader}>
               <div className={classes.formStepIconWrapper}>
                 <Calendar className={classes.formStepIcon} />
               </div>
-              <div className={classes.formStepText}>T’ES DISPO ? ;)</div>
+              <div className={classes.formStepText}>T’ES DISPO ? 😉</div>
             </div>
+            <div className={classes.formStepSubHeader}>
+              QUELLES-SONT TES DISPONIBILITÉS ?
+            </div>
+            <Grid container>
+              {days.map((day) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={day.id}
+                  className={classes.step1Section2step}
+                >
+                  <div>
+                    <Checkbox
+                      disableRipple
+                      checked={timeslots[day.id - 1].checked}
+                      color="default"
+                      icon={<Unchecked />}
+                      onChange={(event) => {
+                        setSelectedDay(day.id);
+                        setDayModal(true);
+                      }}
+                      checkedIcon={<Checked />}
+                      className={classes.step1Section2Checkbox}
+                    />
+                    <span className={classes.step1Section2stepText1}>
+                      {day.name}
+                    </span>
+                  </div>
+                  <span className={classes.step1Section2stepText2}>
+                    {day.description}
+                  </span>
+                </Grid>
+              ))}
+            </Grid>
           </section>
           <section>
             <div className={classes.formStepHeader}>
@@ -591,7 +983,88 @@ export default function Profile(props) {
               </div>
               <div className={classes.formStepText}>FIXE TES TARIFS</div>
             </div>
+            <div className={classes.formStepSubHeader}>
+              QUEL EST TON TARIF PAR HEURE ?
+            </div>
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                md={8}
+                className={classes.step5SliderContainer}
+              >
+                <Checkbox
+                  disableRipple
+                  checked={rateCheckbox}
+                  color="default"
+                  icon={<Unchecked />}
+                  onChange={(event) => setRateCheckbox((st) => !st)}
+                  checkedIcon={<Checked />}
+                  className={classes.step5Checkbox}
+                />
+                <span className={classes.step5CheckboxText}>
+                  Je souhaite recevoir des offres avec une{" "}
+                  <Link to="/" className={classes.link}>
+                    Rémunération à l’heure
+                  </Link>
+                </span>
+                <Slider
+                  min={8}
+                  step={1}
+                  max={26}
+                  value={rate}
+                  marks={[
+                    {
+                      value: 8,
+                      label: "8€",
+                    },
+                    {
+                      value: 26,
+                      label: "26€",
+                    },
+                  ]}
+                  valueLabelDisplay="on"
+                  className={classes.step5Slider}
+                  onChange={(e, value) => setRate(value)}
+                />
+                <Grid item xs={12} className={classes.step5Details} container>
+                  <Grid item xs={12} md={9} className={classes.step5Detail}>
+                    <span>TARIF MINIMUM PAR LES AUTRES LIVREURS:</span>
+                    <span>10€</span>
+                  </Grid>
+                  <Grid item xs={12} md={9} className={classes.step5Detail}>
+                    <span>TARIF MOYEN PAR LES AUTRES LIVREURS:</span>
+                    <span>21€</span>
+                  </Grid>
+                  <Grid item xs={12} md={9} className={classes.step5Detail}>
+                    <span>TARIF MAXIMAL PAR LES AUTRES LIVREURS:</span>
+                    <span>54€</span>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
           </section>
+          <span className={classes.incrementText}>
+            Pour les missions de nuit (entre 20h et 8h), les tarifs sont
+            automatiquement augmentés de 10%
+          </span>
+          <div style={{ marginTop: 30 }}>
+            <Checkbox
+              disableRipple
+              color="default"
+              checked={conditions}
+              icon={<Unchecked />}
+              checkedIcon={<Checked />}
+              className={classes.step5Checkbox}
+              onChange={(event) => setConditions((st) => !st)}
+            />
+            <span className={classes.step5CheckboxText}>
+              Je suis d’accord avec les{" "}
+              <Link to="/" className={classes.link}>
+                Conditions d’utilisation
+              </Link>
+            </span>
+          </div>
           <div className={classes.buttonContainer}>
             <Button type="submit" text={"Soumettre mon dossier"}>
               <Flash style={{ marginRight: 10 }} />
@@ -599,6 +1072,81 @@ export default function Profile(props) {
           </div>
         </section>
       </Container>
+      <Dialog
+        open={dayModal}
+        maxWidth={"md"}
+        fullWidth={true}
+        onClose={() => setDayModal((st) => !st)}
+      >
+        <div className={classes.modalHeaderContainer}>
+          <h2 className={classes.modalHeader}>Add Availability</h2>
+          <CloseIcon
+            onClick={() => setDayModal((st) => !st)}
+            className={classes.modalIcon}
+          />
+        </div>
+        <Grid container className={classes.modalContent}>
+          {timeslots[selectedDay - 1].slots.map((row, index) => (
+            <Grid
+              item
+              xs={3}
+              key={row.start + String(index)}
+              className={classes.modalChip}
+            >
+              <span>{row.start}</span>
+              <span>{row.end}</span>
+              <span>
+                <CloseIcon className={classes.modalIcon} />
+              </span>
+            </Grid>
+          ))}
+        </Grid>
+        <div className={classes.modalForm}>
+          <div className={classes.tableRow}>
+            <span>Start Hour </span>{" "}
+            <Input
+              type="number"
+              color="#FC917C"
+              placeholder="Start Hour"
+              value={startHour}
+              onChange={(e) => setStartHour(e.target.value)}
+            />
+          </div>
+          <div className={classes.tableRow}>
+            {" "}
+            <span>End Hour </span>
+            <Input
+              type="number"
+              color="#FC917C"
+              placeholder="End Hour"
+              value={endHour}
+              onChange={(e) => setEndHour(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className={classes.modalActions}>
+          <Button style={{ width: 100, backgroundColor: "#FC917C" }}>
+            Done
+          </Button>
+          <Button
+            style={{ width: 100, backgroundColor: "#FC917C" }}
+            onClick={() => {
+              let timeslotArray = timeslots;
+              let times = timeslotArray[selectedDay - 1].slots;
+              times.push({
+                start: startHour,
+                end: endHour,
+              });
+              timeslotArray[selectedDay - 1].slots = times;
+              console.log(timeslotArray);
+              setTimeSlots(timeslotArray);
+              setUpdate((st) => !st);
+            }}
+          >
+            Add Row
+          </Button>
+        </div>
+      </Dialog>
     </div>
   );
 }
