@@ -7,6 +7,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Slider from "@material-ui/core/Slider";
 import Dialog from "@material-ui/core/Dialog";
 import CloseIcon from "@material-ui/icons/Close";
+import Chip from "@material-ui/core/Chip";
 
 import { ReactComponent as JumboImage } from "../../assets/images/Fusee.svg";
 import { ReactComponent as Cycle } from "../../assets/images/cycle.svg";
@@ -25,12 +26,14 @@ import { ReactComponent as User2step22 } from "../../assets/images/user2step22.s
 import { ReactComponent as User2step23 } from "../../assets/images/user2step23.svg";
 
 import Header from "../../components/Header";
+import Footer from "../../components/Footer";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: "#fff",
+    paddingBottom: 20,
   },
   // jumbotron
   jumbo: {
@@ -283,7 +286,7 @@ const useStyles = makeStyles((theme) => ({
   step2Slider1: {
     width: "2%",
     color: "#89ED4A",
-    height: 60,
+    height: 55,
     "& .MuiSlider-thumb": {
       display: "none",
     },
@@ -306,7 +309,7 @@ const useStyles = makeStyles((theme) => ({
   step2Slider2: {
     width: "98%",
     color: "#89ED4A",
-    height: 60,
+    height: 55,
     "& .MuiSlider-thumb": {
       display: "none",
     },
@@ -344,7 +347,7 @@ const useStyles = makeStyles((theme) => ({
   step3Slider: {
     width: "98%",
     color: "#8B9AFC",
-    height: 60,
+    height: 35,
     "& .MuiSlider-track": {
       height: 48,
       borderRadius: 6,
@@ -564,15 +567,8 @@ const useStyles = makeStyles((theme) => ({
   modalContent: {
     padding: "0 20px",
   },
-  modalChip: {
-    padding: "0 10px",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    borderRadius: 10,
-    backgroundColor: "#FC917C",
-    color: "#fff",
+  modalChipContainer: {
+    marginBottom: 10,
   },
   modalForm: {
     "& > *": {
@@ -625,7 +621,7 @@ export default function Profile(props) {
   const [conditions, setConditions] = useState(false);
   const [startHour, setStartHour] = useState("");
   const [endHour, setEndHour] = useState("");
-  const [udpate, setUpdate] = useState(false);
+  const [getUpdate, setGetUpdate] = useState(false);
 
   let step1s = [
     {
@@ -1072,6 +1068,7 @@ export default function Profile(props) {
           </div>
         </section>
       </Container>
+      <Footer />
       <Dialog
         open={dayModal}
         maxWidth={"md"}
@@ -1089,58 +1086,109 @@ export default function Profile(props) {
           {timeslots[selectedDay - 1].slots.map((row, index) => (
             <Grid
               item
-              xs={3}
-              key={row.start + String(index)}
-              className={classes.modalChip}
+              xs={12}
+              sm={6}
+              md={3}
+              key={row.start + row.end}
+              className={classes.modalChipContainer}
             >
-              <span>{row.start}</span>
-              <span>{row.end}</span>
-              <span>
-                <CloseIcon className={classes.modalIcon} />
-              </span>
+              <Chip
+                label={"start:" + row.start + " ↔️ end:" + row.end}
+                onDelete={() => {
+                  let arry = timeslots;
+                  let newArray = arry[selectedDay - 1].slots.filter(
+                    (slo, index2) => index2 !== index
+                  );
+                  arry[selectedDay - 1].slots = newArray;
+                  setTimeSlots(arry);
+                  setGetUpdate((st) => !st);
+                }}
+                color="default"
+              />
             </Grid>
           ))}
         </Grid>
         <div className={classes.modalForm}>
-          <div className={classes.tableRow}>
-            <span>Start Hour </span>{" "}
+          <div>
+            <span>Start Hour</span>
             <Input
               type="number"
               color="#FC917C"
               placeholder="Start Hour"
               value={startHour}
-              onChange={(e) => setStartHour(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value >= 0 && e.target.value < 23) {
+                  setStartHour(e.target.value);
+                }
+              }}
             />
           </div>
-          <div className={classes.tableRow}>
-            {" "}
-            <span>End Hour </span>
+          <div>
+            <span>End Hour</span>
             <Input
               type="number"
               color="#FC917C"
               placeholder="End Hour"
               value={endHour}
-              onChange={(e) => setEndHour(e.target.value)}
+              onChange={(e) => {
+                if (e.target.value >= 0 && e.target.value < 24) {
+                  setEndHour(e.target.value);
+                }
+              }}
             />
           </div>
         </div>
         <div className={classes.modalActions}>
-          <Button style={{ width: 100, backgroundColor: "#FC917C" }}>
+          <Button
+            style={{ width: 100, backgroundColor: "#FC917C" }}
+            onClick={() => {
+              if (timeslots[selectedDay - 1].slots.length > 0) {
+                let newSlots = timeslots;
+                newSlots[selectedDay - 1].checked = true;
+                setTimeSlots(newSlots);
+              } else {
+                let newSlots = timeslots;
+                newSlots[selectedDay - 1].checked = false;
+                setTimeSlots(newSlots);
+              }
+              setDayModal(false);
+              setEndHour("");
+              setStartHour("");
+            }}
+          >
             Done
           </Button>
           <Button
             style={{ width: 100, backgroundColor: "#FC917C" }}
             onClick={() => {
-              let timeslotArray = timeslots;
-              let times = timeslotArray[selectedDay - 1].slots;
-              times.push({
-                start: startHour,
-                end: endHour,
-              });
-              timeslotArray[selectedDay - 1].slots = times;
-              console.log(timeslotArray);
-              setTimeSlots(timeslotArray);
-              setUpdate((st) => !st);
+              if (parseInt(startHour) >= parseInt(endHour)) {
+                alert("start hour should be less then endhour");
+              } else {
+                let timeslotArray = timeslots;
+                let times = timeslotArray[selectedDay - 1].slots;
+                let shouldAdd = true;
+                times.map((timeslot) => {
+                  if (
+                    parseInt(startHour) === parseInt(timeslot.start) ||
+                    parseInt(endHour) <= parseInt(timeslot.end) ||
+                    (parseInt(startHour) > parseInt(timeslot.start) &&
+                      parseInt(startHour) < parseInt(timeslot.end))
+                  ) {
+                    shouldAdd = false;
+                  }
+                });
+                if (shouldAdd) {
+                  times.push({
+                    start: startHour,
+                    end: endHour,
+                  });
+                  timeslotArray[selectedDay - 1].slots = times;
+                  setTimeSlots(timeslotArray);
+                } else {
+                  alert("Cannot add overlapping time slots!");
+                }
+                setGetUpdate((st) => !st);
+              }
             }}
           >
             Add Row

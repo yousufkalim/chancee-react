@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "space-between",
+    padding: 0,
+    margin: 0,
   },
   logo: {
     height: 35,
