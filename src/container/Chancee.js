@@ -12,6 +12,8 @@ import PasswordForgot from "../pages/PasswordForgot";
 import UStep1 from "../pages/User/Step1";
 import UStep2 from "../pages/User/Step2";
 import Profile from "../pages/User/Profile";
+import Invitations from "../pages/User/Invitations";
+import Offers from "../pages/User/Offers";
 
 const LFS = () => {
   const store = useSelector((state) => state);
@@ -59,7 +61,9 @@ const LFS = () => {
     <div>Loading...</div>
   ) : store.auth ? (
     <Switch>
-      <Route exact path="/" component={Profile} />
+      <Route exact path="/" component={Offers} />
+      <Route exact path="/invitations" component={Invitations} />
+      <Route exact path="/profile" component={Profile} />
       <Route exact path="/step-1" component={UStep1} />
       <Route exact path="/step-2" component={UStep2} />
       <Redirect from="*" to="/" />
