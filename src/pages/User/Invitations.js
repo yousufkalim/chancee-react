@@ -38,6 +38,24 @@ const useStyles = makeStyles((theme) => ({
   yellowIcon: {
     color: "orange",
   },
+  tableHeader: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    margin: "20px 0",
+    padding: "0px 15px",
+  },
+  tableHeaderLeft: {
+    color: "#000",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
+  tableHeaderRight: {
+    color: "#4DA1FF",
+    fontSize: 22,
+    fontWeight: "bold",
+  },
 }));
 
 const Profile = (props) => {
@@ -126,6 +144,12 @@ const Profile = (props) => {
       <Header />
       <div className={classes.content}>
         <section id="table">
+          <div className={classes.tableHeader}>
+            <div className={classes.tableHeaderLeft}>INVITATIONS RECUES</div>
+            <div className={classes.tableHeaderRight}>
+              MONTANT TOTAL ACQUIS : 43.540€
+            </div>
+          </div>
           <div className={classes.tableContainer}>
             <Table
               headers={[

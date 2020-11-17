@@ -1,12 +1,11 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Rating from "@material-ui/lab/Rating";
 
 import Header from "../../components/Header2";
 import Table from "../../components/Table";
 
 import { ReactComponent as CompanyIcon } from "../../assets/images/diamond.svg";
-import { ReactComponent as Tick } from "../../assets/images/Tick2.svg";
-import { ReactComponent as Cross } from "../../assets/images/Cross.svg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,21 +24,40 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     justifyContent: "center",
     "& > svg": {
-      width: 20,
-      height: 20,
+      width: 30,
+      height: 30,
       marginRight: 5,
     },
   },
   rowIcon: {
-    width: 20,
-    height: 20,
     outline: "none",
     cursor: "pointer",
+  },
+  yellowIcon: {
+    color: "orange",
+  },
+  tableHeader: {
+    color: "#000",
+    fontSize: 22,
+    fontWeight: "bold",
+    paddingLeft: "15px",
+    margin: "20px 0",
+  },
+  tableButton: {
+    color: "#fff",
+    border: "none",
+    borderRadius: 6,
+    fontSize: "10px",
+    cursor: "pointer",
+    fontWeight: "bold",
+    padding: "3px 6px",
+    backgroundColor: "#c21d12",
   },
 }));
 
 const Profile = (props) => {
   const classes = useStyles();
+  const [value, setValue] = React.useState(2);
 
   const rows = [
     [
@@ -53,23 +71,8 @@ const Profile = (props) => {
       "8h - 13h",
       "Moissy (77)",
       "130€",
-      [
-        <div className={classes.itemRow}>
-          <CompanyIcon /> 4.3/5 (43 notes)
-        </div>,
-      ],
-      [
-        <div className={classes.itemRow}>
-          <Tick
-            className={classes.rowIcon}
-            onClick={() => alert("Are you sure you want to do this? 1")}
-          />
-          <Cross
-            className={classes.rowIcon}
-            onClick={() => alert("Are you sure you want to do this? 1")}
-          />
-        </div>,
-      ],
+      "Confirmée",
+      [<div className={classes.tableButton}>ANNULER</div>],
     ],
     [
       2,
@@ -78,21 +81,12 @@ const Profile = (props) => {
           <CompanyIcon /> Starbucks
         </div>,
       ],
-      "20/11/2020",
-      "8h - 13h",
+      "19/11/2020",
+      "8h - 21h",
       "Moissy (77)",
-      "130€",
-      [
-        <div className={classes.itemRow}>
-          <CompanyIcon /> 4.3/5 (43 notes)
-        </div>,
-      ],
-      [
-        <div className={classes.itemRow}>
-          <Tick className={classes.rowIcon} />
-          <Cross className={classes.rowIcon} />
-        </div>,
-      ],
+      "240€",
+      "Confirmée",
+      [<div className={classes.tableButton}>ANNULER</div>],
     ],
     [
       3,
@@ -101,21 +95,42 @@ const Profile = (props) => {
           <CompanyIcon /> Starbucks
         </div>,
       ],
-      "20/11/2020",
+      "14/11/2020",
       "8h - 13h",
       "Moissy (77)",
       "130€",
+      "Réalisée",
       [
         <div className={classes.itemRow}>
-          <CompanyIcon /> 4.3/5 (43 notes)
+          <Rating
+            value={value}
+            onChange={(event, newValue) => {
+              setValue(newValue);
+            }}
+            size="small"
+          />
+          <div
+            className={classes.tableButton}
+            style={{ backgroundColor: "#000", marginLeft: 5 }}
+          >
+            NOTER
+          </div>
         </div>,
       ],
+    ],
+    [
+      4,
       [
         <div className={classes.itemRow}>
-          <Tick className={classes.rowIcon} />
-          <Cross className={classes.rowIcon} />
+          <CompanyIcon /> Starbucks
         </div>,
       ],
+      "14/11/2020",
+      "8h - 13h",
+      "Moissy (77)",
+      "130€",
+      "Réalisée",
+      "Noté 4/5",
     ],
   ];
 
@@ -124,6 +139,7 @@ const Profile = (props) => {
       <Header />
       <div className={classes.content}>
         <section id="table">
+          <div className={classes.tableHeader}>MISSIONS VALIDÉES</div>
           <div className={classes.tableContainer}>
             <Table
               headers={[
@@ -136,6 +152,7 @@ const Profile = (props) => {
                 "ACTION",
               ]}
               rows={rows}
+              dateItem={2}
             />
           </div>
         </section>

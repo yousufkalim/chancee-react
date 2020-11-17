@@ -15,6 +15,12 @@ import Profile from "../pages/User/Profile";
 import Invitations from "../pages/User/Invitations";
 import Offers from "../pages/User/Offers";
 
+// Company
+import COffers from "../pages/Company/Offers";
+import CProfile from "../pages/Company/Profile";
+import Search from "../pages/Company/Search";
+import CStep1 from "../pages/Company/Step1";
+
 const LFS = () => {
   const store = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -60,14 +66,34 @@ const LFS = () => {
   return loading ? (
     <div>Loading...</div>
   ) : store.auth ? (
-    <Switch>
-      <Route exact path="/" component={Offers} />
-      <Route exact path="/invitations" component={Invitations} />
-      <Route exact path="/profile" component={Profile} />
-      <Route exact path="/step-1" component={UStep1} />
-      <Route exact path="/step-2" component={UStep2} />
-      <Redirect from="*" to="/" />
-    </Switch>
+    store.user.role === "company" ? (
+      store.user.status === "active" ? (
+        <Switch>
+          <Route exact path="/" component={COffers} />
+          <Route exact path="/profile" component={CProfile} />
+          <Route exact path="/search" component={Search} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : (
+        <Switch>
+          <Route exact path="/" component={CStep1} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      )
+    ) : store.user.status === "active" ? (
+      <Switch>
+        <Route exact path="/" component={Profile} />
+        <Route exact path="/offers" component={Offers} />
+        <Route exact path="/invitations" component={Invitations} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    ) : (
+      <Switch>
+        <Route exact path="/" component={UStep1} />
+        <Route exact path="/step-2" component={UStep2} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    )
   ) : (
     <Switch>
       <Route exact path="/" component={Login} />

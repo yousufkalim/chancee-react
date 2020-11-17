@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 
-import { ReactComponent as JumboImage } from "../../assets/images/ProfileStep1.svg";
+import { ReactComponent as JumboImage } from "../../assets/images/Home2.svg";
 import { ReactComponent as Microphone } from "../../assets/images/microphone.svg";
 import { ReactComponent as Chat } from "../../assets/images/chatIcon.svg";
 import { ReactComponent as Point } from "../../assets/images/Point.svg";
@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
   },
   jumboImage: {
-    width: "100%",
+    width: "85%",
     [theme.breakpoints.down("md")]: {
       height: 200,
     },
@@ -72,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
   },
   // steps
   stepsContainer: {
+    marginTop: 50,
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
@@ -381,7 +382,9 @@ export default function Profile(props) {
       <section id="Jumbo">
         <Grid container className={classes.jumbo}>
           <Grid item xs={12} md={6}>
-            <JumboImage className={classes.jumboImage} />
+            <div style={{ display: "grid", placeItems: "center" }}>
+              <JumboImage className={classes.jumboImage} />
+            </div>
           </Grid>
           <Grid item xs={12} md={6} className={classes.jumboDetails}>
             <div className={classes.jumboTexts}>

@@ -18,12 +18,14 @@ const useStyles = makeStyles((theme) => ({
     },
     "& .MuiTableCell-root": {
       padding: 20,
-      minWidth: 199,
+      minWidth: 190,
       display: "flex",
+      flexDirection: "column",
       alignItems: "center",
       borderBottom: "none",
       whiteSpace: "nowrap",
       justifyContent: "center",
+      color: "#000",
     },
     "& .MuiTableHead-root": {
       backgroundColor: "#4DA1FF",
@@ -71,8 +73,7 @@ const TableComponent = (props) => {
                 return (
                   <>
                     <TableCell key={key}>
-                      {row[key + 1]}
-                      <br />
+                      <div>{row[key + 1]}</div>
                       {show && (
                         <div className={classes.error}>
                           (Inclut tarif de nuit)

@@ -2,7 +2,10 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   auth: true,
-  user: "",
+  user: {
+    role: "company",
+    status: "active",
+  },
   token: "",
 };
 

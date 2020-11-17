@@ -171,13 +171,15 @@ const Header = (props) => {
         <ul className={classes.list}>
           <NavLink
             to="/"
+            exact
             className={classes.listItem}
             activeClassName={classes.listItemActive}
           >
             <Home className={classes.listItemIcon} />
           </NavLink>
           <NavLink
-            to="/lists"
+            to="/invitations"
+            exact
             className={classes.listItem}
             activeClassName={classes.listItemActive}
           >
