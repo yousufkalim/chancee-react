@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { Switch, Route, Redirect } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import * as actionTypes from "../store/actions/actionTypes";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
-import RegisterCompany from "../pages/RegisterCompany";
-import PasswordForgot from "../pages/PasswordForgot";
+import * as actionTypes from '../store/actions/actionTypes';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import RegisterCompany from '../pages/RegisterCompany';
+import PasswordForgot from '../pages/PasswordForgot';
 
 // User
-import UStep1 from "../pages/User/Step1";
-import UStep2 from "../pages/User/Step2";
-import Profile from "../pages/User/Profile";
-import Invitations from "../pages/User/Invitations";
-import Offers from "../pages/User/Offers";
+import UStep1 from '../pages/User/Step1';
+import UStep2 from '../pages/User/Step2';
+import Profile from '../pages/User/Profile';
+import Invitations from '../pages/User/Invitations';
+import Offers from '../pages/User/Offers';
 
 // Company
-import COffers from "../pages/Company/Offers";
-import CProfile from "../pages/Company/Profile";
-import Search from "../pages/Company/Search";
-import CStep1 from "../pages/Company/Step1";
+import COffers from '../pages/Company/Offers';
+import CProfile from '../pages/Company/Profile';
+import Search from '../pages/Company/Search';
+import CStep1 from '../pages/Company/Step1';
 
 const LFS = () => {
   const store = useSelector((state) => state);
@@ -33,8 +33,8 @@ const LFS = () => {
 
   const checkLogin = async () => {
     try {
-      const token = localStorage.getItem("token");
-      const userId = localStorage.getItem("userId");
+      const token = localStorage.getItem('token');
+      const userId = localStorage.getItem('userId');
       if (!userId || !token) {
         setLoading(false);
         return;
@@ -52,13 +52,13 @@ const LFS = () => {
       // const data = await response.json();
       dispatch({
         type: actionTypes.LOGIN,
-        user: "",
-        token: "",
+        user: '',
+        token: '',
       });
       setLoading(false);
     } catch (err) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userId");
+      localStorage.removeItem('token');
+      localStorage.removeItem('userId');
       console.log(err);
     }
   };
@@ -66,12 +66,12 @@ const LFS = () => {
   return loading ? (
     <div>Loading...</div>
   ) : store.auth ? (
-    store.user.role === "company" ? (
-      store.user.status === "active" ? (
+    store.user.role === 'company' ? (
+      store.user.status === 'active' ? (
         <Switch>
           <Route exact path="/" component={COffers} />
           <Route exact path="/profile" component={CProfile} />
-          <Route exact path="/search" component={Search} />
+          <Route path="/search" component={Search} />
           <Redirect from="*" to="/" />
         </Switch>
       ) : (
@@ -80,7 +80,7 @@ const LFS = () => {
           <Redirect from="*" to="/" />
         </Switch>
       )
-    ) : store.user.status === "active" ? (
+    ) : store.user.status === 'active' ? (
       <Switch>
         <Route exact path="/" component={Profile} />
         <Route exact path="/offers" component={Offers} />

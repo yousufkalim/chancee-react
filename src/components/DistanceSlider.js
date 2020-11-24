@@ -1,125 +1,121 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Slider from "@material-ui/core/Slider";
-import Grid from "@material-ui/core/Grid";
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Slider from '@material-ui/core/Slider';
+import Grid from '@material-ui/core/Grid';
 
-import { ReactComponent as Cycle } from "../assets/images/cycle.svg";
+import { ReactComponent as GPS } from '../assets/images/gps.svg';
 
 const useStyles = makeStyles((theme) => ({
-  formStepHeader: {
-    margin: "0px 0 10px 0",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+  sliderHeader: {
+    margin: '0px 0 10px 0',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  formStepIconWrapper: {
+  sliderHeaderIcon: {
     height: 50,
     width: 50,
-    backgroundColor: "rgba(250,251,252,1)",
+    backgroundColor: 'rgba(250,251,252,1)',
     borderRadius: 6,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  formStepIcon: {
-    width: "40%",
-    height: "50%",
-    color: "rgba(122,204,40,1)",
+  sliderHeaderIconSVG: {
+    width: '40%',
+    height: '50%',
+    color: 'rgba(122,204,40,1)',
   },
-  formStepText: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
-    fontSize: "14px",
-    color: "rgba(122,204,40,1)",
+  sliderHeaderText: {
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: '14px',
+    color: 'rgba(122,204,40,1)',
     letterSpacing: 0.35,
     marginLeft: 10,
   },
-  formStepSubHeader: {
-    fontFamily: "Roboto",
-    fontWeight: "bold",
-    fontSize: "12px",
-    color: "rgba(186,197,205,1)",
-    letterSpacing: "0.41666671752929685px",
-    textTransform: "uppercase",
+  sliderSubHeading: {
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: '12px',
+    color: 'rgba(186,197,205,1)',
+    letterSpacing: '0.41666671752929685px',
+    textTransform: 'uppercase',
     marginBottom: 10,
   },
-  sliderWidth: {
-    width: "70%",
-    [theme.breakpoints.down("md")]: {
-      width: "100%",
-    },
-  },
-  step3Slider: {
-    width: "98%",
-    color: "#8B9AFC",
-    height: 35,
-    "& .MuiSlider-track": {
-      height: 48,
+  slider: {
+    width: '100%',
+    color: '#8B9AFC',
+    height: 54,
+    '& .MuiSlider-track': {
+      height: 65,
       borderRadius: 6,
+      border: '1px solid #8B9AFC',
     },
-    "& .MuiSlider-rail": {
-      height: 47,
-      backgroundColor: "#fff",
+    '& .MuiSlider-rail': {
+      height: 65,
+      backgroundColor: '#fff',
       borderRadius: 6,
-      border: "1px solid #8B9AFC",
+      border: '1px solid #8B9AFC',
     },
-    "& .MuiSlider-mark": {
+    '& .MuiSlider-mark': {
       height: 5,
-      marginTop: 55,
-      backgroundColor: "rgba(0, 0, 0, 0.54)",
+      marginTop: 72,
+      backgroundColor: 'rgba(0, 0, 0, 0.54)',
     },
-    "& .MuiSlider-markActive": {
+    '& .MuiSlider-markActive': {
       height: 5,
-      marginTop: 55,
-      backgroundColor: "rgba(0, 0, 0, 0.54)",
+      marginTop: 72,
+      backgroundColor: 'rgba(0, 0, 0, 0.54)',
     },
-    "& .MuiSlider-markLabel": {
-      marginTop: 47,
-      color: "rgba(0, 0, 0, 0.54)",
+    '& .MuiSlider-markLabel': {
+      marginTop: 64,
+      color: 'rgba(0, 0, 0, 0.54)',
     },
-    "& .MuiSlider-markLabelActive": {
-      marginTop: 47,
-      color: "rgba(0, 0, 0, 0.54)",
+    '& .MuiSlider-markLabelActive': {
+      marginTop: 64,
+      color: 'rgba(0, 0, 0, 0.54)',
     },
-    "& .MuiSlider-thumb.MuiSlider-active": {
-      boxShadow: "none",
+    '& .MuiSlider-thumb.MuiSlider-active': {
+      boxShadow: 'none',
     },
-    "& .MuiSlider-thumb.Mui-focusVisible": {
-      boxShadow: "none",
+    '& .MuiSlider-thumb.Mui-focusVisible': {
+      boxShadow: 'none',
     },
-    "& .MuiSlider-thumb": {
-      marginTop: 14,
+    '& .MuiSlider-thumb': {
+      marginTop: 24,
       width: 20,
       height: 20,
       borderRadius: 4,
-      backgroundColor: "#323C47",
-      "&::after": {
+      backgroundColor: '#323C47',
+      '&::after': {
         fontSize: 9,
-        color: "#fff",
-        display: "flex",
+        color: '#fff',
+        display: 'flex',
         content: "'< >'",
-        alignItems: "center",
-        justifyContent: "center",
+        alignItems: 'center',
+        justifyContent: 'center',
       },
-      "&:hover": {
-        boxShadow: "none",
+      '&:hover': {
+        boxShadow: 'none',
       },
-      "&:active": {
-        boxShadow: "none",
+      '&:active': {
+        boxShadow: 'none',
       },
     },
-    "& .MuiSlider-valueLabel": {
+    '& .MuiSlider-valueLabel': {
       marginTop: 38,
-      marginLeft: -46,
-      color: "transparent",
+      marginLeft: -104,
+      color: 'transparent',
       fontSize: 20,
-      "&::after": {
+      '&::after': {
         content: "'km'",
-        position: "absolute",
-        top: 10,
-        left: 35,
-        color: "#FFF",
-        fontSize: 14,
+        position: 'absolute',
+        top: 4,
+        left: 30,
+        whiteSpace: 'nowrap',
+        color: '#FFF',
+        fontSize: 20,
       },
     },
   },
@@ -130,16 +126,16 @@ const DistanceSlider = (props) => {
 
   return (
     <>
-      <div className={classes.formStepHeader}>
-        <div className={classes.formStepIconWrapper}>
-          <Cycle className={classes.formStepIcon} />
+      <div className={classes.sliderHeader}>
+        <div className={classes.sliderHeaderIcon}>
+          <GPS className={classes.sliderHeaderIconSVG} />
         </div>
-        <div className={classes.formStepText}>TON RAYON D’ACTION</div>
+        <div className={classes.sliderHeaderText}>TON RAYON D’ACTION</div>
       </div>
-      <div className={classes.formStepSubHeader}>
+      <div className={classes.sliderSubHeading}>
         QUEL EST VOTRE RAYON D’ACTION, EN KM ?
       </div>
-      <Grid container className={classes.sliderWidth}>
+      <Grid container>
         <Grid item xs={12}>
           <Slider
             min={0}
@@ -148,17 +144,17 @@ const DistanceSlider = (props) => {
             marks={[
               {
                 value: 2,
-                label: "2 km",
+                label: '2km',
               },
               {
                 value: 100,
-                label: "100 km",
+                label: '100km',
               },
             ]}
             value={props.value}
             valueLabelDisplay="on"
             onChange={props.onChange}
-            className={classes.step3Slider}
+            className={classes.slider}
           />
         </Grid>
       </Grid>
