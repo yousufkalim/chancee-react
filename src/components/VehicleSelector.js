@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Profile = (props) => {
+const VehicleSelector = (props) => {
   const classes = useStyles();
 
   let step1s = [
@@ -215,7 +215,7 @@ const Profile = (props) => {
               <Grid item xs={7}>
                 <span
                   className={`${classes.step1SectionText1} ${
-                    props.value === item.id && classes.step1SectionText1Active
+                    props.values.has(item.id) && classes.step1SectionText1Active
                   }`}
                 >
                   {item.title}
@@ -223,7 +223,7 @@ const Profile = (props) => {
                 <br />
                 <span
                   className={`${classes.step1SectionText2} ${
-                    props.value === item.id && classes.step1SectionText2Active
+                    props.values.has(item.id) && classes.step1SectionText2Active
                   }`}
                 >
                   {item.description}
@@ -233,7 +233,7 @@ const Profile = (props) => {
                 item
                 xs={2}
                 className={`${classes.step1SectionIcon} ${
-                  props.value === item.id && classes.step1SectionIconActive
+                  props.values.has(item.id) && classes.step1SectionIconActive
                 }`}
               >
                 <OK />
@@ -241,7 +241,7 @@ const Profile = (props) => {
             </Grid>
           ))}
         </Grid>
-        {props.checkbox && props.value !== 1 && props.value !== 3 && (
+        {props.checkbox && (props.values.has(1) || props.values.has(3)) && (
           <Grid item xs={12} lg={4} container className={classes.step1Section2}>
             <div className={classes.step1Section2step}>
               <div>
@@ -292,4 +292,4 @@ const Profile = (props) => {
   );
 };
 
-export default Profile;
+export default VehicleSelector;

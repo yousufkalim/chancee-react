@@ -26,7 +26,7 @@ const Search = (props) => {
   const [KM, setKM] = useState(60);
   const [rate, setRate] = useState(18);
   const [volume, setVolume] = useState(2);
-  const [vehicles, setVehicles] = useState([]);
+  const [vehicles, setVehicles] = useState(new Set());
 
   return (
     <div className={classes.root}>
@@ -57,7 +57,7 @@ const Search = (props) => {
         <Card>
           <VehicleSelector
             checkbox={false}
-            value={vehicles}
+            values={vehicles}
             onChange={(value) => {
               let newVehicles = new Set(vehicles);
               let isPresent = newVehicles.has(value);
