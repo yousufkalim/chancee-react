@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import API from '../globals/API';
+import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
+
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import RegisterCompany from '../pages/RegisterCompany';
@@ -22,8 +25,8 @@ import Search from '../pages/Company/Search';
 import CStep1 from '../pages/Company/Step1';
 
 const LFS = () => {
-  const store = useSelector((state) => state);
   const dispatch = useDispatch();
+  const store = useSelector((state) => state);
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
@@ -33,33 +36,25 @@ const LFS = () => {
 
   const checkLogin = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('userId');
-      if (!userId || !token) {
+      const token = localStorage.getItem('chanceeToken');
+      if (!token) {
         setLoading(false);
         return;
+      } else {
+        const data = await API({
+          uri: Constants.PROFILE,
+          token: token,
+        });
+        dispatch({
+          type: actionTypes.LOGIN,
+          user: data.user,
+          token: '',
+        });
+        setLoading(false);
       }
-      // const response = await fetch(
-      //   `${process.env.REACT_APP_SERVER_URL}/profile`,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/json",
-      //     },
-      //     redirect: "follow",
-      //   }
-      // );
-      // if (!response.ok) throw response;
-      // const data = await response.json();
-      dispatch({
-        type: actionTypes.LOGIN,
-        user: '',
-        token: '',
-      });
-      setLoading(false);
     } catch (err) {
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      console.log(err);
+      setLoading(false);
     }
   };
 
@@ -80,17 +75,24 @@ const LFS = () => {
           <Redirect from="*" to="/" />
         </Switch>
       )
-    ) : store.user.status === 'active' ? (
+    ) : store.user.status === 'pending' ? (
       <Switch>
-        <Route exact path="/" component={Profile} />
-        <Route exact path="/offers" component={Offers} />
-        <Route exact path="/invitations" component={Invitations} />
+        {/* User Profile at step 1 */}
+        <Route exact path="/" component={UStep1} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    ) : store.user.status === 'step-1' ? (
+      <Switch>
+        {/* User Profile at step 2 */}
+        <Route exact path="/" component={UStep2} />
         <Redirect from="*" to="/" />
       </Switch>
     ) : (
       <Switch>
-        <Route exact path="/" component={UStep1} />
-        <Route exact path="/step-2" component={UStep2} />
+        {/* User Active */}
+        <Route exact path="/" component={Profile} />
+        <Route exact path="/offers" component={Offers} />
+        <Route exact path="/invitations" component={Invitations} />
         <Redirect from="*" to="/" />
       </Switch>
     )

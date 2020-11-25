@@ -1,17 +1,15 @@
-import * as actionTypes from "../actions/actionTypes";
+import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  auth: true,
-  user: {
-    role: "company",
-    status: "active",
-  },
-  token: "",
+  auth: false,
+  user: '',
+  token: '',
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN:
+      localStorage.setItem('chanceeToken', action.token);
       return {
         ...state,
         auth: true,
@@ -19,11 +17,12 @@ const reducer = (state = initialState, action) => {
         token: action.token,
       };
     case actionTypes.LOGOUT:
+      localStorage.removeItem('chancee');
       return {
         ...state,
         auth: false,
-        user: "",
-        token: "",
+        user: '',
+        token: '',
       };
     default:
       return state;

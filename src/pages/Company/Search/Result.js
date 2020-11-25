@@ -27,9 +27,9 @@ const useStyles = makeStyles((theme) => ({
   filtersRow: {
     width: '85%',
     display: 'flex',
+    overflowX: 'auto',
     flexDirection: 'row',
     alignItems: 'center',
-    overflowX: 'auto',
     '&::-webkit-scrollbar': {
       height: '3px',
     },
@@ -44,29 +44,14 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   filter: {
-    display: 'flex',
+    display: 'grid',
     minWidth: '20px',
-    padding: '20px 0',
     overflow: 'hidden',
     marginRight: '10px',
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    justifyContent: 'center',
-  },
-  filterInput: {
-    border: 0,
-    outline: 0,
-    padding: 0,
-    color: '#000',
+    placeItems: 'center',
+    padding: '20px 30px',
     whiteSpace: 'nowrap',
-    '&::-webkit-outer-spin-button, & ::-webkit-inner-spin-button': {
-      '-webkit-appearance': 'none',
-      margin: 0,
-    },
-    '&input[type=number]': {
-      '-moz-appearance': 'textfield' /* Firefox */,
-    },
+    backgroundColor: '#fff',
   },
   filterButton: {
     outline: 0,
@@ -101,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
 const Search = (props) => {
   const classes = useStyles();
   const [time, setTime] = useState('13/04/2020, 12h - 22h');
-  const [KM, setKM] = useState('40');
+  const [KM, setKM] = useState('40 km');
   const [weight, setWeight] = useState('Moyenne taille');
   const [vehicle, setVehicles] = useState('Vélo / Vélo électrique');
   const [max, setMax] = useState('Max 18€/h');
@@ -115,62 +100,11 @@ const Search = (props) => {
         <PageHeading left="RESULTATS DE LA RECHERCHE" />
         <div className={classes.filters}>
           <div className={classes.filtersRow}>
-            <div className={classes.filter}>
-              <input
-                value={time}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setTime(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={KM}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setKM(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={weight}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setWeight(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={vehicle}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setVehicles(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={max}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setMax(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={min}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setMin(e.target.value)}
-              />
-            </div>
-            <div className={classes.filter}>
-              <input
-                value={deliveries}
-                // type="number"
-                className={classes.filterInput}
-                onChange={(e) => setDeliveries(e.target.value)}
-              />
-            </div>
+            {[time, KM, weight, vehicle, max, min, deliveries].map((i) => (
+              <div key={i} className={classes.filter}>
+                {i}
+              </div>
+            ))}
           </div>
           <button className={classes.filterButton}>Modifier</button>
         </div>

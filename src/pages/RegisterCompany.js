@@ -1,102 +1,108 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
-import Input from "../components/Input";
-import Button from "../components/Button";
+import API from '../globals/API';
+import Constants from '../globals/Constants';
+import * as actionTypes from '../store/actions/actionTypes';
+
+import Input from '../components/Input';
+import Button from '../components/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    width: "100vw",
-    backgroundColor: "#634294",
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    height: '100vh',
+    width: '100vw',
+    backgroundColor: '#634294',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 40,
   },
   form: {
     width: 350,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   formRow: {
-    width: "100%",
-    margin: "6px 0",
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    width: '100%',
+    margin: '6px 0',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   formRowItem: {
-    width: "48%",
+    width: '48%',
   },
   formItem: {
-    width: "100%",
-    margin: "6px 0",
+    width: '100%',
+    margin: '6px 0',
   },
   icon: {
-    color: "#ffd012",
+    color: '#ffd012',
     height: 20,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   submitButton: {
-    width: "100%",
+    width: '100%',
     marginTop: 10,
     marginBottom: 40,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   forgotText: {
-    color: "#7D76BA",
+    color: '#7D76BA',
     fontSize: 10,
-    margin: "5px 0",
-    textDecoration: "none",
+    margin: '5px 0',
+    textDecoration: 'none',
   },
   forgotTextWhite: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 10,
-    margin: "5px 0",
-    textDecoration: "none",
+    margin: '5px 0',
+    textDecoration: 'none',
   },
   forgotRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 }));
 
 export default function Register(props) {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    compName: "",
-    workforce: "",
-    deliveries: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    date: "",
-    password: "",
-    confirmPassword: "",
+    compName: '',
+    workforce: '',
+    deliveries: '',
+    firstName: '',
+    lastName: '',
+    email: '',
+    date: '',
+    password: '',
+    confirmPassword: '',
   });
   const [errors, setErrors] = React.useState({
     compName: false,
@@ -112,30 +118,50 @@ export default function Register(props) {
 
   const onSubmit = async () => {
     try {
-      if (values.compName === "") {
+      if (values.compName === '') {
         setErrors({ ...errors, compName: true });
-      } else if (values.workforce === "") {
+      } else if (values.workforce === '') {
         setErrors({ ...errors, workforce: true });
-      } else if (values.deliveries === "") {
+      } else if (values.deliveries === '') {
         setErrors({ ...errors, deliveries: true });
-      } else if (values.firstName === "") {
+      } else if (values.firstName === '') {
         setErrors({ ...errors, firstName: true });
-      } else if (values.lastName === "") {
+      } else if (values.lastName === '') {
         setErrors({ ...errors, lastName: true });
-      } else if (values.email === "") {
+      } else if (values.email === '') {
         setErrors({ ...errors, email: true });
-      } else if (values.date === "") {
+      } else if (values.date === '') {
         setErrors({ ...errors, date: true });
-      } else if (values.password === "") {
+      } else if (values.password === '') {
         setErrors({ ...errors, password: true });
-      } else if (values.confirmPassword === "") {
+      } else if (values.confirmPassword === '') {
         setErrors({ ...errors, confirmPassword: true });
       } else {
         setLoading(true);
-        setLoading(false);
+        const data = await API({
+          method: 'POST',
+          uri: Constants.REGISTER_COMPANY,
+          body: JSON.stringify({
+            firstName: values.firstName,
+            lastName: values.lastName,
+            email: values.email,
+            dob: values.date,
+            password: values.password,
+            company: {
+              companyName: values.compName,
+              perMonth: values.deliveries,
+              workForce: values.workforce,
+            },
+          }),
+        });
+        dispatch({
+          type: actionTypes.LOGIN,
+          user: data.user,
+          token: data.token,
+        });
       }
     } catch (err) {
-      console.log("Error Login", err);
+      setLoading(false);
     }
   };
 
@@ -170,7 +196,7 @@ export default function Register(props) {
               }
               setValues({ ...values, workforce: event.target.value });
             }}
-            error={errors.workforce && "Something"}
+            error={errors.workforce && 'Something'}
           />
         </div>
         <div className={classes.formItem}>
@@ -187,7 +213,7 @@ export default function Register(props) {
               }
               setValues({ ...values, deliveries: event.target.value });
             }}
-            error={errors.deliveries && "Something"}
+            error={errors.deliveries && 'Something'}
           />
         </div>
         <div className={classes.formRow}>
@@ -208,7 +234,7 @@ export default function Register(props) {
                 }
                 setValues({ ...values, firstName: event.target.value });
               }}
-              error={errors.firstName && "Something"}
+              error={errors.firstName && 'Something'}
             />
           </div>
           <div className={classes.formRowItem}>
@@ -228,7 +254,7 @@ export default function Register(props) {
                 }
                 setValues({ ...values, lastName: event.target.value });
               }}
-              error={errors.lastName && "Something"}
+              error={errors.lastName && 'Something'}
             />
           </div>
         </div>
@@ -247,7 +273,7 @@ export default function Register(props) {
               }
               setValues({ ...values, email: event.target.value });
             }}
-            error={errors.email && "Something"}
+            error={errors.email && 'Something'}
           />
         </div>
         <div className={classes.formItem}>
@@ -257,13 +283,13 @@ export default function Register(props) {
             placeholder="Date de naissance"
             value={values.date}
             onChange={(event) => {
-              console.log("value", event.target.value);
+              console.log('value', event.target.value);
               setValues({ ...values, date: event.target.value });
             }}
-            onFocus={(e) => (e.target.type = "date")}
+            onFocus={(e) => (e.target.type = 'date')}
             onBlur={(e) => {
-              if (e.target.value === "") {
-                e.target.type = "text";
+              if (e.target.value === '') {
+                e.target.type = 'text';
               }
             }}
           />
@@ -282,7 +308,7 @@ export default function Register(props) {
               }
               setValues({ ...values, password: event.target.value });
             }}
-            error={errors.password && "Something"}
+            error={errors.password && 'Something'}
           />
         </div>
         <div className={classes.formItem}>
@@ -299,16 +325,16 @@ export default function Register(props) {
               }
               setValues({ ...values, confirmPassword: event.target.value });
             }}
-            error={errors.confirmPassword && "Something"}
+            error={errors.confirmPassword && 'Something'}
           />
         </div>
         <div className={classes.submitButton}>
           <Button
             type="submit"
-            text={loading ? "Loading..." : "ENREGISTREMENT"}
+            text={loading ? 'Loading...' : 'ENREGISTREMENT'}
             onClick={onSubmit}
             disabled={loading}
-            style={{ width: "70%" }}
+            style={{ width: '70%' }}
           >
             <SvgIcon className={classes.icon}>
               <path

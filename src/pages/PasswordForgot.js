@@ -1,87 +1,90 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
-import LoginBG from "../assets/images/login.png";
-import Input from "../components/Input";
-import Button from "../components/Button";
+import API from '../globals/API';
+import Constants from '../globals/Constants';
+
+import LoginBG from '../assets/images/login.png';
+import Input from '../components/Input';
+import Button from '../components/Button';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    height: "100vh",
-    width: "100vw",
+    height: '100vh',
+    width: '100vw',
     backgroundImage: `url(${LoginBG})`,
-    backgroundRepeat: "no-repeat",
+    backgroundRepeat: 'no-repeat',
     backgroundColor:
-      theme.palette.type === "light"
+      theme.palette.type === 'light'
         ? theme.palette.grey[50]
         : theme.palette.grey[900],
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 26,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   subHeading: {
-    color: "#fff",
+    color: '#fff',
     fontSize: 16,
     marginBottom: 40,
   },
   form: {
     width: 280,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   formItem: {
-    width: "100%",
-    margin: "10px 0",
+    width: '100%',
+    margin: '10px 0',
   },
   icon: {
-    color: "#fff",
+    color: '#fff',
     height: 20,
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   submitButton: {
-    width: "100%",
-    margin: "30px 0 20px 0",
+    width: '100%',
+    margin: '30px 0 20px 0',
   },
   forgotText: {
-    color: "#7D76BA",
+    color: '#7D76BA',
     fontSize: 10,
-    margin: "5px 0",
-    textDecoration: "none",
+    margin: '5px 0',
+    textDecoration: 'none',
   },
   forgotTextWhite: {
-    color: "#FFF",
+    color: '#FFF',
     fontSize: 10,
-    margin: "5px 0",
-    textDecoration: "none",
+    margin: '5px 0',
+    textDecoration: 'none',
   },
   forgotRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 }));
 
-export default function Login(props) {
+export default function PasswordForgot(props) {
   const classes = useStyles();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    email: "",
+    email: '',
   });
   const [errors, setErrors] = React.useState({
     email: false,
@@ -89,14 +92,21 @@ export default function Login(props) {
 
   const onSubmit = async () => {
     try {
-      if (values.email === "") {
+      if (values.email === '') {
         setErrors({ ...errors, email: true });
       } else {
         setLoading(true);
-        setLoading(false);
+        await API({
+          method: 'POST',
+          uri: Constants.PASSWORD_RECOVER,
+          body: JSON.stringify({
+            email: values.email,
+          }),
+        });
+        props.history.replace('/');
       }
     } catch (err) {
-      console.log("Error Login", err);
+      setLoading(false);
     }
   };
 
@@ -122,13 +132,13 @@ export default function Login(props) {
               }
               setValues({ ...values, email: event.target.value });
             }}
-            error={errors.email && "Something"}
+            error={errors.email && 'Something'}
           />
         </div>
         <div className={classes.submitButton}>
           <Button
             type="submit"
-            text={loading ? "Loading..." : "Submit"}
+            text={loading ? 'Loading...' : 'Submit'}
             onClick={onSubmit}
             disabled={loading}
           />
