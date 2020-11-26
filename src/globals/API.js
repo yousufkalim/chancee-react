@@ -17,9 +17,10 @@ const api = ({ method = 'GET', uri, body, headers, token }) =>
       console.log('[API Data]:', data);
       resolve(data);
     } catch (err) {
-      alert('There was an error: ' + err.statusText);
-      console.log('[API Error]:', err);
-      reject(err);
+      const error = await err.json();
+      alert('Whoops: ' + error.message);
+      console.log('[API Error]:', error);
+      reject(error);
     }
   });
 

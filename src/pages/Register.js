@@ -138,7 +138,7 @@ export default function Register(props) {
             password: values.password,
           }),
         });
-
+        alert('Registration was successfull!');
         dispatch({
           type: actionTypes.LOGIN,
           user: data.user,

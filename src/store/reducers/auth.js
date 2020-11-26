@@ -17,12 +17,17 @@ const reducer = (state = initialState, action) => {
         token: action.token,
       };
     case actionTypes.LOGOUT:
-      localStorage.removeItem('chancee');
+      localStorage.removeItem('chanceeToken');
       return {
         ...state,
         auth: false,
         user: '',
         token: '',
+      };
+    case actionTypes.SET_USER:
+      return {
+        ...state,
+        user: action.user,
       };
     default:
       return state;

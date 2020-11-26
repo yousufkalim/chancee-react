@@ -154,6 +154,7 @@ export default function Register(props) {
             },
           }),
         });
+        alert('Registration was successfull!');
         dispatch({
           type: actionTypes.LOGIN,
           user: data.user,
@@ -283,7 +284,6 @@ export default function Register(props) {
             placeholder="Date de naissance"
             value={values.date}
             onChange={(event) => {
-              console.log('value', event.target.value);
               setValues({ ...values, date: event.target.value });
             }}
             onFocus={(e) => (e.target.type = 'date')}

@@ -26,12 +26,37 @@ export default function Button(props) {
         opacity: 0.8,
       },
     },
+    buttonDisabled: {
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      overflow: 'hidden',
+      backgroundColor: props.color ? props.color : '#4DA1FF',
+      borderRadius: 4,
+      transition: 'all 200ms cubic-bezier(0.0, 0, 0.2, 1) 0ms',
+      padding: 14,
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: 'bold',
+      border: 0,
+      outline: 0,
+      cursor: 'default',
+      '&:hover': {
+        opacity: 1,
+      },
+    },
   }));
   const classes = useStyles();
 
   return (
     <button
-      className={classes.button + ' ' + props.className}
+      className={
+        props.disabled
+          ? classes.buttonDisabled
+          : classes.button + ' ' + props.className
+      }
       type={props.type}
       style={props.style}
       disabled={props.disabled}

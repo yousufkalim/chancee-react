@@ -6,6 +6,8 @@ import API from '../globals/API';
 import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
 
+import Loader from '../components/Loader';
+
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import RegisterCompany from '../pages/RegisterCompany';
@@ -27,7 +29,7 @@ import CStep1 from '../pages/Company/Step1';
 const LFS = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   React.useEffect(() => {
     checkLogin();
@@ -48,18 +50,18 @@ const LFS = () => {
         dispatch({
           type: actionTypes.LOGIN,
           user: data.user,
-          token: '',
+          token: token,
         });
         setLoading(false);
       }
     } catch (err) {
-      localStorage.removeItem('token');
+      localStorage.removeItem('chanceeToken');
       setLoading(false);
     }
   };
 
   return loading ? (
-    <div>Loading...</div>
+    <Loader.CenterProgress />
   ) : store.auth ? (
     store.user.role === 'company' ? (
       store.user.status === 'active' ? (

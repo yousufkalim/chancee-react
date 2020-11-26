@@ -103,6 +103,7 @@ export default function PasswordForgot(props) {
             email: values.email,
           }),
         });
+        alert('Email sent successfully!');
         props.history.replace('/');
       }
     } catch (err) {

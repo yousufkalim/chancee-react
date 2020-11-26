@@ -8,6 +8,7 @@ const endpoints = {
   PASSWORD_RECOVER: BASE_URL + 'auth/reset',
   REGISTER_USER: BASE_URL + 'user/create-deliveryman',
   REGISTER_COMPANY: BASE_URL + 'user/create-company',
+  USER_STEP1: BASE_URL + 'user/update-personalinfo',
 };
 
 export default endpoints;
