@@ -14,7 +14,7 @@ import { ReactComponent as Automobile } from '../assets/images/automobile.svg';
 
 const useStyles = makeStyles((theme) => ({
   formStepHeader: {
-    margin: '0px 0 10px 0',
+    margin: '30px 0 10px 0',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -188,10 +188,14 @@ const VehicleSelector = (props) => {
         <div className={classes.formStepIconWrapper}>
           <Cycle className={classes.formStepIcon} />
         </div>
-        <div className={classes.formStepText}>TYPE DE VÉHICULE</div>
+        <div className={classes.formStepText}>
+          {props.heading ? props.heading : 'TYPE DE VÉHICULE'}
+        </div>
       </div>
       <div className={classes.formStepSubHeader}>
-        DANS QUEL(S) TYPE(S) DE VÉHICULE(S) LIVREZ-VOUS ?
+        {props.subHeading
+          ? props.subHeading
+          : 'DANS QUEL(S) TYPE(S) DE VÉHICULE(S) LIVREZ-VOUS ?'}
       </div>
       <Grid container spacing={6}>
         <Grid item xs={12} lg={12} container className={classes.step1}>

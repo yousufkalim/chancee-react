@@ -1,6 +1,5 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import { ReactComponent as Tick } from '../../assets/images/tick.svg';
 
@@ -64,13 +63,9 @@ export default function Input(props) {
           placeholder={props.placeholder}
           type={props.type ? props.type : 'text'}
         />
-        {props.valid ? (
+        {props.valid && (
           <div className={classes.inputIcon}>
-            <Tick className={classes.stepperIcon} />
-          </div>
-        ) : (
-          <div className={classes.inputIcon}>
-            <ErrorOutlineIcon className={classes.stepperIcon} />
+            <Tick />
           </div>
         )}
         {props.right}

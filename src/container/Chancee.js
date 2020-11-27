@@ -26,6 +26,8 @@ import CProfile from '../pages/Company/Profile';
 import Search from '../pages/Company/Search';
 import CStep1 from '../pages/Company/Step1';
 
+import VerifyScreen from '../pages/VerifyScreen';
+
 const LFS = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -83,7 +85,13 @@ const LFS = () => {
         <Route exact path="/" component={UStep1} />
         <Redirect from="*" to="/" />
       </Switch>
-    ) : store.user.status === 'step-1' ? (
+    ) : store.user.status === 'step1' ? (
+      <Switch>
+        {/* User Profile to verified */}
+        <Route exact path="/" component={VerifyScreen} />
+        <Redirect from="*" to="/" />
+      </Switch>
+    ) : store.user.status === 'verified' ? (
       <Switch>
         {/* User Profile at step 2 */}
         <Route exact path="/" component={UStep2} />

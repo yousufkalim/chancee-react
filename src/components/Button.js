@@ -54,7 +54,7 @@ export default function Button(props) {
     <button
       className={
         props.disabled
-          ? classes.buttonDisabled
+          ? classes.buttonDisabled + ' ' + props.className
           : classes.button + ' ' + props.className
       }
       type={props.type}

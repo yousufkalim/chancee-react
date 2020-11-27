@@ -4,80 +4,30 @@ import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
 
+import { ReactComponent as Tick } from '../../assets/images/tick.svg';
+import { ReactComponent as Point } from '../../assets/images/Point.svg';
+import { ReactComponent as Flash } from '../../assets/images/flash.svg';
+import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
+import { ReactComponent as Attach } from '../../assets/images/Attach.svg';
 import { ReactComponent as JumboImage } from '../../assets/images/Home2.svg';
 import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
-import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
-import { ReactComponent as Point } from '../../assets/images/Point.svg';
-import { ReactComponent as Attach } from '../../assets/images/Attach.svg';
-import { ReactComponent as Flash } from '../../assets/images/flash.svg';
 import { ReactComponent as FileUploadIcon } from '../../assets/images/FileUpload.svg';
-import { ReactComponent as Tick } from '../../assets/images/tick.svg';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
+import Jumbotron from '../../components/Jumbotron';
 
 import Input from './Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#fff',
-  },
-  // jumbotron
-  jumbo: {
-    alignItems: 'center',
-  },
-  jumboImage: {
-    width: '85%',
-    [theme.breakpoints.down('md')]: {
-      height: 200,
-    },
-  },
-  jumboDetails: {
-    padding: 40,
-  },
-  jumboTexts: {
-    marginBottom: 20,
-  },
-  jumboText: {
-    lineHeight: '54px',
-    fontFamily: 'Catamaran',
-    fontSize: '42px',
-    color: 'rgba(50,60,71,1)',
-  },
-  jumboTextBold: {
-    lineHeight: '54px',
-    fontFamily: 'Catamaran',
-    fontWeight: 'bold',
-    fontSize: '42px',
-    color: 'rgba(50,60,71,1)',
-  },
-  jumboButton: {
-    maxWidth: 150,
-    marginBottom: 20,
-  },
-  jumboDescription: {
-    maxWidth: 512,
-    lineHeight: '28px',
-    fontFamily: 'Roboto',
-    fontSize: '16px',
-    color: 'rgba(152,152,152,1)',
-    marginBottom: 20,
-  },
-  jumboIcons: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  jumboIcon: {
-    height: 30,
-    marginRight: 10,
   },
   // steps
   stepsContainer: {
@@ -238,9 +188,6 @@ const useStyles = makeStyles((theme) => ({
       color: 'rgba(50,60,71,1)',
     },
   },
-  inputIcon: {
-    marginRight: 20,
-  },
   // steppers
   stepperContainer: {
     marginTop: 15,
@@ -334,7 +281,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   submitButton: {
-    maxWidth: '20%',
+    maxWidth: '40%',
     [theme.breakpoints.down('sm')]: {
       maxWidth: '100%',
     },
@@ -374,13 +321,13 @@ export default function Profile(props) {
     },
     {
       id: 2,
-      title: 'Kbis de moins de 3 mois',
+      title: 'Kbis de moins de 3 mois *',
       description:
         'Kbis version électronique ou version papier numérisée (300dpi minimum)',
     },
     {
       id: 3,
-      title: 'Selfie',
+      title: 'Selfie *',
       description: 'Prenez un selfie où l’on voit clairement votre visage',
     },
     {
@@ -399,8 +346,7 @@ export default function Profile(props) {
       description: 'Facultatif',
     },
   ];
-
-  const Steps = (data) => {
+  const ProfileStepper = (data) => {
     return (
       <div className={classes.steps}>
         <div className={classes.stepLine}></div>
@@ -427,30 +373,6 @@ export default function Profile(props) {
       </>
     );
   };
-  const getAddress = async (event, value, reason) => {
-    setStreet(value);
-    setAddressLoading(true);
-    const response = await fetch(
-      'https://api-adresse.data.gouv.fr/search/?q=' +
-        value +
-        '&type=housenumber&autocomplete=1&limit=15',
-    );
-    const responseJson = await response.json();
-    setAddress(
-      responseJson.features.map((item) => {
-        return {
-          id: item.properties.id,
-          name: item.properties.label,
-          city: item.properties.city,
-          postalCode: item.properties.postcode,
-          lat: item.geometry.coordinates[1],
-          lng: item.geometry.coordinates[0],
-        };
-      }),
-    );
-    setAddressLoading(false);
-  };
-
   const getStep = (itemId) => {
     switch (itemId) {
       case 1:
@@ -470,44 +392,82 @@ export default function Profile(props) {
     }
   };
 
-  const onSubmit = async () => {
-    try {
-      setLoading(true);
-      var myHeaders = new Headers();
-      myHeaders.append('Authorization', store.token);
-
-      var formdata = new FormData();
-      formdata.append('_id', store.user._id);
-      formdata.append('KBIS', KBIS);
-      formdata.append('phone', phone);
-      formdata.append('SIRET', SIRET);
-      formdata.append('profile', profile);
-      formdata.append('diploma', diploma);
-      formdata.append('identity', identity);
-      formdata.append('training', training);
-      formdata.append('insurance', insurance);
-      formdata.append(
-        'address',
-        JSON.stringify({
-          street: street,
-          location: [lat, long],
-          zipcode: postal,
-          complement: complement,
-          city: city,
+  const getAddress = async (event, value, reason) => {
+    setStreet(value);
+    if (value !== '') {
+      setAddressLoading(true);
+      const data = await API({
+        uri:
+          'https://api-adresse.data.gouv.fr/search/?q=' +
+          value +
+          '&type=housenumber&autocomplete=1&limit=15',
+      });
+      setAddress(
+        data.features.map((item) => {
+          return {
+            id: item.properties.id,
+            name: item.properties.label,
+            city: item.properties.city,
+            postalCode: item.properties.postcode,
+            lat: item.geometry.coordinates[1],
+            lng: item.geometry.coordinates[0],
+          };
         }),
       );
+      setAddressLoading(false);
+    } else {
+      setAddress([]);
+    }
+  };
+  const onSubmit = async () => {
+    try {
+      if (
+        identity === '' ||
+        profile === '' ||
+        KBIS === '' ||
+        phone.length < 10 ||
+        SIRET.length !== 14 ||
+        street === '' ||
+        postal === '' ||
+        city === ''
+      ) {
+        alert('Fields are required!');
+      } else {
+        setLoading(true);
+        var formdata = new FormData();
+        formdata.append('KBIS', KBIS);
+        formdata.append('phone', phone);
+        formdata.append('SIRET', SIRET);
+        formdata.append('profile', profile);
+        diploma !== '' && formdata.append('diploma', diploma);
+        formdata.append('identity', identity);
+        training !== '' && formdata.append('training', training);
+        insurance !== '' && formdata.append('insurance', insurance);
+        formdata.append(
+          'address',
+          JSON.stringify({
+            street: street,
+            location: [lat, long],
+            zipcode: postal,
+            complement: complement,
+            city: city,
+          }),
+        );
 
-      const data = await API({
-        method: 'PUT',
-        uri: Constants.USER_STEP1,
-        headers: myHeaders,
-        body: formdata,
-      });
-      console.log(data);
-      dispatch({
-        type: actionTypes.SET_USER,
-        user: data.user,
-      });
+        const data = await API({
+          method: 'PUT',
+          uri: Constants.USER_STEP1,
+          headers: {
+            Authorization: `Bearer ${store.token}`,
+          },
+          body: formdata,
+        });
+        console.log(data);
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: data.user,
+        });
+      }
     } catch (err) {
       setLoading(false);
     }
@@ -517,36 +477,20 @@ export default function Profile(props) {
     <div className={classes.root}>
       <Header />
       <section id="Jumbo">
-        <Grid container className={classes.jumbo}>
-          <Grid item xs={12} md={6}>
-            <div style={{ display: 'grid', placeItems: 'center' }}>
-              <JumboImage className={classes.jumboImage} />
-            </div>
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.jumboDetails}>
-            <div className={classes.jumboTexts}>
-              <span className={classes.jumboText}>Bienvenue sur</span>
-              <br />
-              <span className={classes.jumboTextBold}>Chancee !</span>
-            </div>
-            <div className={classes.jumboButton}>
-              <Button text="DÉMARRER" disabled />
-            </div>
-            <div className={classes.jumboDescription}>
-              Nous configurons votre espace personnel, plus que quelques étapes
-              et votre profil sera disponible auprès de nos 2300+ restaurants
-              partenaires
-            </div>
-            <div className={classes.jumboIcons}>
-              <Chat className={classes.jumboIcon} />
-              <Microphone className={classes.jumboIcon} />
-            </div>
-          </Grid>
-        </Grid>
+        <Jumbotron
+          image={JumboImage}
+          head="Bienvenue sur"
+          head2="Chancee !"
+          buttonText="DÉMARRER"
+          description="Nous configurons votre espace personnel, plus que quelques étapes et
+          votre profil sera disponible auprès de nos 2300+ restaurants
+          partenaires"
+          icons={[Chat, Microphone]}
+        />
       </section>
       <Container maxWidth="xl">
         <section id="Steps" className={classes.stepsContainer}>
-          <Steps
+          <ProfileStepper
             steps={[
               { id: 1, name: 'SAISIE DE VOS INFORMATIONS', active: true },
               { id: 2, name: 'VALIDATION DE VOS INFORMATIONS', active: false },
@@ -565,22 +509,26 @@ export default function Profile(props) {
             />
             <Grid container className={classes.form}>
               <Grid item xs={12} md={6} className={classes.formItem}>
-                <div className={classes.inputLabel}>N° DE RUE ET RUE</div>
+                <div className={classes.inputLabel}>N° DE RUE ET RUE *</div>
                 <Autocomplete
+                  options={address}
+                  inputValue={street}
+                  loading={addressLoading}
                   onInputChange={getAddress}
-                  getOptionSelected={(option, value) => {
-                    setStreet(value.name);
-                    setCity(value.city);
-                    setPostal(value.postalCode);
-                    setLong(value.lng);
+                  noOptionsText="Input your address!"
+                  onChange={(event, value) => {
                     setLat(value.lat);
+                    setLong(value.lng);
+                    setCity(value.city);
+                    setStreet(value.name);
+                    setPostal(value.postalCode);
+                  }}
+                  getOptionSelected={(option, value) => {
                     return option.name === value.name;
                   }}
                   getOptionLabel={(option) => {
                     return option.name;
                   }}
-                  options={address}
-                  loading={addressLoading}
                   renderInput={(params) => (
                     <div
                       ref={params.InputProps.ref}
@@ -588,17 +536,16 @@ export default function Profile(props) {
                     >
                       <input
                         type="text"
-                        value={street}
                         {...params.inputProps}
                         className={classes.input}
                       />
-                      {postal !== '' ? (
-                        <div className={classes.inputIcon}>
-                          <Tick className={classes.stepperIcon} />
-                        </div>
-                      ) : (
-                        <div className={classes.inputIcon}>
-                          <ErrorOutlineIcon className={classes.stepperIcon} />
+                      {postal !== '' && (
+                        <div
+                          style={{
+                            marginRight: 20,
+                          }}
+                        >
+                          <Tick />
                         </div>
                       )}
                     </div>
@@ -609,7 +556,7 @@ export default function Profile(props) {
                 <Input
                   disabled
                   value={postal}
-                  label="CODE POSTAL"
+                  label="CODE POSTAL *"
                   valid={postal !== ''}
                 />
               </Grid>
@@ -617,17 +564,17 @@ export default function Profile(props) {
                 <Input
                   value={complement}
                   valid={complement !== ''}
+                  label="COMPLÉMENT D’ADRESSE"
                   onChange={({ target: { name, value } }) =>
                     setComplement(value)
                   }
-                  label="COMPLÉMENT D’ADRESSE"
                 />
               </Grid>
               <Grid item xs={12} md={6} className={classes.formItem}>
                 <Input
                   disabled
                   value={city}
-                  label="VILLE"
+                  label="VILLE *"
                   valid={city !== ''}
                 />
               </Grid>
@@ -636,10 +583,10 @@ export default function Profile(props) {
                   type="number"
                   value={phone}
                   valid={phone !== ''}
+                  label="NUMÉRO DE TÉLÉPHONE *"
                   onChange={(e) => {
-                    setPhone(e.target.value);
+                    e.target.value.length <= 10 && setPhone(e.target.value);
                   }}
-                  label="NUMÉRO DE TÉLÉPHONE"
                   left={
                     <div className={classes.flagIcon}>
                       <img
@@ -664,10 +611,10 @@ export default function Profile(props) {
                   type="number"
                   value={SIRET}
                   valid={SIRET !== ''}
+                  label="SIRET *"
                   onChange={(e) => {
-                    setSIRET(e.target.value);
+                    e.target.value.length <= 14 && setSIRET(e.target.value);
                   }}
-                  label="SIRET"
                 />
               </Grid>
             </Grid>
@@ -731,8 +678,7 @@ export default function Profile(props) {
             <Button
               type="submit"
               onClick={onSubmit}
-              // disabled={loading}
-              disabled={true}
+              disabled={loading}
               className={classes.submitButton}
               text={loading ? 'Loading...' : 'Soumettre mon dossier'}
             >
