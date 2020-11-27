@@ -9,44 +9,9 @@ import { ReactComponent as Checked } from '../assets/images/checked.svg';
 import { ReactComponent as Unchecked } from '../assets/images/unchecked.svg';
 import { ReactComponent as CoinStack } from '../assets/images/coinStack.svg';
 
+import Heading from '../components/FormStepHeader';
+
 const useStyles = makeStyles((theme) => ({
-  sliderHeader: {
-    margin: '0px 0 10px 0',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  sliderHeaderIcon: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'rgba(250,251,252,1)',
-    borderRadius: 6,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sliderHeaderIconSVG: {
-    width: '40%',
-    height: '50%',
-    color: 'rgba(122,204,40,1)',
-  },
-  sliderHeaderText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'rgba(122,204,40,1)',
-    letterSpacing: 0.35,
-    marginLeft: 10,
-  },
-  sliderSubHeading: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
-    letterSpacing: '0.41666671752929685px',
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
   slider: {
     width: '100%',
     color: '#FC917C',
@@ -159,15 +124,13 @@ const RateSlider = (props) => {
 
   return (
     <>
-      <div className={classes.sliderHeader}>
-        <div className={classes.sliderHeaderIcon}>
-          <CoinStack className={classes.sliderHeaderIconSVG} />
-        </div>
-        <div className={classes.sliderHeaderText}>FIXE TES TARIFS</div>
-      </div>
-      <div className={classes.sliderSubHeading}>
-        QUEL EST TON TARIF PAR HEURE ?
-      </div>
+      <Heading
+        icon={CoinStack}
+        heading={props.heading ? props.heading : 'FIXE TES TARIFS'}
+        subHeading={
+          props.subHeading ? props.subHeading : 'QUEL EST TON TARIF PAR HEURE ?'
+        }
+      />
       <Grid container>
         <Grid
           item

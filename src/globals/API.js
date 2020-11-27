@@ -3,7 +3,7 @@ const api = ({ method = 'GET', uri, body, headers, token }) =>
     try {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
-      token && myHeaders.append('Authorization', 'Bearer ' + token);
+      token && myHeaders.append('Authorization', `Bearer ${token}`);
 
       const response = await fetch(uri, {
         method,

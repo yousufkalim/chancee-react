@@ -66,16 +66,24 @@ const LFS = () => {
     <Loader.CenterProgress />
   ) : store.auth ? (
     store.user.role === 'company' ? (
-      store.user.status === 'active' ? (
+      store.user.status === 'pending' ? (
         <Switch>
-          <Route exact path="/" component={COffers} />
-          <Route exact path="/profile" component={CProfile} />
-          <Route path="/search" component={Search} />
+          {/* Company Profile at step 1 */}
+          <Route exact path="/" component={CStep1} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : store.user.status === 'step1' ? (
+        <Switch>
+          {/* Company Profile to verified */}
+          <Route exact path="/" component={VerifyScreen} />
           <Redirect from="*" to="/" />
         </Switch>
       ) : (
         <Switch>
-          <Route exact path="/" component={CStep1} />
+          {/* Company Active */}
+          <Route exact path="/" component={COffers} />
+          <Route exact path="/profile" component={CProfile} />
+          <Route path="/search" component={Search} />
           <Redirect from="*" to="/" />
         </Switch>
       )

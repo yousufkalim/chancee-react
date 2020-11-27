@@ -5,44 +5,9 @@ import Grid from '@material-ui/core/Grid';
 
 import { ReactComponent as GPS } from '../assets/images/gps.svg';
 
+import Heading from '../components/FormStepHeader';
+
 const useStyles = makeStyles((theme) => ({
-  sliderHeader: {
-    margin: '0px 0 10px 0',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  sliderHeaderIcon: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'rgba(250,251,252,1)',
-    borderRadius: 6,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  sliderHeaderIconSVG: {
-    width: '40%',
-    height: '50%',
-    color: 'rgba(122,204,40,1)',
-  },
-  sliderHeaderText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'rgba(122,204,40,1)',
-    letterSpacing: 0.35,
-    marginLeft: 10,
-  },
-  sliderSubHeading: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
-    letterSpacing: '0.41666671752929685px',
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
   slider: {
     width: '100%',
     color: '#8B9AFC',
@@ -126,15 +91,15 @@ const DistanceSlider = (props) => {
 
   return (
     <>
-      <div className={classes.sliderHeader}>
-        <div className={classes.sliderHeaderIcon}>
-          <GPS className={classes.sliderHeaderIconSVG} />
-        </div>
-        <div className={classes.sliderHeaderText}>TON RAYON D’ACTION</div>
-      </div>
-      <div className={classes.sliderSubHeading}>
-        QUEL EST VOTRE RAYON D’ACTION, EN KM ?
-      </div>
+      <Heading
+        icon={GPS}
+        heading={props.heading ? props.heading : 'TON RAYON D’ACTION'}
+        subHeading={
+          props.subHeading
+            ? props.subHeading
+            : 'QUEL EST VOTRE RAYON D’ACTION, EN KM ?'
+        }
+      />
       <Grid container>
         <Grid item xs={12}>
           <Slider

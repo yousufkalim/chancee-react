@@ -11,45 +11,12 @@ import { ReactComponent as StepCycle } from '../assets/images/stepCycle.svg';
 import { ReactComponent as Unchecked } from '../assets/images/unchecked.svg';
 import { ReactComponent as StepECycle } from '../assets/images/stepECycle.svg';
 import { ReactComponent as Automobile } from '../assets/images/automobile.svg';
+import { ReactComponent as Truck } from '../assets/images/Truck.svg';
+import { ReactComponent as Wagon } from '../assets/images/Wagon.svg';
+
+import Heading from '../components/FormStepHeader';
 
 const useStyles = makeStyles((theme) => ({
-  formStepHeader: {
-    margin: '30px 0 10px 0',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  formStepIconWrapper: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'rgba(250,251,252,1)',
-    borderRadius: 6,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formStepIcon: {
-    width: '40%',
-    height: '50%',
-    color: 'rgba(122,204,40,1)',
-  },
-  formStepText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'rgba(122,204,40,1)',
-    letterSpacing: 0.35,
-    marginLeft: 10,
-  },
-  formStepSubHeader: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
-    letterSpacing: '0.41666671752929685px',
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
   step1: {
     marginTop: 10,
     '& :nth-child(1)': {
@@ -152,51 +119,47 @@ const VehicleSelector = (props) => {
     },
     {
       id: 2,
-      title: 'VÉLO',
-      description: 'Seuls les vrais savent',
+      title: 'SCOOTER',
+      description: 'Pour les pros',
       image: <Scooter className={classes.stepImage} />,
     },
     {
       id: 3,
-      title: 'VÉLO',
-      description: 'Seuls les vrais savent',
+      title: 'VÉLO ÉLECTRIQUE',
+      description: 'Pour te la péter dans les montées',
       image: <StepECycle className={classes.stepImage} />,
     },
     {
       id: 4,
-      title: 'VÉLO',
-      description: 'Seuls les vrais savent',
+      title: 'VOITURE',
+      description: 'Pour des tournées XXL',
       image: <Automobile className={classes.stepImage} />,
     },
     {
       id: 5,
-      title: 'VÉLO',
-      description: 'Seuls les vrais savent',
-      image: <StepCycle className={classes.stepImage} />,
+      title: 'CAMION',
+      description: 'Quand il y a du poids',
+      image: <Wagon className={classes.stepImage} />,
     },
     {
       id: 6,
-      title: 'VÉLO',
-      description: 'Seuls les vrais savent',
-      image: <StepCycle className={classes.stepImage} />,
+      title: 'PERMIS POIDS LOURD',
+      description: 'Quand il n’y a plus le choix',
+      image: <Truck className={classes.stepImage} />,
     },
   ];
 
   return (
     <>
-      <div className={classes.formStepHeader}>
-        <div className={classes.formStepIconWrapper}>
-          <Cycle className={classes.formStepIcon} />
-        </div>
-        <div className={classes.formStepText}>
-          {props.heading ? props.heading : 'TYPE DE VÉHICULE'}
-        </div>
-      </div>
-      <div className={classes.formStepSubHeader}>
-        {props.subHeading
-          ? props.subHeading
-          : 'DANS QUEL(S) TYPE(S) DE VÉHICULE(S) LIVREZ-VOUS ?'}
-      </div>
+      <Heading
+        icon={Cycle}
+        heading={props.heading ? props.heading : 'TYPE DE VÉHICULE'}
+        subHeading={
+          props.subHeading
+            ? props.subHeading
+            : 'DANS QUEL(S) TYPE(S) DE VÉHICULE(S) LIVREZ-VOUS ?'
+        }
+      />
       <Grid container spacing={6}>
         <Grid item xs={12} lg={12} container className={classes.step1}>
           {step1s.map((item) => (

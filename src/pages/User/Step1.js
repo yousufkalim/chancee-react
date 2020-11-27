@@ -18,81 +18,18 @@ import { ReactComponent as JumboImage } from '../../assets/images/Home2.svg';
 import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
 import { ReactComponent as FileUploadIcon } from '../../assets/images/FileUpload.svg';
 
+import Steps from '../../components/Steps';
+import Input from './Input';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
 import Jumbotron from '../../components/Jumbotron';
-
-import Input from './Input';
+import Heading from '../../components/FormStepHeader';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#fff',
   },
-  // steps
-  stepsContainer: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  steps: {
-    position: 'relative',
-    width: '80%',
-    height: 35,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  stepLine: {
-    position: 'absolute',
-    height: '0.999px',
-    backgroundColor: 'rgba(208,215,221,1)',
-    [theme.breakpoints.down('md')]: {
-      width: '80%',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '60%',
-    },
-  },
-  step: {
-    backgroundColor: '#fff',
-    border: '1px solid rgba(208,215,221,1)',
-    borderRadius: 20,
-    zIndex: 2,
-    color: 'rgba(50,60,71,1)',
-    fontFamily: 'Roboto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    [theme.breakpoints.between('xs', 'md')]: {
-      fontSize: 8,
-      margin: '0 10px',
-      padding: '0 10px',
-      height: '45px',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      fontSize: 8,
-      margin: '0 20px',
-      padding: '0 20px',
-      height: '35px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      fontSize: 12,
-      margin: '0 20px',
-      padding: '0 20px',
-      height: '35px',
-    },
-  },
-  stepActive: {
-    backgroundColor: '#00A1FF',
-    border: '1px solid #00A1FF',
-    color: '#fff',
-  },
-  // formContainer
   formContainer: {
     marginTop: 50,
   },
@@ -102,35 +39,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '2em',
     color: 'rgba(50,60,71,1)',
   },
-  // formStepHeader
-  formStepHeader: {
-    margin: '40px 20px 0 0',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  formStepIconWrapper: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'rgba(250,251,252,1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formStepIcon: {
-    width: '40%',
-    height: '50%',
-    color: 'rgba(122,204,40,1)',
-  },
-  formStepText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'rgba(122,204,40,1)',
-    letterSpacing: 0.35,
-    marginLeft: 10,
-  },
-  form: {},
   formItem: {
     display: 'flex',
     flexDirection: 'column',
@@ -346,33 +254,6 @@ export default function Profile(props) {
       description: 'Facultatif',
     },
   ];
-  const ProfileStepper = (data) => {
-    return (
-      <div className={classes.steps}>
-        <div className={classes.stepLine}></div>
-        {data.steps.map((i) => (
-          <div
-            key={i.id}
-            className={
-              i.active ? classes.step + ' ' + classes.stepActive : classes.step
-            }
-          >
-            {i.id}. {i.name}
-          </div>
-        ))}
-      </div>
-    );
-  };
-  const FormStepHeader = (data) => {
-    return (
-      <>
-        <div className={classes.formStepHeader}>
-          <div className={classes.formStepIconWrapper}>{data.icon}</div>
-          <div className={classes.formStepText}>{data.title}</div>
-        </div>
-      </>
-    );
-  };
   const getStep = (itemId) => {
     switch (itemId) {
       case 1:
@@ -391,7 +272,6 @@ export default function Profile(props) {
         console.log('default');
     }
   };
-
   const getAddress = async (event, value, reason) => {
     setStreet(value);
     if (value !== '') {
@@ -489,8 +369,8 @@ export default function Profile(props) {
         />
       </section>
       <Container maxWidth="xl">
-        <section id="Steps" className={classes.stepsContainer}>
-          <ProfileStepper
+        <section id="Steps">
+          <Steps
             steps={[
               { id: 1, name: 'SAISIE DE VOS INFORMATIONS', active: true },
               { id: 2, name: 'VALIDATION DE VOS INFORMATIONS', active: false },
@@ -503,10 +383,7 @@ export default function Profile(props) {
             Validons ensemble vos informations
           </div>
           <section id="formStep1">
-            <FormStepHeader
-              icon={<Point className={classes.formStepIcon} />}
-              title="ADRESSE POSTALE"
-            />
+            <Heading icon={Point} heading="ADRESSE POSTALE" />
             <Grid container className={classes.form}>
               <Grid item xs={12} md={6} className={classes.formItem}>
                 <div className={classes.inputLabel}>N° DE RUE ET RUE *</div>
@@ -601,10 +478,7 @@ export default function Profile(props) {
             </Grid>
           </section>
           <section id="formStep2">
-            <FormStepHeader
-              icon={<Attach className={classes.formStepIcon} />}
-              title="JUSTIFICATIFS"
-            />
+            <Heading icon={Attach} heading="JUSTIFICATIFS" />
             <Grid container>
               <Grid item xs={12} md={6} className={classes.formItem}>
                 <Input

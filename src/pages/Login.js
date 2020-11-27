@@ -84,7 +84,7 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    email: 'test@user.com',
+    email: 'test@company.com',
     password: 'password12',
   });
   const [errors, setErrors] = React.useState({

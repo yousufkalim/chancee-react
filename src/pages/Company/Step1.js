@@ -1,194 +1,44 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-import Dialog from '@material-ui/core/Dialog';
-import CloseIcon from '@material-ui/icons/Close';
-import Chip from '@material-ui/core/Chip';
-import Checkbox from '@material-ui/core/Checkbox';
+import Container from '@material-ui/core/Container';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { ReactComponent as JumboImage } from '../../assets/images/ProfileStep1.svg';
-import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
-import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
-import { ReactComponent as Point } from '../../assets/images/Point.svg';
-import { ReactComponent as Attach } from '../../assets/images/Attach.svg';
-import { ReactComponent as Flash } from '../../assets/images/flash.svg';
-import { ReactComponent as FileUpload } from '../../assets/images/FileUpload.svg';
+import API from '../../globals/API';
+import Constants from '../../globals/Constants';
+import * as actionTypes from '../../store/actions/actionTypes';
+
 import { ReactComponent as Tick } from '../../assets/images/tick.svg';
+import { ReactComponent as Point } from '../../assets/images/Point.svg';
+import { ReactComponent as Flash } from '../../assets/images/flash.svg';
+import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
+import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
+import { ReactComponent as JumboImage } from '../../assets/images/ProfileStep1.svg';
 
-import { ReactComponent as Calendar } from '../../assets/images/event.svg';
-import { ReactComponent as Checked } from '../../assets/images/checked.svg';
-import { ReactComponent as Unchecked } from '../../assets/images/unchecked.svg';
-
+import Steps from '../../components/Steps';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
-import Input from '../../components/Input';
+import Jumbotron from '../../components/Jumbotron';
+import Heading from '../../components/FormStepHeader';
+import DocumentUploading from '../../components/DocumentUploading';
+import AvailabilitySelector from '../../components/AvailabilitySelector';
+
+import Input from './Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#fff',
   },
-  // jumbotron
-  jumbo: {
-    alignItems: 'center',
-  },
-  jumboImage: {
-    width: '100%',
-    [theme.breakpoints.down('md')]: {
-      height: 200,
-    },
-  },
-  jumboDetails: {
-    padding: 40,
-  },
-  jumboTexts: {
-    marginBottom: 20,
-  },
-  jumboText: {
-    lineHeight: '54px',
-    fontFamily: 'Catamaran',
-    fontSize: '42px',
-    color: 'rgba(50,60,71,1)',
-  },
-  jumboTextBold: {
-    lineHeight: '54px',
-    fontFamily: 'Catamaran',
-    fontWeight: 'bold',
-    fontSize: '42px',
-    color: 'rgba(50,60,71,1)',
-  },
-  jumboButton: {
-    maxWidth: 150,
-    marginBottom: 20,
-  },
-  jumboDescription: {
-    maxWidth: 512,
-    lineHeight: '28px',
-    fontFamily: 'Roboto',
-    fontSize: '16px',
-    color: 'rgba(152,152,152,1)',
-    marginBottom: 20,
-  },
-  jumboIcons: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  jumboIcon: {
-    height: 30,
-    marginRight: 10,
-  },
-  // steps
-  stepsContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  steps: {
-    position: 'relative',
-    width: '80%',
-    height: 35,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  stepLine: {
-    position: 'absolute',
-    height: '0.999px',
-    backgroundColor: 'rgba(208,215,221,1)',
-    [theme.breakpoints.down('md')]: {
-      width: '80%',
-    },
-    [theme.breakpoints.up('md')]: {
-      width: '60%',
-    },
-  },
-  step: {
-    backgroundColor: '#fff',
-    border: '1px solid rgba(208,215,221,1)',
-    borderRadius: 20,
-    zIndex: 2,
-    color: 'rgba(50,60,71,1)',
-    fontFamily: 'Roboto',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    [theme.breakpoints.between('xs', 'md')]: {
-      fontSize: 8,
-      margin: '0 10px',
-      padding: '0 10px',
-      height: '45px',
-    },
-    [theme.breakpoints.between('md', 'lg')]: {
-      fontSize: 8,
-      margin: '0 20px',
-      padding: '0 20px',
-      height: '35px',
-    },
-    [theme.breakpoints.up('xl')]: {
-      fontSize: 12,
-      margin: '0 20px',
-      padding: '0 20px',
-      height: '35px',
-    },
-  },
-  stepActive: {
-    backgroundColor: '#00A1FF',
-    border: '1px solid #00A1FF',
-    color: '#fff',
-  },
-  // formContainer
   formContainer: {
     marginTop: 50,
   },
-  // formHeader
   formHeader: {
     fontFamily: 'Catamaran',
     fontSize: '2em',
     color: 'rgba(50,60,71,1)',
   },
-  // formStepHeader
-  formStepHeader: {
-    margin: '40px 20px 0 0',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  formStepIconWrapper: {
-    height: 50,
-    width: 50,
-    backgroundColor: 'rgba(250,251,252,1)',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  formStepIcon: {
-    width: '40%',
-    height: '50%',
-    color: 'rgba(122,204,40,1)',
-  },
-  formStepText: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '14px',
-    color: 'rgba(122,204,40,1)',
-    letterSpacing: 0.35,
-    marginLeft: 10,
-  },
-  formStepSubHeader: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
-    letterSpacing: '0.41666671752929685px',
-    textTransform: 'uppercase',
-    marginBottom: 10,
-  },
-  form: {},
   formItem: {
     display: 'flex',
     flexDirection: 'column',
@@ -220,11 +70,6 @@ const useStyles = makeStyles((theme) => ({
       width: '80%',
     },
   },
-  inputSIRET: {
-    [theme.breakpoints.up('md')]: {
-      width: '50%',
-    },
-  },
   flagIcon: {
     backgroundColor: 'rgba(233,239,244,1)',
     width: '12%',
@@ -246,90 +91,6 @@ const useStyles = makeStyles((theme) => ({
       color: 'rgba(50,60,71,1)',
     },
   },
-  inputIcon: {
-    marginRight: 20,
-  },
-  // steppers
-  stepperContainer: {
-    marginTop: 40,
-  },
-  stepperInput: {
-    border: '1px dashed rgba(208,215,221,1)',
-    borderRadius: 4,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  stepperInputContent: {
-    width: '60%',
-    height: '60%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperInputIcon: {},
-  stepperInputTexts: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperInputText: {
-    fontSize: 20,
-    fontWeight: 'light',
-    color: '#000',
-  },
-  steppers: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  stepper: {
-    paddingBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 4,
-    zIndex: 2,
-    [theme.breakpoints.up('md')]: {
-      paddingLeft: 20,
-    },
-  },
-  stepperRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  stepperIconWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid rgba(208,215,221,1)',
-    borderRadius: 4,
-    width: 30,
-    height: 30,
-    color: 'rgba(166,229,15,1)',
-  },
-  stepperIcon: {
-    width: 18,
-    height: 18,
-  },
-  stepperTitle: {
-    marginLeft: 15,
-    color: 'rgba(166,229,15,1)',
-    fontFamily: 'Roboto',
-    fontSize: '16px',
-  },
-  stepperTitleDone: {
-    color: '#000',
-  },
-  stepperDesc: {
-    marginTop: 4,
-    fontFamily: 'Roboto',
-    fontSize: '14px',
-    color: 'rgba(152,152,152,1)',
-  },
   buttonContainer: {
     paddingTop: 20,
     paddingBottom: 50,
@@ -342,101 +103,37 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   submitButton: {
-    maxWidth: '20%',
+    maxWidth: '40%',
     [theme.breakpoints.down('sm')]: {
       maxWidth: '100%',
     },
   },
-  //
-  step1Section2step: {
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  step1Section2stepText1: {
-    fontWeight: '500',
-    fontSize: '14px',
-    color: '#000',
-  },
-  step1Section2stepText2: {
-    fontSize: '10px',
-    color: 'rgba(152,152,152,1)',
-  },
-  step1Section2Checkbox: {
-    padding: 0,
-    marginRight: 10,
-    '&:hover': {
-      backgroundColor: 'transparent',
-    },
-  },
-  //
-  modalHeaderContainer: {
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  modalHeader: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    margin: 0,
-  },
-  modalIcon: {
-    cursor: 'pointer',
-    color: 'rgba(0, 0, 0, 0.54)',
-  },
-  modalContent: {
-    padding: '0 20px',
-  },
-  modalChipContainer: {
-    marginBottom: 10,
-  },
-  modalForm: {
-    '& > *': {
-      padding: '10px 20px',
-    },
-  },
-  modalActions: {
-    padding: '10px 20px',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    '& > *': {
-      marginLeft: 20,
-    },
-  },
-  // buttonContainer: {
-  //   paddingTop: 20,
-  //   paddingBottom: 50,
-  //   width: "100%",
-  //   display: "flex",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   [theme.breakpoints.up("md")]: {
-  //     paddingTop: 50,
-  //   },
-  // },
 }));
 
 export default function Profile(props) {
   const classes = useStyles();
-  const [step, setStep] = useState(3);
-  const [selectedDay, setSelectedDay] = useState(1);
-  const [timeslots, setTimeSlots] = useState([
-    { day: 1, checked: false, slots: [] },
-    { day: 2, checked: false, slots: [] },
-    { day: 3, checked: false, slots: [] },
-    { day: 4, checked: false, slots: [] },
-    { day: 5, checked: false, slots: [] },
-    { day: 6, checked: false, slots: [] },
-    { day: 7, checked: false, slots: [] },
-  ]);
-  const [dayModal, setDayModal] = React.useState(false);
-  const [startHour, setStartHour] = useState('');
-  const [endHour, setEndHour] = useState('');
-  const [getUpdate, setGetUpdate] = useState(false);
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state);
 
-  const steps = [
+  const [address, setAddress] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
+
+  const [lat, setLat] = useState('');
+  const [city, setCity] = useState('');
+  const [long, setLong] = useState('');
+  const [SIRET, setSIRET] = useState('');
+  const [phone, setPhone] = useState('');
+  const [postal, setPostal] = useState('');
+  const [street, setStreet] = useState('');
+  const [complement, setComplement] = useState('');
+
+  const [KBIS, setKBIS] = useState('');
+  const [logo, setLogo] = useState('');
+  const [identity, setIdentity] = useState('');
+  const [timeslots, setTimeSlots] = useState([]);
+
+  const documentSteps = [
     {
       id: 1,
       title: 'Justificatif d’identité en cours de validité *',
@@ -444,418 +141,271 @@ export default function Profile(props) {
     },
     {
       id: 2,
-      title:
-        'Justificatif d’identité en cours de validité (complément si nécéssaire)',
-      description: 'CNI Recto/Verso, Passeport ou titre de séjour',
-    },
-    {
-      id: 3,
-      title: 'Kbis de moins de 3 mois',
+      title: 'Kbis de moins de 3 mois *',
       description:
         'Kbis version électronique ou version papier numérisée (300dpi minimum)',
     },
     {
-      id: 4,
-      title: 'Logo d’entreprise',
+      id: 3,
+      title: 'Logo d’entreprise *',
       description:
         'Attachez le logo de votre entreprise, qui sera présenté aux livreurs',
     },
   ];
-  const days = [
-    {
-      id: 1,
-      name: 'Lundi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 2,
-      name: 'Mardi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 3,
-      name: 'Mercredi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 4,
-      name: 'Jeudi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 5,
-      name: 'Vendredi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 6,
-      name: 'Samedi',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-    {
-      id: 7,
-      name: 'Dimanche',
-      description: 'A partir de 8h00, pendant 10 heures',
-    },
-  ];
+  const getDocumentStep = (itemId) => {
+    switch (itemId) {
+      case 1:
+        return { name: identity, fn: setIdentity };
+      case 2:
+        return { name: KBIS, fn: setKBIS };
+      case 3:
+        return { name: logo, fn: setLogo };
+      default:
+        console.log('default');
+    }
+  };
+  const getAddress = async (event, value, reason) => {
+    setStreet(value);
+    if (value !== '') {
+      setAddressLoading(true);
+      const data = await API({
+        uri:
+          'https://api-adresse.data.gouv.fr/search/?q=' +
+          value +
+          '&type=housenumber&autocomplete=1&limit=15',
+      });
+      setAddress(
+        data.features.map((item) => {
+          return {
+            id: item.properties.id,
+            name: item.properties.label,
+            city: item.properties.city,
+            postalCode: item.properties.postcode,
+            lat: item.geometry.coordinates[1],
+            lng: item.geometry.coordinates[0],
+          };
+        }),
+      );
+      setAddressLoading(false);
+    } else {
+      setAddress([]);
+    }
+  };
+  const onSubmit = async () => {
+    try {
+      if (
+        KBIS === '' ||
+        logo === '' ||
+        city === '' ||
+        street === '' ||
+        postal === '' ||
+        identity === '' ||
+        phone.length < 10 ||
+        SIRET.length !== 14 ||
+        !timeslots.some((item) => item.checked)
+      ) {
+        alert('Fields are required!');
+      } else {
+        setLoading(true);
+        var formdata = new FormData();
+        formdata.append('KBIS', KBIS);
+        formdata.append('phone', phone);
+        formdata.append('SIRET', SIRET);
+        formdata.append('profile', logo);
+        formdata.append('identity', identity);
+        formdata.append('timeslots', timeslots);
+        formdata.append('company', JSON.stringify({ openingTime: '4' }));
+        formdata.append(
+          'address',
+          JSON.stringify({
+            city: city,
+            street: street,
+            zipcode: postal,
+            location: [lat, long],
+            complement: complement,
+          }),
+        );
+
+        const data = await API({
+          method: 'PUT',
+          uri: Constants.COMPANY_STEP1,
+          headers: {
+            Authorization: `Bearer ${store.token}`,
+          },
+          body: formdata,
+        });
+        console.log(data);
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: data.user,
+        });
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Header />
       <section id="Jumbo">
-        <Grid container className={classes.jumbo}>
-          <Grid item xs={12} md={6}>
-            <JumboImage className={classes.jumboImage} />
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.jumboDetails}>
-            <div className={classes.jumboTexts}>
-              <span className={classes.jumboText}>Bienvenue sur</span>
-              <br />
-              <span className={classes.jumboTextBold}>Chancee !</span>
-            </div>
-            <div className={classes.jumboButton}>
-              <Button text="DÉMARRER" disabled />
-            </div>
-            <div className={classes.jumboDescription}>
-              Nous configurons votre espace personnel, plus que quelques étapes
-              et votre profil sera disponible auprès de nos 2300+ restaurants
-              partenaires
-            </div>
-            <div className={classes.jumboIcons}>
-              <Chat className={classes.jumboIcon} />
-              <Microphone className={classes.jumboIcon} />
-            </div>
-          </Grid>
-        </Grid>
+        <Jumbotron
+          image={JumboImage}
+          head="Bienvenue sur"
+          head2="Chancee !"
+          buttonText="DÉMARRER"
+          description="Nous configurons votre espace personnel, plus que quelques étapes et
+          votre profil sera disponible auprès de nos 2300+ restaurants
+          partenaires"
+          icons={[Chat, Microphone]}
+        />
       </section>
       <Container maxWidth="xl">
-        <section id="Steps" className={classes.stepsContainer}>
-          <div className={classes.steps}>
-            <div className={classes.stepLine}></div>
-            <div className={classes.step + ' ' + classes.stepActive}>
-              1. SAISIE DE VOS INFORMATIONS
-            </div>
-            <div className={classes.step}>
-              2. VALIDATION DE VOS INFORMATIONS
-            </div>
-          </div>
+        <section id="Steps">
+          <Steps
+            steps={[
+              { id: 1, name: 'SAISIE DE VOS INFORMATIONS', active: true },
+              { id: 2, name: 'VALIDATION DE VOS INFORMATIONS', active: false },
+            ]}
+          />
         </section>
         <section id="form" className={classes.formContainer}>
           <div className={classes.formHeader}>
             Validons ensemble vos informations
           </div>
-          <div className={classes.formStepHeader}>
-            <div className={classes.formStepIconWrapper}>
-              <Point className={classes.formStepIcon} />
-            </div>
-            <div className={classes.formStepText}>ADRESSE POSTALE</div>
-          </div>
-          <Grid container className={classes.form}>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>N° DE RUE ET RUE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="71 rue du Faubourg Poissonnière "
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>CODE POSTAL</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="75009"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>COMPLÉMENT D’ADRESSE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="5ème étage"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>VILLE</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="Paris"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>NUMÉRO DE TÉLÉPHONE</div>
-              <div className={classes.inputContainer}>
-                <div className={classes.flagIcon}>
-                  <img src={Flag} className={classes.flagIconImg} alt="flag" />
-                </div>
-                <input
-                  className={classes.input}
-                  type="number"
-                  placeholder="07 88 45 20 12"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.formItem}>
-              <div className={classes.inputLabel}>NUMERO DE SIRET</div>
-              <div className={classes.inputContainer}>
-                <input
-                  className={classes.input}
-                  type="text"
-                  placeholder="313 313 334 19076"
-                />
-                <div className={classes.inputIcon}>
-                  <Tick className={classes.stepperIcon} />
-                </div>
-              </div>
-            </Grid>
-          </Grid>
-          <section>
-            <div className={classes.formStepHeader}>
-              <div className={classes.formStepIconWrapper}>
-                <Calendar className={classes.formStepIcon} />
-              </div>
-              <div className={classes.formStepText}>HORAIRES D’OUVERTURE</div>
-            </div>
-            <div className={classes.formStepSubHeader}>
-              QUELS SONT LES HORAIRES CLASSIQUES D’OUVERTURE DE L’ENTREPRISE ?
-            </div>
-            <Grid container>
-              {days.map((day) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={3}
-                  key={day.id}
-                  className={classes.step1Section2step}
-                >
-                  <div>
-                    <Checkbox
-                      disableRipple
-                      checked={timeslots[day.id - 1].checked}
-                      color="default"
-                      icon={<Unchecked />}
-                      onChange={(event) => {
-                        setSelectedDay(day.id);
-                        setDayModal(true);
-                      }}
-                      checkedIcon={<Checked />}
-                      className={classes.step1Section2Checkbox}
-                    />
-                    <span className={classes.step1Section2stepText1}>
-                      {day.name}
-                    </span>
-                  </div>
-                  <span className={classes.step1Section2stepText2}>
-                    {day.description}
-                  </span>
-                </Grid>
-              ))}
-            </Grid>
-          </section>
-          <div className={classes.formStepHeader}>
-            <div className={classes.formStepIconWrapper}>
-              <Attach className={classes.formStepIcon} />
-            </div>
-            <div className={classes.formStepText}>DOCUMENTS A JOINDRE</div>
-          </div>
-          <Grid container className={classes.stepperContainer}>
-            <Grid item xs={12} md={6} className={classes.stepperInput}>
-              <div className={classes.stepperInputContent}>
-                <FileUpload className={classes.stepperInputIcon} />
-                <div className={classes.stepperInputTexts}>
-                  <span className={classes.stepperInputText}>
-                    Cliquez sur le justificatif
-                  </span>
-                  <span className={classes.stepperInputText}>
-                    pour ajouter votre document
-                  </span>
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} md={6} className={classes.steppers}>
-              {steps.map((item) => (
-                <div key={item.id} className={classes.stepper}>
-                  <div className={classes.stepperRow}>
-                    <div className={classes.stepperIconWrapper}>
-                      {item.id < step && (
-                        <Tick className={classes.stepperIcon} />
+          <section id="formStep1">
+            <Heading icon={Point} heading="ADRESSE POSTALE" />
+            <Grid container className={classes.form}>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <div className={classes.inputLabel}>N° DE RUE ET RUE *</div>
+                <Autocomplete
+                  options={address}
+                  inputValue={street}
+                  loading={addressLoading}
+                  onInputChange={getAddress}
+                  noOptionsText="Input your address!"
+                  onChange={(event, value) => {
+                    setLat(value.lat);
+                    setLong(value.lng);
+                    setCity(value.city);
+                    setStreet(value.name);
+                    setPostal(value.postalCode);
+                  }}
+                  getOptionSelected={(option, value) => {
+                    return option.name === value.name;
+                  }}
+                  getOptionLabel={(option) => {
+                    return option.name;
+                  }}
+                  renderInput={(params) => (
+                    <div
+                      ref={params.InputProps.ref}
+                      className={classes.inputContainer}
+                    >
+                      <input
+                        type="text"
+                        {...params.inputProps}
+                        className={classes.input}
+                      />
+                      {postal !== '' && (
+                        <div
+                          style={{
+                            marginRight: 20,
+                          }}
+                        >
+                          <Tick />
+                        </div>
                       )}
                     </div>
-                    <div
-                      className={`${classes.stepperTitle} ${
-                        item.id >= step ? classes.stepperTitleDone : ''
-                      }`}
-                    >
-                      {item.title}
+                  )}
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <Input
+                  disabled
+                  value={postal}
+                  label="CODE POSTAL *"
+                  valid={postal !== ''}
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <Input
+                  value={complement}
+                  valid={complement !== ''}
+                  label="COMPLÉMENT D’ADRESSE"
+                  onChange={({ target: { name, value } }) =>
+                    setComplement(value)
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <Input
+                  disabled
+                  value={city}
+                  label="VILLE *"
+                  valid={city !== ''}
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <Input
+                  type="number"
+                  value={phone}
+                  valid={phone !== ''}
+                  label="NUMÉRO DE TÉLÉPHONE *"
+                  onChange={(e) => {
+                    e.target.value.length <= 10 && setPhone(e.target.value);
+                  }}
+                  left={
+                    <div className={classes.flagIcon}>
+                      <img
+                        src={Flag}
+                        className={classes.flagIconImg}
+                        alt="flag"
+                      />
                     </div>
-                  </div>
-                  <div className={classes.stepperDesc}>{item.description}</div>
-                </div>
-              ))}
+                  }
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.formItem}>
+                <Input
+                  type="number"
+                  value={SIRET}
+                  valid={SIRET !== ''}
+                  label="NUMERO DE SIRET *"
+                  onChange={(e) => {
+                    e.target.value.length <= 14 && setSIRET(e.target.value);
+                  }}
+                />
+              </Grid>
             </Grid>
-          </Grid>
+          </section>
+          <section id="availability">
+            <AvailabilitySelector
+              value={timeslots}
+              onChange={(value) => {
+                setTimeSlots(value);
+              }}
+            />
+          </section>
+          <section id="documentUploading">
+            <DocumentUploading
+              steps={documentSteps}
+              getStep={getDocumentStep}
+            />
+          </section>
           <div className={classes.buttonContainer}>
             <Button
               type="submit"
-              text={'Soumettre mon dossier'}
+              onClick={onSubmit}
+              disabled={loading}
               className={classes.submitButton}
+              text={loading ? 'Loading...' : 'Soumettre mon dossier'}
             >
               <Flash style={{ marginRight: 10 }} />
             </Button>
           </div>
         </section>
       </Container>
-      <Dialog
-        open={dayModal}
-        maxWidth={'md'}
-        fullWidth={true}
-        onClose={() => setDayModal((st) => !st)}
-      >
-        <div className={classes.modalHeaderContainer}>
-          <h2 className={classes.modalHeader}>Add Availability</h2>
-          <CloseIcon
-            onClick={() => setDayModal((st) => !st)}
-            className={classes.modalIcon}
-          />
-        </div>
-        <Grid container className={classes.modalContent}>
-          {timeslots[selectedDay - 1].slots.map((row, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={3}
-              key={row.start + row.end}
-              className={classes.modalChipContainer}
-            >
-              <Chip
-                label={'start:' + row.start + ' ↔️ end:' + row.end}
-                onDelete={() => {
-                  let arry = timeslots;
-                  let newArray = arry[selectedDay - 1].slots.filter(
-                    (slo, index2) => index2 !== index,
-                  );
-                  arry[selectedDay - 1].slots = newArray;
-                  setTimeSlots(arry);
-                  setGetUpdate((st) => !st);
-                }}
-                color="default"
-              />
-            </Grid>
-          ))}
-        </Grid>
-        <div className={classes.modalForm}>
-          <div>
-            <span>Start Hour</span>
-            <Input
-              type="number"
-              color="#FC917C"
-              placeholder="Start Hour"
-              value={startHour}
-              onChange={(e) => {
-                if (e.target.value >= 0 && e.target.value < 23) {
-                  setStartHour(e.target.value);
-                }
-              }}
-            />
-          </div>
-          <div>
-            <span>End Hour</span>
-            <Input
-              type="number"
-              color="#FC917C"
-              placeholder="End Hour"
-              value={endHour}
-              onChange={(e) => {
-                if (e.target.value >= 0 && e.target.value < 24) {
-                  setEndHour(e.target.value);
-                }
-              }}
-            />
-          </div>
-        </div>
-        <div className={classes.modalActions}>
-          <Button
-            style={{ width: 100, backgroundColor: '#FC917C' }}
-            onClick={() => {
-              if (timeslots[selectedDay - 1].slots.length > 0) {
-                let newSlots = timeslots;
-                newSlots[selectedDay - 1].checked = true;
-                setTimeSlots(newSlots);
-              } else {
-                let newSlots = timeslots;
-                newSlots[selectedDay - 1].checked = false;
-                setTimeSlots(newSlots);
-              }
-              setDayModal(false);
-              setEndHour('');
-              setStartHour('');
-            }}
-          >
-            Done
-          </Button>
-          <Button
-            style={{ width: 100, backgroundColor: '#FC917C' }}
-            onClick={() => {
-              if (parseInt(startHour) >= parseInt(endHour)) {
-                alert('start hour should be less then endhour');
-              } else {
-                let timeslotArray = timeslots;
-                let times = timeslotArray[selectedDay - 1].slots;
-                let shouldAdd = true;
-                times.map((timeslot) => {
-                  if (
-                    parseInt(startHour) === parseInt(timeslot.start) ||
-                    parseInt(endHour) <= parseInt(timeslot.end) ||
-                    (parseInt(startHour) > parseInt(timeslot.start) &&
-                      parseInt(startHour) < parseInt(timeslot.end))
-                  ) {
-                    shouldAdd = false;
-                  }
-                });
-                if (shouldAdd) {
-                  times.push({
-                    start: startHour,
-                    end: endHour,
-                  });
-                  timeslotArray[selectedDay - 1].slots = times;
-                  setTimeSlots(timeslotArray);
-                } else {
-                  alert('Cannot add overlapping time slots!');
-                }
-                setGetUpdate((st) => !st);
-              }
-            }}
-          >
-            Add Row
-          </Button>
-        </div>
-      </Dialog>
     </div>
   );
 }
