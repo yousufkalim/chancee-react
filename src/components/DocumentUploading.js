@@ -96,25 +96,34 @@ export default function DocumentUploading(props) {
 
   return (
     <>
-      <Heading
-        icon={Attach}
-        heading={props.heading ? props.heading : 'DOCUMENTS A JOINDRE'}
-      />
+      {!props.justCheckbox && (
+        <Heading
+          icon={Attach}
+          heading={props.heading ? props.heading : 'DOCUMENTS A JOINDRE'}
+        />
+      )}
       <Grid container className={classes.stepperContainer}>
-        <Grid item xs={12} md={6} className={classes.stepperInput}>
-          <div className={classes.stepperInputContent}>
-            <FileUploadIcon className={classes.stepperInputIcon} />
-            <div className={classes.stepperInputTexts}>
-              <span className={classes.stepperInputText}>
-                {props.title ? props.title : 'Cliquez sur le justificatif'}
-              </span>
-              <span className={classes.stepperInputText}>
-                {props.title2 ? props.title2 : 'pour ajouter votre document'}
-              </span>
+        {!props.justCheckbox && (
+          <Grid item xs={12} md={6} className={classes.stepperInput}>
+            <div className={classes.stepperInputContent}>
+              <FileUploadIcon className={classes.stepperInputIcon} />
+              <div className={classes.stepperInputTexts}>
+                <span className={classes.stepperInputText}>
+                  {props.title ? props.title : 'Cliquez sur le justificatif'}
+                </span>
+                <span className={classes.stepperInputText}>
+                  {props.title2 ? props.title2 : 'pour ajouter votre document'}
+                </span>
+              </div>
             </div>
-          </div>
-        </Grid>
-        <Grid item xs={12} md={6} className={classes.steppers}>
+          </Grid>
+        )}
+        <Grid
+          item
+          xs={12}
+          md={props.justCheckbox ? 12 : 6}
+          className={classes.steppers}
+        >
           {props.steps.map((item) => (
             <div key={item.id} className={classes.stepper}>
               <div className={classes.stepperRow}>

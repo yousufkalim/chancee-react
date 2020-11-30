@@ -1,149 +1,244 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { useState, useEffect } from 'react';
+import Rating from '@material-ui/lab/Rating';
+import { makeStyles } from '@material-ui/core/styles';
 
-import Header from "../../components/Header2";
-import Table from "../../components/Table";
+import { ReactComponent as Star } from '../../assets/images/star.svg';
+import { ReactComponent as Tick } from '../../assets/images/Tick2.svg';
+import { ReactComponent as Cross } from '../../assets/images/Cross.svg';
+import { ReactComponent as CompanyIcon } from '../../assets/images/diamond.svg';
 
-import { ReactComponent as CompanyIcon } from "../../assets/images/diamond.svg";
-import { ReactComponent as Tick } from "../../assets/images/Tick2.svg";
-import { ReactComponent as Cross } from "../../assets/images/Cross.svg";
-import { ReactComponent as Star } from "../../assets/images/star.svg";
+import Header from '../../components/Header2';
+import Table from '../../components/Table2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: "#F5F7FB",
+    backgroundColor: '#F5F7FB',
     paddingTop: 90,
     paddingLeft: 90,
-    minHeight: "100vh",
+    minHeight: '100vh',
   },
   content: {
     padding: 30,
     paddingBottom: 100,
   },
   itemRow: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    "& > svg": {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > svg': {
       width: 30,
       height: 30,
       marginRight: 5,
     },
   },
   rowIcon: {
-    outline: "none",
-    cursor: "pointer",
+    outline: 'none',
+    cursor: 'pointer',
   },
   yellowIcon: {
-    color: "orange",
+    color: 'orange',
   },
   tableHeader: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    margin: "20px 0",
-    padding: "0px 15px",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: '20px 0',
+    padding: '0px 15px',
   },
   tableHeaderLeft: {
-    color: "#000",
+    color: '#000',
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   tableHeaderRight: {
-    color: "#4DA1FF",
+    color: '#4DA1FF',
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+  },
+  tableButton: {
+    color: '#fff',
+    border: 'none',
+    borderRadius: 6,
+    fontSize: '10px',
+    cursor: 'pointer',
+    fontWeight: 'bold',
+    padding: '3px 6px',
+    backgroundColor: '#c21d12',
   },
 }));
 
 const Profile = (props) => {
   const classes = useStyles();
 
-  const rows = [
-    [
-      1,
+  const [offers, setOffers] = useState([]);
+  const [value, setValue] = React.useState(2);
+  const [invitations, setInvitations] = useState([]);
+
+  useEffect(() => {
+    const invitationsArray = [
       [
-        <div className={classes.itemRow}>
-          <CompanyIcon /> Starbucks
-        </div>,
-      ],
-      "20/11/2020",
-      "8h - 13h",
-      "Moissy (77)",
-      "130€",
-      [
-        <div className={classes.itemRow}>
-          <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-        </div>,
-      ],
-      [
-        <div className={classes.itemRow}>
-          <Tick
-            className={classes.rowIcon}
-            onClick={() => alert("Are you sure you want to do this? 1")}
-          />
-          <Cross
-            className={classes.rowIcon}
-            onClick={() => alert("Are you sure you want to do this? 1")}
-          />
-        </div>,
-      ],
-    ],
-    [
-      2,
-      [
-        <div className={classes.itemRow}>
-          <CompanyIcon /> McDonalds
-        </div>,
-      ],
-      "20/11/2020",
-      "8h - 21h",
-      "Moissy (77)",
-      "240€",
-      [
-        <div className={classes.itemRow}>
-          <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-        </div>,
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> Starbucks
+          </div>,
+        ],
+        '20/11/2020',
+        '8h - 13h',
+        'Moissy (77)',
+        '130€',
+        [
+          <div className={classes.itemRow}>
+            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
+          </div>,
+        ],
+        [
+          <div className={classes.itemRow}>
+            <Tick
+              className={classes.rowIcon}
+              onClick={() => alert('Are you sure you want to do this? 1')}
+            />
+            <Cross
+              className={classes.rowIcon}
+              onClick={() => alert('Are you sure you want to do this? 1')}
+            />
+          </div>,
+        ],
       ],
       [
-        <div className={classes.itemRow}>
-          <Tick className={classes.rowIcon} />
-          <Cross className={classes.rowIcon} />
-        </div>,
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> McDonalds
+          </div>,
+        ],
+        '20/11/2020',
+        '8h - 21h',
+        'Moissy (77)',
+        '240€',
+        [
+          <div className={classes.itemRow}>
+            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
+          </div>,
+        ],
+        [
+          <div className={classes.itemRow}>
+            <Tick className={classes.rowIcon} />
+            <Cross className={classes.rowIcon} />
+          </div>,
+        ],
       ],
-    ],
-    [
-      3,
       [
-        <div className={classes.itemRow}>
-          <CompanyIcon /> McDonalds
-        </div>,
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> McDonalds
+          </div>,
+        ],
+        '20/11/2020',
+        '8h - 21h',
+        'Moissy (77)',
+        '130€',
+        [
+          <div className={classes.itemRow}>
+            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
+          </div>,
+        ],
+        [
+          <div className={classes.itemRow}>
+            <Tick className={classes.rowIcon} />
+            <Cross className={classes.rowIcon} />
+          </div>,
+        ],
       ],
-      "20/11/2020",
-      "8h - 21h",
-      "Moissy (77)",
-      "130€",
+    ];
+    const offersArray = [
       [
-        <div className={classes.itemRow}>
-          <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-        </div>,
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> Starbucks
+          </div>,
+        ],
+        '20/11/2020',
+        '8h - 13h',
+        'Moissy (77)',
+        '130€',
+        'Confirmée',
+        [
+          <div className={classes.itemRow}>
+            <div className={classes.tableButton}>ANNULER</div>
+          </div>,
+        ],
       ],
       [
-        <div className={classes.itemRow}>
-          <Tick className={classes.rowIcon} />
-          <Cross className={classes.rowIcon} />
-        </div>,
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> Starbucks
+          </div>,
+        ],
+        '19/11/2020',
+        '8h - 21h',
+        'Moissy (77)',
+        '240€',
+        'Confirmée',
+        [
+          <div className={classes.itemRow}>
+            <div className={classes.tableButton}>ANNULER</div>
+          </div>,
+        ],
       ],
-    ],
-  ];
+      [
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> Starbucks
+          </div>,
+        ],
+        '14/11/2020',
+        '8h - 13h',
+        'Moissy (77)',
+        '130€',
+        'Réalisée',
+        [
+          <div className={classes.itemRow}>
+            <Rating
+              value={value}
+              onChange={(event, newValue) => {
+                setValue(newValue);
+              }}
+              size="small"
+            />
+            <div
+              className={classes.tableButton}
+              style={{ backgroundColor: '#000', marginLeft: 5 }}
+            >
+              NOTER
+            </div>
+          </div>,
+        ],
+      ],
+      [
+        [
+          <div className={classes.itemRow}>
+            <CompanyIcon /> Starbucks
+          </div>,
+        ],
+        '14/11/2020',
+        '8h - 13h',
+        'Moissy (77)',
+        '130€',
+        'Réalisée',
+        'Noté 4/5',
+      ],
+    ];
+    setInvitations(invitationsArray);
+    setOffers(offersArray);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className={classes.root}>
       <Header />
       <div className={classes.content}>
-        <section id="table">
+        <section id="invitations">
           <div className={classes.tableHeader}>
             <div className={classes.tableHeaderLeft}>INVITATIONS RECUES</div>
             <div className={classes.tableHeaderRight}>
@@ -153,15 +248,34 @@ const Profile = (props) => {
           <div className={classes.tableContainer}>
             <Table
               headers={[
-                "ENTREPRISE",
-                "DATE",
-                "HORAIRES",
-                "VILLE",
-                "MONTANT TOTAL",
-                "STATUS",
-                "ACTION",
+                'ENTREPRISE',
+                'DATE',
+                'HORAIRES',
+                'VILLE',
+                'MONTANT TOTAL',
+                'STATUS',
+                'ACTION',
               ]}
-              rows={rows}
+              values={invitations}
+            />
+          </div>
+        </section>
+        <section id="offers">
+          <div className={classes.tableHeader}>
+            <div className={classes.tableHeaderLeft}>MISSIONS VALIDÉES</div>
+          </div>
+          <div className={classes.tableContainer}>
+            <Table
+              headers={[
+                'ENTREPRISE',
+                'DATE',
+                'HORAIRES',
+                'VILLE',
+                'MONTANT TOTAL',
+                'STATUS',
+                'ACTION',
+              ]}
+              values={offers}
               dateItem={2}
             />
           </div>

@@ -135,7 +135,7 @@ const RateSlider = (props) => {
         <Grid
           item
           xs={12}
-          md={props.search ? 12 : 8}
+          md={props.search || props.fullWidth ? 12 : 8}
           style={
             !props.search
               ? {

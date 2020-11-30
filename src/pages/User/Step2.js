@@ -24,6 +24,7 @@ import RateSlider from '../../components/RateSlider';
 import VolumeSlider from '../../components/VolumeSlider';
 import DistanceSlider from '../../components/DistanceSlider';
 import VehicleSelector from '../../components/VehicleSelector';
+import DocumentUploading from '../../components/DocumentUploading';
 import AvailabilitySelector from '../../components/AvailabilitySelector';
 
 const useStyles = makeStyles((theme) => ({
@@ -79,46 +80,106 @@ export default function Profile(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
-
   const [loading, setLoading] = useState(false);
 
+  const [license, setLicense] = useState('');
+  const [vehicleProof, setVehicleProof] = useState('');
   const [vehicles, setVehicles] = useState(new Set([1]));
-  const [vehicleCheck1, setvehicleCheck1] = useState(false);
-  const [vehicleCheck2, setvehicleCheck2] = useState(false);
-  const [volume, setVolume] = useState(2);
+
   const [KM, setKM] = useState(60);
-  const [timeslots, setTimeSlots] = useState([]);
   const [rate, setRate] = useState(18);
-  const [rateCheckbox, setRateCheckbox] = useState(false);
+  const [volume, setVolume] = useState(2);
+  const [timeslots, setTimeSlots] = useState([]);
   const [conditions, setConditions] = useState(false);
+  const [rateCheckbox, setRateCheckbox] = useState(false);
+
+  const documentSteps = [
+    {
+      id: 1,
+      title: 'Permis de conduire *',
+      description: 'Obligatoire si sélection d’un véhicule motorisé.',
+    },
+    {
+      id: 2,
+      title: 'Preuve d’achat du véhicule *',
+      description: 'Obligatoire si sélection d’un véhicule motorisé.',
+    },
+  ];
+  const getDocumentStep = (itemId) => {
+    switch (itemId) {
+      case 1:
+        return { name: license, fn: setLicense };
+      case 2:
+        return { name: vehicleProof, fn: setVehicleProof };
+      case 3:
+      default:
+        console.log('default');
+    }
+  };
 
   const onSubmit = async () => {
     try {
       if (
         (!vehicles.has(1) &&
           !vehicles.has(3) &&
-          (!vehicleCheck1 || !vehicleCheck2)) ||
+          (license === '' || vehicleProof === '')) ||
         !rateCheckbox ||
         !timeslots.some((item) => item.checked) ||
         !conditions
       ) {
         alert('Fields are required!');
       } else {
-        alert('Submit');
-        // setLoading(true);
+        setLoading(true);
+        let transportType =
+          Number(volume) === 1
+            ? 'Small'
+            : Number(volume) === 2
+            ? 'Means'
+            : 'Large';
+        let vehicleType;
+        if (vehicles.has(1)) {
+          vehicleType = 'Bike';
+        } else if (vehicles.has(2)) {
+          vehicleType = 'Electric bike';
+        } else if (vehicles.has(3)) {
+          vehicleType = 'Scooter';
+        } else if (vehicles.has(4)) {
+          vehicleType = 'Car';
+        } else if (vehicles.has(5)) {
+          vehicleType = 'Truck';
+        } else {
+          vehicleType = 'Large volume permit';
+        }
+        var formdata = new FormData();
+        formdata.append('licence', license);
+        formdata.append('purchaseProof', vehicleProof);
+        formdata.append('timeslots', JSON.stringify(timeslots));
+        formdata.append(
+          'delivery',
+          JSON.stringify({
+            vehicle: {
+              vehicleType: vehicleType,
+            },
+            range: String(KM),
+            perHour: rate,
+            transportType: transportType,
+          }),
+        );
 
-        // const data = await API({
-        //   method: 'PUT',
-        //   uri: Constants.USER_STEP2,
-        //   body: JSON.stringify({}),
-        //   token: store.token,
-        // });
-        // console.log(data);
+        const data = await API({
+          method: 'PUT',
+          uri: Constants.USER_STEP2,
+          headers: {
+            Authorization: `Bearer ${store.token}`,
+          },
+          token: store.token,
+          body: formdata,
+        });
 
-        // dispatch({
-        //   type: actionTypes.SET_USER,
-        //   user: data.user,
-        // });
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: data.user,
+        });
       }
     } catch (err) {
       setLoading(false);
@@ -167,42 +228,15 @@ export default function Profile(props) {
                 />
               </Grid>
               <Grid item xs={12} lg={4}>
-                {!vehicles.has(1) &&
-                  !vehicles.has(3) &&
-                  [
-                    {
-                      value: vehicleCheck1,
-                      fn: setvehicleCheck1,
-                      title: 'Permis de conduire',
-                      desc: 'Obligatoire si sélection d’un véhicule motorisé.',
-                    },
-                    {
-                      value: vehicleCheck2,
-                      fn: setvehicleCheck2,
-                      title: 'Preuve d’achat du véhicule',
-                      desc: 'Obligatoire si sélection d’un véhicule motorisé.',
-                    },
-                  ].map((item, index) => (
-                    <div key={index} className={classes.marginVertical}>
-                      <div>
-                        <Checkbox
-                          checked={item.value}
-                          onChange={(event) => item.fn(event.target.checked)}
-                          disableRipple
-                          color="default"
-                          checkedIcon={<Checked />}
-                          icon={<Unchecked />}
-                          className={classes.step1Section2Checkbox}
-                        />
-                        <span className={classes.step1Section2stepText1}>
-                          {item.title}
-                        </span>
-                      </div>
-                      <span className={classes.step1Section2stepText2}>
-                        {item.desc}
-                      </span>
-                    </div>
-                  ))}
+                <section id="documentUploading">
+                  {!vehicles.has(1) && !vehicles.has(3) && (
+                    <DocumentUploading
+                      steps={documentSteps}
+                      getStep={getDocumentStep}
+                      justCheckbox={true}
+                    />
+                  )}
+                </section>
               </Grid>
             </Grid>
           </section>
@@ -231,10 +265,10 @@ export default function Profile(props) {
               minimum="10"
               average="10"
               maximum="10"
-              rateCheckbox={rateCheckbox}
-              setRateCheckbox={(event) => setRateCheckbox((st) => !st)}
               value={rate}
+              rateCheckbox={rateCheckbox}
               onChange={(e, value) => setRate(value)}
+              setRateCheckbox={(event) => setRateCheckbox((st) => !st)}
             />
           </section>
           <span className={classes.incrementText}>

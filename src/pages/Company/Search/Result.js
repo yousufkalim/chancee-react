@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Header from '../../../components/HeaderCompany';
@@ -85,13 +85,51 @@ const useStyles = makeStyles((theme) => ({
 
 const Search = (props) => {
   const classes = useStyles();
-  const [time, setTime] = useState('13/04/2020, 12h - 22h');
-  const [KM, setKM] = useState('40 km');
-  const [weight, setWeight] = useState('Moyenne taille');
-  const [vehicle, setVehicles] = useState('Vélo / Vélo électrique');
-  const [max, setMax] = useState('Max 18€/h');
-  const [min, setMin] = useState('Min. 3/5');
-  const [deliveries, setDeliveries] = useState('2 livreurs');
+
+  const [data, setData] = useState([]);
+  const [filters, setFilters] = useState({});
+
+  useEffect(() => {
+    setFilters({
+      time: '13/04/2020, 12h - 22h',
+      KM: '40 km',
+      weight: 'Moyenne taille',
+      vehicles: 'Vélo / Vélo électrique',
+      max: 'Max 18€/h',
+      min: 'Min. 3/5',
+      deliveries: '2 livreurs',
+    });
+    setData([
+      [
+        'Henry Lafford',
+        'PETIT',
+        'Voiture',
+        '19€',
+        '220€',
+        '3.5/5',
+        <button className={classes.tableButton}>INVITER</button>,
+      ],
+      [
+        'Henry Lafford',
+        'PETIT',
+        'Voiture',
+        '19€',
+        '220€',
+        '3.5/5',
+        <button className={classes.tableButton}>INVITER</button>,
+      ],
+      [
+        'Henry Lafford',
+        'PETIT',
+        'Voiture',
+        '19€',
+        '220€',
+        '3.5/5',
+        <button className={classes.tableButton}>INVITER</button>,
+      ],
+    ]);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -100,13 +138,18 @@ const Search = (props) => {
         <PageHeading left="RESULTATS DE LA RECHERCHE" />
         <div className={classes.filters}>
           <div className={classes.filtersRow}>
-            {[time, KM, weight, vehicle, max, min, deliveries].map((i) => (
+            {Object.values(filters).map((i) => (
               <div key={i} className={classes.filter}>
                 {i}
               </div>
             ))}
           </div>
-          <button className={classes.filterButton}>Modifier</button>
+          <button
+            className={classes.filterButton}
+            onClick={() => props.history.goBack()}
+          >
+            Modifier
+          </button>
         </div>
 
         <Table
@@ -119,35 +162,7 @@ const Search = (props) => {
             'NOTE MOYENNE',
             'ACTION',
           ]}
-          values={[
-            [
-              'Henry Lafford',
-              'PETIT',
-              'Voiture',
-              '19€',
-              '220€',
-              '3.5/5',
-              <button className={classes.tableButton}>INVITER</button>,
-            ],
-            [
-              'Henry Lafford',
-              'PETIT',
-              'Voiture',
-              '19€',
-              '220€',
-              '3.5/5',
-              <button className={classes.tableButton}>INVITER</button>,
-            ],
-            [
-              'Henry Lafford',
-              'PETIT',
-              'Voiture',
-              '19€',
-              '220€',
-              '3.5/5',
-              <button className={classes.tableButton}>INVITER</button>,
-            ],
-          ]}
+          values={data}
         />
       </div>
     </div>

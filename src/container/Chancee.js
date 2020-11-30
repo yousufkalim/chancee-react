@@ -18,7 +18,6 @@ import UStep1 from '../pages/User/Step1';
 import UStep2 from '../pages/User/Step2';
 import Profile from '../pages/User/Profile';
 import Invitations from '../pages/User/Invitations';
-import Offers from '../pages/User/Offers';
 
 // Company
 import COffers from '../pages/Company/Offers';
@@ -109,7 +108,6 @@ const LFS = () => {
       <Switch>
         {/* User Active */}
         <Route exact path="/" component={Profile} />
-        <Route exact path="/offers" component={Offers} />
         <Route exact path="/invitations" component={Invitations} />
         <Redirect from="*" to="/" />
       </Switch>

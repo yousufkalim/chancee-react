@@ -209,12 +209,12 @@ export default function Profile(props) {
         setLoading(true);
         var formdata = new FormData();
         formdata.append('KBIS', KBIS);
-        formdata.append('phone', phone);
-        formdata.append('SIRET', SIRET);
-        formdata.append('profile', logo);
         formdata.append('identity', identity);
-        formdata.append('timeslots', timeslots);
+        formdata.append('profile', logo);
+        formdata.append('SIRET', SIRET);
+        formdata.append('phone', phone);
         formdata.append('company', JSON.stringify({ openingTime: '4' }));
+        formdata.append('timeslots', JSON.stringify(timeslots));
         formdata.append(
           'address',
           JSON.stringify({
@@ -234,7 +234,6 @@ export default function Profile(props) {
           },
           body: formdata,
         });
-        console.log(data);
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,

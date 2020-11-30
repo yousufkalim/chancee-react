@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
   step1Section2Checkbox: {
     padding: 0,
     marginRight: 10,
+    cursor: 'copy',
     '&:hover': {
       backgroundColor: 'transparent',
     },
@@ -197,11 +198,11 @@ export default function Profile(props) {
               xs={12}
               sm={6}
               md={3}
-              key={row.start + row.end}
+              key={row.from + row.to}
               className={classes.modalChipContainer}
             >
               <Chip
-                label={'start:' + row.start + ' ↔️ end:' + row.end}
+                label={'start:' + row.from + ' ↔️ end:' + row.to}
                 onDelete={() => {
                   let arry = timeslots;
                   let newArray = arry[selectedDay - 1].slots.filter(
@@ -282,18 +283,18 @@ export default function Profile(props) {
                 let shouldAdd = true;
                 times.map((timeslot) => {
                   if (
-                    parseInt(startHour) === parseInt(timeslot.start) ||
-                    parseInt(endHour) <= parseInt(timeslot.end) ||
-                    (parseInt(startHour) > parseInt(timeslot.start) &&
-                      parseInt(startHour) < parseInt(timeslot.end))
+                    parseInt(startHour) === parseInt(timeslot.from) ||
+                    parseInt(endHour) <= parseInt(timeslot.to) ||
+                    (parseInt(startHour) > parseInt(timeslot.from) &&
+                      parseInt(startHour) < parseInt(timeslot.to))
                   ) {
                     shouldAdd = false;
                   }
                 });
                 if (shouldAdd) {
                   times.push({
-                    start: startHour,
-                    end: endHour,
+                    from: startHour,
+                    to: endHour,
                   });
                   timeslotArray[selectedDay - 1].slots = times;
                   setTimeSlots(timeslotArray);

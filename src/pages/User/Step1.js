@@ -16,15 +16,15 @@ import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
 import { ReactComponent as Attach } from '../../assets/images/Attach.svg';
 import { ReactComponent as JumboImage } from '../../assets/images/Home2.svg';
 import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
-import { ReactComponent as FileUploadIcon } from '../../assets/images/FileUpload.svg';
 
-import Steps from '../../components/Steps';
 import Input from './Input';
+import Steps from '../../components/Steps';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
 import Jumbotron from '../../components/Jumbotron';
 import Heading from '../../components/FormStepHeader';
+import DocumentUploading from '../../components/DocumentUploading';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -96,87 +96,6 @@ const useStyles = makeStyles((theme) => ({
       color: 'rgba(50,60,71,1)',
     },
   },
-  // steppers
-  stepperContainer: {
-    marginTop: 15,
-  },
-  stepperInput: {
-    border: '1px dashed rgba(208,215,221,1)',
-    borderRadius: 4,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 20,
-  },
-  stepperInputContent: {
-    width: '60%',
-    height: '60%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperInputIcon: {},
-  stepperInputTexts: {
-    marginTop: 10,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  stepperInputText: {
-    fontSize: 20,
-    fontWeight: 'light',
-    color: '#000',
-  },
-  steppers: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  stepper: {
-    paddingBottom: 20,
-    backgroundColor: '#fff',
-    borderRadius: 4,
-    zIndex: 2,
-    [theme.breakpoints.up('md')]: {
-      paddingLeft: 20,
-    },
-  },
-  stepperRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  stepperIconWrapper: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid rgba(208,215,221,1)',
-    borderRadius: 4,
-    width: 30,
-    height: 30,
-    color: 'rgba(166,229,15,1)',
-  },
-  stepperIcon: {
-    width: 18,
-    height: 18,
-  },
-  stepperTitle: {
-    marginLeft: 15,
-    color: 'rgba(166,229,15,1)',
-    fontFamily: 'Roboto',
-    fontSize: '16px',
-  },
-  stepperTitleDone: {
-    color: '#000',
-  },
-  stepperDesc: {
-    marginTop: 4,
-    fontFamily: 'Roboto',
-    fontSize: '14px',
-    color: 'rgba(152,152,152,1)',
-  },
   buttonContainer: {
     paddingTop: 20,
     paddingBottom: 50,
@@ -221,7 +140,7 @@ export default function Profile(props) {
   const [training, setTraining] = useState('');
   const [insurance, setInsurance] = useState('');
 
-  const steps = [
+  const documentSteps = [
     {
       id: 1,
       title: 'Justificatif d’identité en cours de validité *',
@@ -254,7 +173,7 @@ export default function Profile(props) {
       description: 'Facultatif',
     },
   ];
-  const getStep = (itemId) => {
+  const getDocumentStep = (itemId) => {
     switch (itemId) {
       case 1:
         return { name: identity, fn: setIdentity };
@@ -342,7 +261,6 @@ export default function Profile(props) {
           },
           body: formdata,
         });
-        console.log(data);
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,
@@ -492,61 +410,12 @@ export default function Profile(props) {
                 />
               </Grid>
             </Grid>
-            <Grid container className={classes.stepperContainer}>
-              <Grid item xs={12} md={6} className={classes.stepperInput}>
-                <div className={classes.stepperInputContent}>
-                  <FileUploadIcon className={classes.stepperInputIcon} />
-                  <div className={classes.stepperInputTexts}>
-                    <span className={classes.stepperInputText}>
-                      Cliquez sur le justificatif
-                    </span>
-                    <span className={classes.stepperInputText}>
-                      pour ajouter votre document
-                    </span>
-                  </div>
-                </div>
-              </Grid>
-              <Grid item xs={12} md={6} className={classes.steppers}>
-                {steps.map((item) => (
-                  <div key={item.id} className={classes.stepper}>
-                    <div className={classes.stepperRow}>
-                      <div
-                        className={classes.stepperIconWrapper}
-                        onClick={() => {
-                          document
-                            .getElementById(`fileinput${item.id}`)
-                            .click();
-                        }}
-                      >
-                        {getStep(item.id).name !== '' && (
-                          <Tick className={classes.stepperIcon} />
-                        )}
-                      </div>
-                      <input
-                        type="file"
-                        hidden
-                        id={`fileinput${item.id}`}
-                        onChange={(e) => {
-                          getStep(item.id).fn(e.target.files[0]);
-                        }}
-                      />
-                      <div
-                        className={`${classes.stepperTitle} ${
-                          getStep(item.id).name === ''
-                            ? classes.stepperTitleDone
-                            : ''
-                        }`}
-                      >
-                        {item.title}
-                      </div>
-                    </div>
-                    <div className={classes.stepperDesc}>
-                      {item.description}
-                    </div>
-                  </div>
-                ))}
-              </Grid>
-            </Grid>
+            <section id="documentUploading">
+              <DocumentUploading
+                steps={documentSteps}
+                getStep={getDocumentStep}
+              />
+            </section>
           </section>
           <div className={classes.buttonContainer}>
             <Button

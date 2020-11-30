@@ -9,9 +9,9 @@ import API from '../globals/API';
 import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
 
-import LoginBG from '../assets/images/login.png';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import LoginBG from '../assets/images/login.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,7 +84,7 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    email: 'test@company.com',
+    email: 'test@user.com',
     password: 'password12',
   });
   const [errors, setErrors] = React.useState({
