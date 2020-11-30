@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Rating from '@material-ui/lab/Rating';
+import { makeStyles } from '@material-ui/core/styles';
 
 import Card from '../../../components/Card';
+import Button from '../../../components/Button';
 import Header from '../../../components/HeaderCompany';
 import RateSlider from '../../../components/RateSlider';
 import PageHeading from '../../../components/PageHeading';
 import VolumeSlider from '../../../components/VolumeSlider';
 import DistanceSlider from '../../../components/DistanceSlider';
 import VehicleSelector from '../../../components/VehicleSelector';
-import Button from '../../../components/Button';
 
 import { ReactComponent as Calendar } from '../../../assets/images/calendar.svg';
 import { ReactComponent as SearchAvatar } from '../../../assets/images/searchavatar.svg';
@@ -75,6 +76,19 @@ const useStyles = makeStyles((theme) => ({
       color: '#000',
     },
   },
+  select: {
+    width: 281,
+    height: 37,
+    outline: 0,
+    color: '#000',
+    borderRadius: 6,
+    padding: '0 12px',
+    border: '2px solid #ccc',
+    backgroundColor: 'transparent',
+    '&::placeholder': {
+      color: '#000',
+    },
+  },
   center: {
     width: '100%',
     height: '100%',
@@ -83,6 +97,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Input = (props) => {
+  const classes = useStyles();
+  return (
+    <>
+      <p className={classes.subHeading}>{props.label}</p>
+      <input
+        type={props.type}
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        className={classes.input}
+        min={props.min}
+        max={props.max}
+      />
+    </>
+  );
+};
+const Select = (props) => {
+  const classes = useStyles();
+  return (
+    <>
+      <p className={classes.subHeading}>{props.label}</p>
+      <select
+        name={props.name}
+        value={props.value}
+        selected={props.value}
+        onChange={props.onChange}
+        className={classes.select}
+      >
+        {props.values.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+};
+
 const Search = (props) => {
   const classes = useStyles();
   const [KM, setKM] = useState(60);
@@ -90,25 +143,10 @@ const Search = (props) => {
   const [volume, setVolume] = useState(2);
   const [rating, setRating] = useState(3);
   const [vehicles, setVehicles] = useState(new Set());
-  const [day, setDay] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
+  const [from, setFrom] = useState(6);
+  const [to, setTo] = useState(8);
   const [deliveries, setDeliveries] = useState('');
-
-  const Input = (data) => {
-    return (
-      <>
-        <p className={classes.subHeading}>{data.label}</p>
-        <input
-          type={props.type}
-          name={data.name}
-          value={data.value}
-          onChange={data.onChange}
-          className={classes.input}
-        />
-      </>
-    );
-  };
 
   return (
     <div className={classes.root}>
@@ -158,39 +196,93 @@ const Search = (props) => {
                   </div>
                 </div>
                 <Input
-                  label="JOUR :"
+                  type="date"
                   name="day"
                   value={day}
-                  onChange={(e) => setDay(e.target.value)}
+                  label="JOUR :"
+                  min={moment().format('YYYY-MM-DD')}
+                  onChange={({ target: { name, value } }) => setDay(value)}
                 />
-                <Input
+                <Select
                   label="HEURE DE DEMARRAGE :"
-                  type="number"
-                  name="from"
                   value={from}
-                  onChange={(e) =>
-                    Number(e.target.value) > Number(0) &&
-                    Number(e.target.value) < Number(23) &&
-                    setFrom(e.target.value)
+                  onChange={({ target: { name, value } }) =>
+                    Number(value) >= Number(0) &&
+                    Number(value) <= Number(23) &&
+                    setFrom(value)
                   }
+                  values={[
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                  ]}
                 />
-                <Input
+                <Select
                   label="HEURE DE FIN :"
-                  type="number"
-                  name="to"
                   value={to}
-                  onChange={(e) =>
-                    Number(e.target.value) > Number(0) &&
-                    Number(e.target.value) < Number(23) &&
-                    setTo(e.target.value)
+                  onChange={({ target: { name, value } }) =>
+                    Number(value) >= Number(0) &&
+                    Number(value) <= Number(23) &&
+                    setTo(value)
                   }
+                  values={[
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6,
+                    7,
+                    8,
+                    9,
+                    10,
+                    11,
+                    12,
+                    13,
+                    14,
+                    15,
+                    16,
+                    17,
+                    18,
+                    19,
+                    20,
+                    21,
+                    22,
+                    23,
+                  ]}
                 />
                 <Input
                   label="NOMBRE DE LIVREURS SOUHAITES :"
                   type="number"
                   name="deliveries"
                   value={deliveries}
-                  onChange={(e) => setDeliveries(e.target.value)}
+                  onChange={({ target: { name, value } }) =>
+                    Number(value) >= Number(0) &&
+                    Number(value) <= 50 &&
+                    setDeliveries(value)
+                  }
                 />
               </div>
             </Grid>
@@ -217,7 +309,19 @@ const Search = (props) => {
                   text="RECHERCHER"
                   style={{ marginTop: 20 }}
                   onClick={() =>
-                    props.history.push(`${props.match.url}/result`)
+                    props.history.push(`${props.match.url}/result`, {
+                      filters: {
+                        KM,
+                        rate,
+                        volume,
+                        rating,
+                        vehicles,
+                        day,
+                        from,
+                        to,
+                        deliveries,
+                      },
+                    })
                   }
                 />
               </div>

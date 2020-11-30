@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux';
 import Rating from '@material-ui/lab/Rating';
+import { makeStyles } from '@material-ui/core/styles';
 
+import API from '../../globals/API';
+import Constants from '../../globals/Constants';
+
+import Table from '../../components/Table';
+import Loader from '../../components/Loader';
 import Header from '../../components/HeaderCompany';
-import Table2 from '../../components/Table2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#F5F7FB',
     paddingTop: 90,
     paddingLeft: 90,
     minHeight: '100vh',
+    backgroundColor: '#F5F7FB',
   },
   content: {
     padding: 30,
+    height: '100%',
     paddingBottom: 100,
   },
   itemRow: {
@@ -55,12 +61,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Profile = (props) => {
   const classes = useStyles();
+  const store = useSelector((state) => state);
 
   const [data, setData] = useState([]);
   const [value, setValue] = React.useState(2);
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    setData([
+    const rows = [
       [
         '21/02/2020',
         '12h - 16h',
@@ -148,31 +156,50 @@ const Profile = (props) => {
         'Invité, non confirmé',
         'Mission passée',
       ],
-    ]);
+    ];
+    getData();
     // eslint-disable-next-line
   }, []);
+
+  const getData = async () => {
+    try {
+      const data = await API({
+        uri: Constants.GET_OFFERS,
+        token: store.token,
+      });
+      console.log({ data });
+      // setData(offersArray);
+      // setLoading(false)
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={classes.root}>
       <Header />
       <div className={classes.content}>
-        <section id="table">
-          <div className={classes.tableHeader}>TOUTES LES MISSIONS</div>
-          <div className={classes.tableContainer}>
-            <Table2
-              headers={[
-                'DATE',
-                'HEURE',
-                'NOM DU LIVREUR',
-                'TYPE DE VEHICULE',
-                'MONTANT TOTAL',
-                'STATUS',
-                'ACTION',
-              ]}
-              values={data}
-            />
-          </div>
-        </section>
+        {loading ? (
+          <Loader.Progress />
+        ) : (
+          <section id="table">
+            <div className={classes.tableHeader}>TOUTES LES MISSIONS</div>
+            <div className={classes.tableContainer}>
+              <Table
+                headers={[
+                  'DATE',
+                  'HEURE',
+                  'NOM DU LIVREUR',
+                  'TYPE DE VEHICULE',
+                  'MONTANT TOTAL',
+                  'STATUS',
+                  'ACTION',
+                ]}
+                values={data}
+              />
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );

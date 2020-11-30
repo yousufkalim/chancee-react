@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 
+import API from '../../../globals/API';
+import Constants from '../../../globals/Constants';
+
+import Table from '../../../components/Table';
+import Loader from '../../../components/Loader';
 import Header from '../../../components/HeaderCompany';
 import PageHeading from '../../../components/PageHeading';
-import Table from '../../../components/Table2';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: 30,
+    height: '100%',
     paddingBottom: 100,
   },
   filters: {
@@ -44,14 +50,21 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   filter: {
+    maxWidth: 170,
     display: 'grid',
+    borderRadius: 6,
     minWidth: '20px',
-    overflow: 'hidden',
+    overflowX: 'auto',
+    overflowY: 'hidden',
     marginRight: '10px',
     placeItems: 'center',
-    padding: '20px 30px',
+    padding: '20px 25px',
     whiteSpace: 'nowrap',
     backgroundColor: '#fff',
+    '&::-webkit-scrollbar': {
+      width: 0,
+      height: 0,
+    },
   },
   filterButton: {
     outline: 0,
@@ -85,12 +98,14 @@ const useStyles = makeStyles((theme) => ({
 
 const Search = (props) => {
   const classes = useStyles();
+  const store = useSelector((state) => state);
 
   const [data, setData] = useState([]);
   const [filters, setFilters] = useState({});
+  const [loading, setLoading] = React.useState(true);
 
   useEffect(() => {
-    setFilters({
+    const filtersData = {
       time: '13/04/2020, 12h - 22h',
       KM: '40 km',
       weight: 'Moyenne taille',
@@ -98,8 +113,8 @@ const Search = (props) => {
       max: 'Max 18€/h',
       min: 'Min. 3/5',
       deliveries: '2 livreurs',
-    });
-    setData([
+    };
+    const rows = [
       [
         'Henry Lafford',
         'PETIT',
@@ -127,9 +142,61 @@ const Search = (props) => {
         '3.5/5',
         <button className={classes.tableButton}>INVITER</button>,
       ],
-    ]);
+    ];
+    getData();
     // eslint-disable-next-line
   }, []);
+
+  const getData = async () => {
+    try {
+      const filters = props.location.state.filters;
+      let volume =
+        filters.volume === 1
+          ? 'Small'
+          : filters.volume === 2
+          ? 'Means'
+          : 'Large';
+      let vehicles = [];
+      filters.vehicles.has(1) && vehicles.push('Bike');
+      filters.vehicles.has(2) && vehicles.push('Electric bike');
+      filters.vehicles.has(3) && vehicles.push('Scooter');
+      filters.vehicles.has(4) && vehicles.push('Car');
+      filters.vehicles.has(5) && vehicles.push('Truck');
+      filters.vehicles.has(6) && vehicles.push('Large volume permit');
+      setFilters({
+        time: `${filters.day || '--:--:----'}, ${filters.from || '00'}h - ${
+          filters.to || '00'
+        }h`,
+        KM: `${filters.KM} km`,
+        weight: `${volume} taille`,
+        vehicles:
+          vehicles.length > 0
+            ? vehicles.map((veh) => veh + ' / ')
+            : 'All vehicules',
+        max: `Max ${filters.rate}€/h`,
+        min: `Min. ${filters.rating}/5`,
+        deliveries: `${filters.deliveries || 0} livreurs`,
+      });
+      const data = await API({
+        method: 'POST',
+        uri: Constants.SEARCH,
+        body: JSON.stringify({
+          vehicleType: vehicles,
+          transportType: volume,
+          range: filters.KM,
+          perHour: filters.rate,
+          desiredPerson: filters.deliveries,
+          rating: filters.rating,
+          day: filters.day,
+          startTime: filters.from,
+          endTime: filters.to,
+        }),
+        token: store.token,
+      });
+      setData(data.users);
+      setLoading(false);
+    } catch (err) {}
+  };
 
   return (
     <div className={classes.root}>
@@ -152,18 +219,22 @@ const Search = (props) => {
           </button>
         </div>
 
-        <Table
-          headers={[
-            'LIVREUR',
-            'VOLUME',
-            'TYPE DE VEHICULE',
-            'TARIF HORAIRE',
-            'MONTANT TOTAL',
-            'NOTE MOYENNE',
-            'ACTION',
-          ]}
-          values={data}
-        />
+        {loading ? (
+          <Loader.Progress />
+        ) : (
+          <Table
+            headers={[
+              'LIVREUR',
+              'VOLUME',
+              'TYPE DE VEHICULE',
+              'TARIF HORAIRE',
+              'MONTANT TOTAL',
+              'NOTE MOYENNE',
+              'ACTION',
+            ]}
+            values={data}
+          />
+        )}
       </div>
     </div>
   );

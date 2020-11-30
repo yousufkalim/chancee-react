@@ -11,26 +11,35 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#fff',
   },
   progress: {
-    backgroundColor: '#fff',
+    height: '100%',
+    width: '100%',
+    display: 'grid',
+    placeItems: 'center',
   },
 }));
 
-const Progress = () => {
+const Progress = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.progress}>
-      <CircularProgress />
+      <CircularProgress
+        color={props.color || 'inherit'}
+        size={props.size || 25}
+      />
     </div>
   );
 };
 
-const CenterProgress = () => {
+const CenterProgress = (props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.center}>
-      <CircularProgress />
+      <CircularProgress
+        color={props.color || 'inherit'}
+        size={props.size || 40}
+      />
     </div>
   );
 };
