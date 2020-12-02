@@ -92,6 +92,7 @@ export default function Profile(props) {
     { day: 6, checked: false, slots: [] },
     { day: 7, checked: false, slots: [] },
   ]);
+  const [firstRender, setfirstRender] = useState(true);
 
   const days = [
     {
@@ -132,9 +133,15 @@ export default function Profile(props) {
   ];
 
   React.useEffect(() => {
-    props.onChange(timeslots);
+    !firstRender && props.onChange(timeslots);
     // eslint-disable-next-line
   }, [timeslots, getUpdate]);
+
+  React.useEffect(() => {
+    props.defaultValue && setTimeSlots(props.defaultValue);
+    setfirstRender(false);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <>

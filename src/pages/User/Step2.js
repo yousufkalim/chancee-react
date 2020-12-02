@@ -10,9 +10,9 @@ import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
 
-import { ReactComponent as JumboImage } from '../../assets/images/Fusee.svg';
 import { ReactComponent as Flash } from '../../assets/images/flash.svg';
 import { ReactComponent as Checked } from '../../assets/images/checked.svg';
+import { ReactComponent as JumboImage } from '../../assets/images/Fusee.svg';
 import { ReactComponent as Unchecked } from '../../assets/images/unchecked.svg';
 
 import Steps from '../../components/Steps';
@@ -132,10 +132,10 @@ export default function Profile(props) {
         setLoading(true);
         let transportType =
           Number(volume) === 1
-            ? 'Small'
+            ? 'small'
             : Number(volume) === 2
-            ? 'Means'
-            : 'Large';
+            ? 'medium'
+            : 'large';
         let vehicleType;
         if (vehicles.has(1)) {
           vehicleType = 'Bike';
@@ -160,7 +160,7 @@ export default function Profile(props) {
             vehicle: {
               vehicleType: vehicleType,
             },
-            range: String(KM),
+            range: KM,
             perHour: rate,
             transportType: transportType,
           }),

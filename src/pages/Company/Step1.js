@@ -71,14 +71,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   flagIcon: {
-    backgroundColor: 'rgba(233,239,244,1)',
-    width: '12%',
+    width: 55,
     height: '100%',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(233,239,244,1)',
   },
-  flagIconImg: {},
   input: {
     width: '100%',
     height: '100%',
@@ -213,7 +212,7 @@ export default function Profile(props) {
         formdata.append('profile', logo);
         formdata.append('SIRET', SIRET);
         formdata.append('phone', phone);
-        formdata.append('company', JSON.stringify({ openingTime: '4' }));
+        formdata.append('company', JSON.stringify({ openingTime: 4 }));
         formdata.append('timeslots', JSON.stringify(timeslots));
         formdata.append(
           'address',

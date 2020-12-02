@@ -152,10 +152,10 @@ const Search = (props) => {
       const filters = props.location.state.filters;
       let volume =
         filters.volume === 1
-          ? 'Small'
+          ? 'small'
           : filters.volume === 2
-          ? 'Means'
-          : 'Large';
+          ? 'medium'
+          : 'large';
       let vehicles = [];
       filters.vehicles.has(1) && vehicles.push('Bike');
       filters.vehicles.has(2) && vehicles.push('Electric bike');

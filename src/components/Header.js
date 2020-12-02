@@ -1,27 +1,27 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Drawer from "@material-ui/core/Drawer";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Toolbar from "@material-ui/core/Toolbar";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import Hidden from "@material-ui/core/Hidden";
-import MenuIcon from "@material-ui/icons/Menu";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import Drawer from '@material-ui/core/Drawer';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Toolbar from '@material-ui/core/Toolbar';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import Hidden from '@material-ui/core/Hidden';
+import MenuIcon from '@material-ui/icons/Menu';
 
-import * as actionTypes from "../store/actions/actionTypes";
-import ProfileImage from "../assets/images/avatar.svg";
-import Logo from "../assets/images/Logo.png";
+import * as actionTypes from '../store/actions/actionTypes';
+import ProfileImage from '../assets/images/avatar.svg';
+import Logo from '../assets/images/Logo.png';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
     minHeight: 64,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     padding: 0,
     margin: 0,
   },
@@ -29,17 +29,17 @@ const useStyles = makeStyles((theme) => ({
     height: 35,
   },
   link: {
-    color: "#000",
+    color: '#000',
     fontSize: 12,
-    fontWeight: "light",
-    margin: "0 12px",
-    textDecoration: "none",
+    fontWeight: 'light',
+    margin: '0 12px',
+    textDecoration: 'none',
   },
   profile: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    cursor: "pointer",
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    cursor: 'pointer',
   },
   profileImage: {
     width: 20,
@@ -48,25 +48,26 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 10,
   },
   profileName: {
-    color: "#000",
+    color: '#000',
     fontSize: 10,
-    fontWeight: "bold",
-    textDecoration: "none",
+    fontWeight: 'bold',
+    textDecoration: 'none',
   },
   drawer: {
     width: 250,
   },
   logoDrawerContainer: {
     height: 70,
-    width: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 }));
 
 export default function Login(props) {
   const dispatch = useDispatch();
+  const store = useSelector((state) => state);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [drawer, setDrawer] = React.useState(false);
@@ -106,8 +107,8 @@ export default function Login(props) {
           </nav>
         </Hidden>
         <Hidden mdUp>
-          <MenuIcon onClick={toggleDrawer} style={{ cursor: "pointer" }} />
-          <Drawer anchor={"left"} open={drawer} onClose={toggleDrawer}>
+          <MenuIcon onClick={toggleDrawer} style={{ cursor: 'pointer' }} />
+          <Drawer anchor={'left'} open={drawer} onClose={toggleDrawer}>
             <div
               className={classes.drawer}
               role="presentation"
@@ -120,7 +121,7 @@ export default function Login(props) {
                 </Link>
               </div>
               <List>
-                {["Product", "Pricing", "Contacts", "Team"].map((text) => (
+                {['Product', 'Pricing', 'Contacts', 'Team'].map((text) => (
                   <ListItem key={text}>
                     <Link
                       className={classes.link}
@@ -141,7 +142,9 @@ export default function Login(props) {
               alt="profileImage"
               className={classes.profileImage}
             />
-            <span className={classes.profileName}>Anne-Gabrielle</span>
+            <span className={classes.profileName}>
+              {store.user.firstName + ' ' + store.user.lastName}
+            </span>
           </div>
           <Menu
             id="simple-menu"

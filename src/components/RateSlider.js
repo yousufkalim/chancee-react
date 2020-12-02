@@ -146,7 +146,7 @@ const RateSlider = (props) => {
               : {}
           }
         >
-          {!props.search && (
+          {!props.search && !props.noCheckbox && (
             <>
               <Checkbox
                 disableRipple

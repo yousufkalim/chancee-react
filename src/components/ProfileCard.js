@@ -102,7 +102,10 @@ const Profile = (props) => {
     <div className={classes.card}>
       <div className={classes.root}>
         <div className={classes.profileEditIcon}>
-          <Pencil style={{ width: '50%', cursor: 'pointer' }} />
+          <Pencil
+            style={{ width: '50%', cursor: 'pointer' }}
+            onClick={props.onClick}
+          />
         </div>
         <div className={classes.profileCardContent}>
           <img
@@ -124,7 +127,7 @@ const Profile = (props) => {
             <br />
             {props.city}
           </div>
-          <div className={classes.profileText}>{props.coords}</div>
+          <div className={classes.profileText}>{props.phone}</div>
           {!props.isUser && (
             <div className={classes.profileEmail} style={{ marginTop: 15 }}>
               NUMERO DE SIRET

@@ -1,12 +1,22 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
+import moment from 'moment';
 
 import ProfileImage from '../../assets/images/avatar.svg';
 
+import API from '../../globals/API';
+import Constants from '../../globals/Constants';
+import * as actionTypes from '../../store/actions/actionTypes';
+
+import Input from './Input';
 import Card from '../../components/Card';
+import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import Header from '../../components/Header2';
+import Flag from '../../assets/images/flag.png';
 import RateSlider from '../../components/RateSlider';
 import ProfileCard from '../../components/ProfileCard';
 import VolumeSlider from '../../components/VolumeSlider';
@@ -36,20 +46,52 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 50,
     },
   },
+  flagIcon: {
+    width: 55,
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(233,239,244,1)',
+  },
 }));
 
 const Profile = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state);
 
   const [license, setLicense] = useState('');
   const [vehicleProof, setVehicleProof] = useState('');
   const [vehicles, setVehicles] = useState(new Set([1]));
 
+  const [address, setAddress] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
+  const [profileModal, setProfileModal] = React.useState(false);
+
+  const [lat, setLat] = useState('');
+  const [city, setCity] = useState('');
+  const [long, setLong] = useState('');
+  const [SIRET, setSIRET] = useState('');
+  const [phone, setPhone] = useState('');
+  const [postal, setPostal] = useState('');
+  const [street, setStreet] = useState('');
+  const [complement, setComplement] = useState('');
+
   const [KM, setKM] = useState(60);
   const [rate, setRate] = useState(18);
   const [volume, setVolume] = useState(2);
   const [timeslots, setTimeSlots] = useState([]);
-  const [rateCheckbox, setRateCheckbox] = useState(false);
+  const [defaultTimeslots, setDefaultTimeslots] = useState([
+    { day: 1, checked: false, slots: [] },
+    { day: 2, checked: false, slots: [] },
+    { day: 3, checked: false, slots: [] },
+    { day: 4, checked: false, slots: [] },
+    { day: 5, checked: false, slots: [] },
+    { day: 6, checked: false, slots: [] },
+    { day: 7, checked: false, slots: [] },
+  ]);
 
   const [KBIS, setKBIS] = useState('');
   const [profile, setProfile] = useState('');
@@ -57,6 +99,11 @@ const Profile = (props) => {
   const [identity, setIdentity] = useState('');
   const [training, setTraining] = useState('');
   const [insurance, setInsurance] = useState('');
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [date, setDate] = useState('');
 
   const documentSteps = [
     {
@@ -132,6 +179,137 @@ const Profile = (props) => {
         console.log('default');
     }
   };
+  const getAddress = async (event, value, reason) => {
+    setStreet(value);
+    if (value !== '') {
+      setAddressLoading(true);
+      const data = await API({
+        uri:
+          'https://api-adresse.data.gouv.fr/search/?q=' +
+          value +
+          '&type=housenumber&autocomplete=1&limit=15',
+      });
+      setAddress(
+        data.features.map((item) => {
+          return {
+            name: item.properties.label,
+            city: item.properties.city,
+            postalCode: item.properties.postcode,
+            lat: item.geometry.coordinates[1],
+            lng: item.geometry.coordinates[0],
+          };
+        }),
+      );
+      setAddressLoading(false);
+    } else {
+      setAddress([]);
+    }
+  };
+
+  useEffect(() => {
+    let timeslotsArray = defaultTimeslots;
+    store.user.timeslots.map((timeslot, index) => {
+      if (timeslot.slots.length > 0) {
+        timeslotsArray[index].slots = timeslot.slots;
+        timeslotsArray[index].checked = true;
+      }
+    });
+
+    const { user } = store;
+    let vehicleType = 1;
+    if (user.delivery.vehicle.vehicleType === 'Bike') vehicleType = 1;
+    if (user.delivery.vehicle.vehicleType === 'Electric bike') vehicleType = 2;
+    if (user.delivery.vehicle.vehicleType === 'Scooter') vehicleType = 3;
+    if (user.delivery.vehicle.vehicleType === 'Car') vehicleType = 4;
+    if (user.delivery.vehicle.vehicleType === 'Truck') vehicleType = 5;
+    if (user.delivery.vehicle.vehicleType === 'Large volume permit')
+      vehicleType = 6;
+    let volume =
+      user.delivery.transportType === 'small'
+        ? 1
+        : user.delivery.transportType === 'medium'
+        ? 2
+        : 3;
+
+    setLicense(user.delivery.vehicle.licence);
+    setVehicleProof(user.delivery.vehicle.purchaseProof);
+    setVehicles(new Set([vehicleType]));
+    setLat(user.address.location[1]);
+    setCity(user.address.city);
+    setLong(user.address.location[0]);
+    setSIRET(user.SIRET);
+    setPhone(user.phone);
+    setPostal(user.address.zip);
+    setStreet(user.address.street);
+    setComplement(user.address.complement);
+    setKM(Number(user.delivery.range));
+    setRate(user.delivery.perHour);
+    setVolume(volume);
+    setDefaultTimeslots(timeslotsArray);
+    setKBIS(user.proofs.KBIS);
+    setProfile(user.proofs.profile);
+    setDiploma(user.proofs.diploma);
+    setIdentity(user.proofs.identity);
+    setTraining(user.proofs.training);
+    setInsurance(user.proofs.insurance);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.email);
+    setDate(moment(user.dob).format('YYYY-MM-DD'));
+    // eslint-disable-next-line
+  }, [store]);
+
+  const onSubmit = async () => {
+    try {
+      setLoading(true);
+
+      var formdata = new FormData();
+      formdata.append('phone', phone);
+      formdata.append('SIRET', SIRET);
+      KBIS !== '' && formdata.append('KBIS', KBIS);
+      profile !== '' && formdata.append('profile', profile);
+      diploma !== '' && formdata.append('diploma', diploma);
+      identity !== '' && formdata.append('identity', identity);
+      training !== '' && formdata.append('training', training);
+      insurance !== '' && formdata.append('insurance', insurance);
+      formdata.append(
+        'address',
+        JSON.stringify({
+          street: street,
+          location: [lat, long],
+          zipcode: postal,
+          complement: complement,
+          city: city,
+        }),
+      );
+      formdata.append(
+        'profile',
+        JSON.stringify({
+          firstName: firstName,
+          lastName: lastName,
+          email: email,
+          dob: date,
+        }),
+      );
+
+      // const data = await API({
+      //   method: 'POST',
+      //   uri: Constants.REGISTER_USER,
+      // headers: {
+      //   Authorization: `Bearer ${store.token}`,
+      // },
+      //   body: formdata,
+      // });
+      // alert('Registration was successfull!');
+      // dispatch({
+      //   type: actionTypes.LOGIN,
+      //   user: data.user,
+      //   token: data.token,
+      // });
+    } catch (err) {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className={classes.root}>
@@ -142,16 +320,17 @@ const Profile = (props) => {
             <ProfileCard
               isUser={true}
               image={ProfileImage}
-              name="Anne-Gabrielle Lavigne"
-              email="Anne-gabrelle@gmail.com"
+              name={store.user.firstName + ' ' + store.user.lastName}
+              email={store.user.email}
               courses="485"
-              street="28, rue Jean Jaures"
-              postal=" 5ème étage"
-              city="Paris, 75012"
-              coords="06.31.31.42.53"
+              street={store.user.address.street}
+              postal={store.user.address.complement}
+              city={store.user.address.city + ',' + store.user.address.zip}
+              phone={store.user.phone}
               rocket="32"
               rating="32"
               notes="32"
+              onClick={() => setProfileModal(true)}
             />
           </Grid>
           <Grid item xs={12} xl={8}>
@@ -192,9 +371,8 @@ const Profile = (props) => {
                   average="10"
                   maximum="10"
                   value={rate}
-                  rateCheckbox={rateCheckbox}
+                  noCheckbox={true}
                   onChange={(e, value) => setRate(value)}
-                  setRateCheckbox={(event) => setRateCheckbox((st) => !st)}
                 />
               </Card>
             </section>
@@ -234,6 +412,7 @@ const Profile = (props) => {
             <section id="availability">
               <Card>
                 <AvailabilitySelector
+                  defaultValue={defaultTimeslots}
                   value={timeslots}
                   onChange={(value) => {
                     setTimeSlots(value);
@@ -255,6 +434,105 @@ const Profile = (props) => {
           />
         </div>
       </div>
+      <Modal
+        open={profileModal}
+        onClose={() => setProfileModal((st) => !st)}
+        title="Edit Profile"
+        body={
+          <Grid container>
+            <Grid item xs={12} md={6}>
+              <Autocomplete
+                options={address}
+                defaultValue={{
+                  name: store.user.address.street,
+                  city: store.user.address.city,
+                  postalCode: store.user.address.zip,
+                  lat: store.user.address.location[1],
+                  lng: store.user.address.location[0],
+                }}
+                inputValue={street}
+                loading={addressLoading}
+                onInputChange={getAddress}
+                noOptionsText="Input your address!"
+                onChange={(event, value) => {
+                  setLat(value.lat);
+                  setLong(value.lng);
+                  setCity(value.city);
+                  setStreet(value.name);
+                  setPostal(value.postalCode);
+                }}
+                getOptionSelected={(option, value) => {
+                  return option.name === value.name;
+                }}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                renderInput={(params) => (
+                  <Input
+                    valid={postal !== ''}
+                    label="N° DE RUE ET RUE *"
+                    ref={params.InputProps.ref}
+                    spreadProps={params.inputProps}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                disabled
+                value={postal}
+                label="CODE POSTAL *"
+                valid={postal !== ''}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                value={complement}
+                valid={complement !== ''}
+                label="COMPLÉMENT D’ADRESSE"
+                onChange={({ target: { name, value } }) => setComplement(value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                disabled
+                value={city}
+                label="VILLE *"
+                valid={city !== ''}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                type="number"
+                value={phone}
+                valid={phone.length === 10}
+                label="NUMÉRO DE TÉLÉPHONE *"
+                onChange={(e) => {
+                  e.target.value.length <= 10 && setPhone(e.target.value);
+                }}
+                left={
+                  <div className={classes.flagIcon}>
+                    <img src={Flag} alt="flag" />
+                  </div>
+                }
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                type="number"
+                value={SIRET}
+                valid={SIRET.length === 14}
+                label="SIRET *"
+                onChange={(e) => {
+                  e.target.value.length <= 14 && setSIRET(e.target.value);
+                }}
+              />
+            </Grid>
+          </Grid>
+        }
+        actions={<Button text="Done" />}
+      />
+      {console.log({ street })}
     </div>
   );
 };

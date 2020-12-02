@@ -14,17 +14,16 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 5,
   },
   inputContainer: {
-    maxHeight: 52,
-    backgroundColor: '#fff',
+    height: 44,
+    borderWidth: 1,
     borderRadius: 4,
     display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     overflow: 'hidden',
-    color: 'rgba(233,239,244,1)',
-    borderWidth: 1,
+    flexDirection: 'row',
     borderStyle: 'solid',
+    backgroundColor: '#fff',
+    color: 'rgba(233,239,244,1)',
+    justifyContent: 'space-between',
     borderColor: 'rgba(233,239,244,1)',
     [theme.breakpoints.up('md')]: {
       width: '80%',
@@ -43,25 +42,29 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   inputIcon: {
-    marginRight: 20,
+    width: 40,
+    height: '100%',
+    display: 'grid',
+    placeItems: 'center',
   },
 }));
 
-export default function Input(props) {
+const Input = React.forwardRef((props, ref) => {
   const classes = useStyles();
 
   return (
     <>
-      <div className={classes.inputLabel}>{props.label}</div>
-      <div className={classes.inputContainer}>
+      {props.label && <div className={classes.inputLabel}>{props.label}</div>}
+      <div className={classes.inputContainer} ref={ref}>
         {props.left}
         <input
+          type={props.type ? props.type : 'text'}
           value={props.value}
           onChange={props.onChange}
           disabled={props.disabled}
-          className={classes.input}
           placeholder={props.placeholder}
-          type={props.type ? props.type : 'text'}
+          {...props.spreadProps}
+          className={classes.input}
         />
         {props.valid && (
           <div className={classes.inputIcon}>
@@ -72,4 +75,6 @@ export default function Input(props) {
       </div>
     </>
   );
-}
+});
+
+export default Input;
