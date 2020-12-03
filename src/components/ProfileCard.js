@@ -128,14 +128,10 @@ const Profile = (props) => {
             {props.city}
           </div>
           <div className={classes.profileText}>{props.phone}</div>
-          {!props.isUser && (
-            <div className={classes.profileEmail} style={{ marginTop: 15 }}>
-              NUMERO DE SIRET
-            </div>
-          )}
-          {!props.isUser && (
-            <div className={classes.profileText}>{props.siret}</div>
-          )}
+          <div className={classes.profileEmail} style={{ marginTop: 15 }}>
+            NUMERO DE SIRET
+          </div>
+          <div className={classes.profileText}>{props.siret}</div>
         </div>
         <div className={classes.profileRatingArea}>
           <div className={classes.profileRating}>

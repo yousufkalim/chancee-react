@@ -130,7 +130,7 @@ export default function DocumentUploading(props) {
                 <div
                   className={classes.stepperIconWrapper}
                   onClick={() => {
-                    document.getElementById(`fileinput${item.id}`).click();
+                    document.getElementById(`fileinput${item.title}`).click();
                   }}
                 >
                   {props.getStep(item.id).name !== '' && (
@@ -140,8 +140,9 @@ export default function DocumentUploading(props) {
                 <input
                   type="file"
                   hidden
-                  id={`fileinput${item.id}`}
+                  id={`fileinput${item.title}`}
                   onChange={(e) => {
+                    console.log(item.id, e.target.files[0]);
                     props.getStep(item.id).fn(e.target.files[0]);
                   }}
                 />

@@ -105,6 +105,7 @@ const Profile = (props) => {
   const [email, setEmail] = useState('');
   const [date, setDate] = useState('');
 
+  // can add a name field also to differentiate
   const documentSteps = [
     {
       id: 1,
@@ -138,6 +139,18 @@ const Profile = (props) => {
       description: 'Facultatif',
     },
   ];
+  const documentSteps2 = [
+    {
+      id: 1,
+      title: 'Permis de conduire *',
+      description: 'Obligatoire si sélection d’un véhicule motorisé.',
+    },
+    {
+      id: 2,
+      title: 'Preuve d’achat du véhicule *',
+      description: 'Obligatoire si sélection d’un véhicule motorisé.',
+    },
+  ];
   const getDocumentStep = (itemId) => {
     switch (itemId) {
       case 1:
@@ -156,18 +169,6 @@ const Profile = (props) => {
         console.log('default');
     }
   };
-  const documentSteps2 = [
-    {
-      id: 1,
-      title: 'Permis de conduire *',
-      description: 'Obligatoire si sélection d’un véhicule motorisé.',
-    },
-    {
-      id: 2,
-      title: 'Preuve d’achat du véhicule *',
-      description: 'Obligatoire si sélection d’un véhicule motorisé.',
-    },
-  ];
   const getDocumentStep2 = (itemId) => {
     switch (itemId) {
       case 1:
@@ -261,51 +262,95 @@ const Profile = (props) => {
 
   const onSubmit = async () => {
     try {
-      setLoading(true);
+      if (
+        (!vehicles.has(1) &&
+          !vehicles.has(3) &&
+          (license === '' || vehicleProof === '')) ||
+        !timeslots.some((item) => item.checked)
+      ) {
+        alert('Fields are required!');
+      } else {
+        setLoading(true);
+        let transportType =
+          Number(volume) === 1
+            ? 'small'
+            : Number(volume) === 2
+            ? 'medium'
+            : 'large';
+        let vehicleType;
+        if (vehicles.has(1)) {
+          vehicleType = 'Bike';
+        } else if (vehicles.has(2)) {
+          vehicleType = 'Electric bike';
+        } else if (vehicles.has(3)) {
+          vehicleType = 'Scooter';
+        } else if (vehicles.has(4)) {
+          vehicleType = 'Car';
+        } else if (vehicles.has(5)) {
+          vehicleType = 'Truck';
+        } else {
+          vehicleType = 'Large volume permit';
+        }
 
-      var formdata = new FormData();
-      formdata.append('phone', phone);
-      formdata.append('SIRET', SIRET);
-      KBIS !== '' && formdata.append('KBIS', KBIS);
-      profile !== '' && formdata.append('profile', profile);
-      diploma !== '' && formdata.append('diploma', diploma);
-      identity !== '' && formdata.append('identity', identity);
-      training !== '' && formdata.append('training', training);
-      insurance !== '' && formdata.append('insurance', insurance);
-      formdata.append(
-        'address',
-        JSON.stringify({
-          street: street,
-          location: [lat, long],
-          zipcode: postal,
-          complement: complement,
-          city: city,
-        }),
-      );
-      formdata.append(
-        'profile',
-        JSON.stringify({
-          firstName: firstName,
-          lastName: lastName,
-          email: email,
-          dob: date,
-        }),
-      );
+        const timeslotsArray = timeslots.map((item) => {
+          console.log(item);
+          if (item._id) delete item._id;
+          return item;
+        });
 
-      // const data = await API({
-      //   method: 'POST',
-      //   uri: Constants.REGISTER_USER,
-      // headers: {
-      //   Authorization: `Bearer ${store.token}`,
-      // },
-      //   body: formdata,
-      // });
-      // alert('Registration was successfull!');
-      // dispatch({
-      //   type: actionTypes.LOGIN,
-      //   user: data.user,
-      //   token: data.token,
-      // });
+        console.log({ timeslotsArray });
+
+        // var formdata = new FormData();
+        // typeof identity === 'object' && formdata.append('identity', identity);
+        // typeof KBIS === 'object' && formdata.append('KBIS', KBIS);
+        // typeof profile === 'object' && formdata.append('profile', profile);
+        // typeof diploma === 'object' && formdata.append('diploma', diploma);
+        // typeof training === 'object' && formdata.append('training', training);
+        // typeof insurance === 'object' &&
+        //   formdata.append('insurance', insurance);
+        // typeof license === 'object' && formdata.append('licence', license);
+        // typeof vehicleProof === 'object' &&
+        //   formdata.append('purchaseProof', vehicleProof);
+
+        // formdata.append(
+        //   'address',
+        //   JSON.stringify({
+        //     street: street,
+        //     location: [lat, long],
+        //     zipcode: postal,
+        //     complement: complement,
+        //     city: city,
+        //   }),
+        // );
+        // formdata.append('phone', phone);
+        // formdata.append('SIRET', SIRET);
+        // formdata.append('perHour', rate);
+        // formdata.append('vehicleType', vehicleType);
+        // formdata.append('range', KM);
+        // formdata.append('transportType', transportType);
+        // formdata.append('timeslots', JSON.stringify(timeslots));
+
+        // for (let value of formdata.entries()) {
+        //   console.log(value[0], value[1]);
+        // }
+
+        setLoading(false);
+
+        // const data = await API({
+        //   method: 'POST',
+        //   uri: Constants.REGISTER_USER,
+        // headers: {
+        //   Authorization: `Bearer ${store.token}`,
+        // },
+        //   body: formdata,
+        // });
+        // alert('Registration was successfull!');
+        // dispatch({
+        //   type: actionTypes.LOGIN,
+        //   user: data.user,
+        //   token: data.token,
+        // });
+      }
     } catch (err) {
       setLoading(false);
     }
@@ -320,13 +365,14 @@ const Profile = (props) => {
             <ProfileCard
               isUser={true}
               image={ProfileImage}
-              name={store.user.firstName + ' ' + store.user.lastName}
-              email={store.user.email}
+              name={firstName + ' ' + lastName}
+              email={email}
               courses="485"
-              street={store.user.address.street}
-              postal={store.user.address.complement}
-              city={store.user.address.city + ',' + store.user.address.zip}
-              phone={store.user.phone}
+              street={street}
+              postal={complement}
+              city={city + ',' + postal}
+              phone={phone}
+              siret={SIRET}
               rocket="32"
               rating="32"
               notes="32"
@@ -429,7 +475,9 @@ const Profile = (props) => {
           <Button
             color="#000"
             type="button"
-            text="UPDATE"
+            text={loading ? 'Loading...' : 'UPDATE'}
+            disabled={loading}
+            onClick={onSubmit}
             style={{ width: 150, fontSize: 18 }}
           />
         </div>
@@ -444,31 +492,31 @@ const Profile = (props) => {
               <Autocomplete
                 options={address}
                 defaultValue={{
-                  name: store.user.address.street,
-                  city: store.user.address.city,
-                  postalCode: store.user.address.zip,
-                  lat: store.user.address.location[1],
-                  lng: store.user.address.location[0],
+                  name: street,
+                  city: city,
+                  postalCode: postal,
+                  lat: lat,
+                  lng: long,
                 }}
                 inputValue={street}
                 loading={addressLoading}
                 onInputChange={getAddress}
                 noOptionsText="Input your address!"
                 onChange={(event, value) => {
-                  setLat(value.lat);
-                  setLong(value.lng);
-                  setCity(value.city);
-                  setStreet(value.name);
-                  setPostal(value.postalCode);
-                }}
-                getOptionSelected={(option, value) => {
-                  return option.name === value.name;
+                  if (value) {
+                    setLat(value.lat);
+                    setLong(value.lng);
+                    setCity(value.city);
+                    setStreet(value.name);
+                    setPostal(value.postalCode);
+                  }
                 }}
                 getOptionLabel={(option) => {
                   return option.name;
                 }}
                 renderInput={(params) => (
                   <Input
+                    inputValue={street}
                     valid={postal !== ''}
                     label="N° DE RUE ET RUE *"
                     ref={params.InputProps.ref}
@@ -530,9 +578,25 @@ const Profile = (props) => {
             </Grid>
           </Grid>
         }
-        actions={<Button text="Done" />}
+        actions={
+          <Button
+            text="Done"
+            onClick={() => {
+              if (
+                street === '' ||
+                postal === '' ||
+                phone.length !== 10 ||
+                SIRET.length !== 14 ||
+                city === ''
+              ) {
+                alert('Fields are required!');
+              } else {
+                setProfileModal((st) => !st);
+              }
+            }}
+          />
+        }
       />
-      {console.log({ street })}
     </div>
   );
 };

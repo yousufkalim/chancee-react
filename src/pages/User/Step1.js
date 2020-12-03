@@ -200,7 +200,7 @@ export default function Profile(props) {
           'address',
           JSON.stringify({
             street: street,
-            location: [lat, long],
+            location: [long, lat],
             zipcode: postal,
             complement: complement,
             city: city,

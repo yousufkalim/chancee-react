@@ -220,7 +220,7 @@ export default function Profile(props) {
             city: city,
             street: street,
             zipcode: postal,
-            location: [lat, long],
+            location: [long, lat],
             complement: complement,
           }),
         );
@@ -348,7 +348,7 @@ export default function Profile(props) {
                 <Input
                   type="number"
                   value={phone}
-                  valid={phone !== ''}
+                  valid={phone.length === 10}
                   label="NUMÉRO DE TÉLÉPHONE *"
                   onChange={(e) => {
                     e.target.value.length <= 10 && setPhone(e.target.value);
@@ -368,7 +368,7 @@ export default function Profile(props) {
                 <Input
                   type="number"
                   value={SIRET}
-                  valid={SIRET !== ''}
+                  valid={SIRET.length === 14}
                   label="NUMERO DE SIRET *"
                   onChange={(e) => {
                     e.target.value.length <= 14 && setSIRET(e.target.value);
