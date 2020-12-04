@@ -167,9 +167,8 @@ const Profile = (props) => {
         uri: Constants.GET_OFFERS,
         token: store.token,
       });
-      console.log({ data });
-      // setData(offersArray);
-      // setLoading(false)
+      setData(data.offers);
+      setLoading(false);
     } catch (err) {
       setLoading(false);
     }

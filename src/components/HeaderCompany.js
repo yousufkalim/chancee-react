@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -105,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = (props) => {
   const dispatch = useDispatch();
   const classes = useStyles();
+  const store = useSelector((state) => state);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {
@@ -126,7 +127,7 @@ const Header = (props) => {
             <span className={classes.profileName}>
               Hello,{' '}
               <NavLink to="/" className={classes.link}>
-                Anne-Gabrielle
+                {store.user.firstName + ' ' + store.user.lastName}
               </NavLink>
             </span>
             <img
@@ -148,9 +149,6 @@ const Header = (props) => {
               >
                 <MenuItem component={NavLink} to="/profile">
                   Profile
-                </MenuItem>
-                <MenuItem component={NavLink} to="/account">
-                  My account
                 </MenuItem>
                 <MenuItem
                   onClick={() => dispatch({ type: actionTypes.LOGOUT })}

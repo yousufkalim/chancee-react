@@ -22,13 +22,14 @@ const useStyles = makeStyles((theme) => ({
   },
   profileEditIcon: {
     width: 30,
+    right: 20,
     height: 30,
-    borderRadius: 30,
-    border: '1px solid #ccc',
     display: 'grid',
+    borderRadius: 30,
+    cursor: 'pointer',
     placeItems: 'center',
     position: 'absolute',
-    right: 20,
+    border: '1px solid #ccc',
   },
   profileCardContent: {
     display: 'flex',
@@ -93,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
   profileRatingIcon: {
     width: 15,
   },
+  smallText: {
+    margin: '5px 0',
+  },
 }));
 
 const Profile = (props) => {
@@ -101,11 +105,8 @@ const Profile = (props) => {
   return (
     <div className={classes.card}>
       <div className={classes.root}>
-        <div className={classes.profileEditIcon}>
-          <Pencil
-            style={{ width: '50%', cursor: 'pointer' }}
-            onClick={props.onClick}
-          />
+        <div className={classes.profileEditIcon} onClick={props.onClick}>
+          <Pencil style={{ width: '50%' }} />
         </div>
         <div className={classes.profileCardContent}>
           <img
@@ -121,11 +122,11 @@ const Profile = (props) => {
             </div>
           )}
           <div className={classes.profileText}>
-            {props.street}
-            <br />
-            {props.postal}
-            <br />
-            {props.city}
+            <div className={classes.smallText}>{props.street}</div>
+            <div className={classes.smallText}>{props.complement}</div>
+            <div className={classes.smallText}>
+              {props.city}, {props.postal}
+            </div>
           </div>
           <div className={classes.profileText}>{props.phone}</div>
           <div className={classes.profileEmail} style={{ marginTop: 15 }}>

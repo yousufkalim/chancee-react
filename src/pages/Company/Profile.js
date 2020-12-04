@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
+import { makeStyles } from '@material-ui/core/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import Flag from '../../assets/images/flag.png';
 import ProfileImage from '../../assets/images/avatar.svg';
 
+import API from '../../globals/API';
+import Constants from '../../globals/Constants';
+import * as actionTypes from '../../store/actions/actionTypes';
+
 import Card from '../../components/Card';
+import Modal from '../../components/Modal';
 import Button from '../../components/Button';
+import Input from '../../components/ProfileInput';
 import Header from '../../components/HeaderCompany';
 import ProfileCard from '../../components/ProfileCard';
 import DocumentUploading from '../../components/DocumentUploading';
@@ -13,14 +23,14 @@ import AvailabilitySelector from '../../components/AvailabilitySelector';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#F5F7FB',
     paddingTop: 90,
     paddingLeft: 90,
     minHeight: '100vh',
+    backgroundColor: '#F5F7FB',
   },
   content: {
     padding: 30,
-    paddingBottom: 20,
+    paddingBottom: 100,
   },
   buttonContainer: {
     paddingTop: 20,
@@ -33,15 +43,54 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: 50,
     },
   },
+  flagIcon: {
+    width: 55,
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(233,239,244,1)',
+  },
 }));
 
 const Profile = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state);
+
+  const [address, setAddress] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [profileModal, setProfileModal] = useState(false);
+  const [addressLoading, setAddressLoading] = useState(false);
+
+  const [lat, setLat] = useState('');
+  const [city, setCity] = useState('');
+  const [long, setLong] = useState('');
+  const [SIRET, setSIRET] = useState('');
+  const [phone, setPhone] = useState('');
+  const [postal, setPostal] = useState('');
+  const [street, setStreet] = useState('');
+  const [complement, setComplement] = useState('');
+
+  const [timeslots, setTimeSlots] = useState([]);
+  const [defaultTimeslots, setDefaultTimeslots] = useState([
+    { day: 1, checked: false, slots: [] },
+    { day: 2, checked: false, slots: [] },
+    { day: 3, checked: false, slots: [] },
+    { day: 4, checked: false, slots: [] },
+    { day: 5, checked: false, slots: [] },
+    { day: 6, checked: false, slots: [] },
+    { day: 7, checked: false, slots: [] },
+  ]);
 
   const [KBIS, setKBIS] = useState('');
   const [logo, setLogo] = useState('');
   const [identity, setIdentity] = useState('');
-  const [timeslots, setTimeSlots] = useState([]);
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [date, setDate] = useState('');
 
   const documentSteps = [
     {
@@ -75,6 +124,123 @@ const Profile = (props) => {
     }
   };
 
+  const getAddress = async (event, value, reason) => {
+    setStreet(value);
+    if (value !== '') {
+      setAddressLoading(true);
+      const data = await API({
+        uri:
+          'https://api-adresse.data.gouv.fr/search/?q=' +
+          value +
+          '&type=housenumber&autocomplete=1&limit=15',
+      });
+      setAddress(
+        data.features.map((item) => {
+          return {
+            name: item.properties.label,
+            city: item.properties.city,
+            postalCode: item.properties.postcode,
+            lat: item.geometry.coordinates[1],
+            lng: item.geometry.coordinates[0],
+          };
+        }),
+      );
+      setAddressLoading(false);
+    } else {
+      setAddress([]);
+    }
+  };
+
+  useEffect(() => {
+    let timeslotsArray = defaultTimeslots;
+    store.user.timeslots.map((timeslot, index) => {
+      if (timeslot.slots.length > 0) {
+        timeslotsArray[index].slots = timeslot.slots;
+        timeslotsArray[index].checked = true;
+      }
+    });
+    const { user } = store;
+    setLat(user.address.location[1]);
+    setCity(user.address.city);
+    setLong(user.address.location[0]);
+    setSIRET(user.SIRET);
+    setPhone(user.phone);
+    setPostal(user.address.zip);
+    setStreet(user.address.street);
+    setComplement(user.address.complement);
+    setDefaultTimeslots(timeslotsArray);
+    setKBIS(user.proofs.KBIS);
+    setLogo(user.proofs.profile);
+    setIdentity(user.proofs.identity);
+    setFirstName(user.firstName);
+    setLastName(user.lastName);
+    setEmail(user.email);
+    setDate(moment(user.dob).format('YYYY-MM-DD'));
+    // eslint-disable-next-line
+  }, [store]);
+
+  const onSubmit = async () => {
+    try {
+      if (!timeslots.some((item) => item.checked)) {
+        alert('Fields are required!');
+      } else {
+        setLoading(true);
+
+        const timeslotsArray = timeslots.map((item) => {
+          item.slots.map((slot) => {
+            if (slot._id) {
+              delete slot._id;
+            }
+            return slot;
+          });
+          return item;
+        });
+
+        var formdata = new FormData();
+        typeof identity === 'object' && formdata.append('identity', identity);
+        typeof KBIS === 'object' && formdata.append('KBIS', KBIS);
+        typeof logo === 'object' && formdata.append('profile', logo);
+        formdata.append(
+          'address',
+          JSON.stringify({
+            street: street,
+            location: [lat, long],
+            zipcode: postal,
+            complement: complement,
+            city: city,
+          }),
+        );
+
+        formdata.append('phone', phone);
+        formdata.append('SIRET', SIRET);
+        formdata.append('timeslots', JSON.stringify(timeslotsArray));
+
+        for (let value of formdata.entries()) {
+          console.log(value[0], value[1]);
+        }
+
+        setLoading(false);
+
+        // const data = await API({
+        //   method: 'POST',
+        //   uri: Constants.REGISTER_USER,
+        // headers: {
+        //   Authorization: `Bearer ${store.token}`,
+        // },
+        //   body: formdata,
+        // });
+        // alert('Registration was successfull!');
+        // dispatch({
+        //   type: actionTypes.LOGIN,
+        //   user: data.user,
+        //   token: data.token,
+        // });
+      }
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className={classes.root}>
       <Header />
@@ -83,22 +249,25 @@ const Profile = (props) => {
           <Grid item xs={12} xl={4}>
             <ProfileCard
               image={ProfileImage}
-              name="Anne-Gabrielle Lavigne"
-              email="Anne-gabrelle@gmail.com"
-              street="28, rue Jean Jaures"
-              postal=" 5ème étage"
-              city="Paris, 75012"
-              coords="06.31.31.42.53"
-              siret="313 313 334 19076"
+              name={firstName + ' ' + lastName}
+              email={email}
+              street={street}
+              complement={complement}
+              city={city}
+              postal={postal}
+              phone={phone}
+              siret={SIRET}
               rocket="32"
               rating="32"
               notes="32"
+              onClick={() => setProfileModal(true)}
             />
           </Grid>
           <Grid item xs={12} xl={8}>
             <section id="documentUploading">
               <Card>
                 <AvailabilitySelector
+                  defaultValue={defaultTimeslots}
                   value={timeslots}
                   onChange={(value) => {
                     setTimeSlots(value);
@@ -117,13 +286,148 @@ const Profile = (props) => {
           style={{ justifyContent: 'flex-end' }}
         >
           <Button
-            type="button"
-            text={'UPDATE'}
             color="#000"
+            type="button"
+            disabled={loading}
+            onClick={onSubmit}
             style={{ width: 150, fontSize: 18 }}
+            text={loading ? 'Loading...' : 'UPDATE'}
           />
         </div>
       </div>
+      <Modal
+        open={profileModal}
+        onClose={() => setProfileModal((st) => !st)}
+        title="Edit Profile"
+        body={
+          <Grid container>
+            <Grid item xs={12} md={6}>
+              <Input
+                label="Prenom *"
+                value={firstName}
+                valid={firstName !== ''}
+                onChange={({ target: { name, value } }) => setFirstName(value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                label="Nom *"
+                value={lastName}
+                valid={lastName !== ''}
+                onChange={({ target: { name, value } }) => setLastName(value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Autocomplete
+                options={address}
+                defaultValue={{
+                  lat: lat,
+                  lng: long,
+                  city: city,
+                  name: street,
+                  postalCode: postal,
+                }}
+                inputValue={street}
+                loading={addressLoading}
+                onInputChange={getAddress}
+                noOptionsText="Input your address!"
+                onChange={(event, value) => {
+                  if (value) {
+                    setLat(value.lat);
+                    setLong(value.lng);
+                    setCity(value.city);
+                    setStreet(value.name);
+                    setPostal(value.postalCode);
+                  }
+                }}
+                getOptionLabel={(option) => {
+                  return option.name;
+                }}
+                renderInput={(params) => (
+                  <Input
+                    inputValue={street}
+                    valid={street !== ''}
+                    label="N° DE RUE ET RUE *"
+                    ref={params.InputProps.ref}
+                    spreadProps={params.inputProps}
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                disabled
+                value={postal}
+                label="CODE POSTAL *"
+                valid={postal !== ''}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                value={complement}
+                valid={complement !== ''}
+                label="COMPLÉMENT D’ADRESSE"
+                onChange={({ target: { name, value } }) => setComplement(value)}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                disabled
+                value={city}
+                label="VILLE *"
+                valid={city !== ''}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                type="number"
+                value={phone}
+                valid={phone.length === 10}
+                label="NUMÉRO DE TÉLÉPHONE *"
+                onChange={(e) => {
+                  e.target.value.length <= 10 && setPhone(e.target.value);
+                }}
+                left={
+                  <div className={classes.flagIcon}>
+                    <img src={Flag} alt="flag" />
+                  </div>
+                }
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Input
+                type="number"
+                value={SIRET}
+                valid={SIRET.length === 14}
+                label="SIRET *"
+                onChange={(e) => {
+                  e.target.value.length <= 14 && setSIRET(e.target.value);
+                }}
+              />
+            </Grid>
+          </Grid>
+        }
+        actions={
+          <Button
+            text="Done"
+            onClick={() => {
+              if (
+                firstName === '' ||
+                lastName === '' ||
+                street === '' ||
+                postal === '' ||
+                phone.length !== 10 ||
+                SIRET.length !== 14 ||
+                city === ''
+              ) {
+                alert('Fields are required!');
+              } else {
+                setProfileModal((st) => !st);
+              }
+            }}
+          />
+        }
+      />
     </div>
   );
 };

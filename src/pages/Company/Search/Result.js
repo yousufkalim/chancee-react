@@ -158,8 +158,8 @@ const Search = (props) => {
           : 'large';
       let vehicles = [];
       filters.vehicles.has(1) && vehicles.push('Bike');
-      filters.vehicles.has(2) && vehicles.push('Electric bike');
-      filters.vehicles.has(3) && vehicles.push('Scooter');
+      filters.vehicles.has(2) && vehicles.push('Scooter');
+      filters.vehicles.has(3) && vehicles.push('Electric bike');
       filters.vehicles.has(4) && vehicles.push('Car');
       filters.vehicles.has(5) && vehicles.push('Truck');
       filters.vehicles.has(6) && vehicles.push('Large volume permit');

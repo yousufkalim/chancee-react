@@ -156,9 +156,6 @@ export default function Login(props) {
             <MenuItem component={Link} to="/profile">
               Profile
             </MenuItem>
-            <MenuItem component={Link} to="/account">
-              My account
-            </MenuItem>
             <MenuItem onClick={() => dispatch({ type: actionTypes.LOGOUT })}>
               Logout
             </MenuItem>

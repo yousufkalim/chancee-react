@@ -9,7 +9,6 @@ import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
 
-import { ReactComponent as Tick } from '../../assets/images/tick.svg';
 import { ReactComponent as Point } from '../../assets/images/Point.svg';
 import { ReactComponent as Flash } from '../../assets/images/flash.svg';
 import { ReactComponent as Chat } from '../../assets/images/chatIcon.svg';
@@ -20,12 +19,11 @@ import Steps from '../../components/Steps';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
+import Input from '../../components/ProfileInput';
 import Jumbotron from '../../components/Jumbotron';
 import Heading from '../../components/FormStepHeader';
 import DocumentUploading from '../../components/DocumentUploading';
 import AvailabilitySelector from '../../components/AvailabilitySelector';
-
-import Input from './Input';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,33 +41,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
   },
-  // form Input
-  inputLabel: {
-    fontFamily: 'Roboto',
-    fontWeight: 'bold',
-    fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
-    letterSpacing: 0.4,
-    marginTop: 15,
-    marginBottom: 5,
-  },
-  inputContainer: {
-    maxHeight: 52,
-    backgroundColor: '#fff',
-    borderRadius: 4,
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-    color: 'rgba(233,239,244,1)',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    borderColor: 'rgba(233,239,244,1)',
-    [theme.breakpoints.up('md')]: {
-      width: '80%',
-    },
-  },
   flagIcon: {
     width: 55,
     height: '100%',
@@ -77,18 +48,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(233,239,244,1)',
-  },
-  input: {
-    width: '100%',
-    height: '100%',
-    padding: '14px 12px',
-    color: 'rgba(50,60,71,1)',
-    backgroundColor: 'transparent',
-    border: 0,
-    outline: 0,
-    '&::placeholder': {
-      color: 'rgba(50,60,71,1)',
-    },
   },
   buttonContainer: {
     paddingTop: 20,
@@ -199,7 +158,7 @@ export default function Profile(props) {
         street === '' ||
         postal === '' ||
         identity === '' ||
-        phone.length < 10 ||
+        phone.length !== 10 ||
         SIRET.length !== 14 ||
         !timeslots.some((item) => item.checked)
       ) {
@@ -233,6 +192,7 @@ export default function Profile(props) {
           },
           body: formdata,
         });
+        alert('Profile was completed successfully!');
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,
@@ -275,7 +235,6 @@ export default function Profile(props) {
             <Heading icon={Point} heading="ADRESSE POSTALE" />
             <Grid container className={classes.form}>
               <Grid item xs={12} md={6} className={classes.formItem}>
-                <div className={classes.inputLabel}>N° DE RUE ET RUE *</div>
                 <Autocomplete
                   options={address}
                   inputValue={street}
@@ -296,25 +255,12 @@ export default function Profile(props) {
                     return option.name;
                   }}
                   renderInput={(params) => (
-                    <div
+                    <Input
+                      valid={postal !== ''}
+                      label="N° DE RUE ET RUE *"
                       ref={params.InputProps.ref}
-                      className={classes.inputContainer}
-                    >
-                      <input
-                        type="text"
-                        {...params.inputProps}
-                        className={classes.input}
-                      />
-                      {postal !== '' && (
-                        <div
-                          style={{
-                            marginRight: 20,
-                          }}
-                        >
-                          <Tick />
-                        </div>
-                      )}
-                    </div>
+                      spreadProps={params.inputProps}
+                    />
                   )}
                 />
               </Grid>

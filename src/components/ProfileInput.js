@@ -1,14 +1,14 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { ReactComponent as Tick } from '../../assets/images/tick.svg';
+import { ReactComponent as Tick } from '../assets/images/tick.svg';
 
 const useStyles = makeStyles((theme) => ({
   inputLabel: {
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     fontSize: '12px',
-    color: 'rgba(186,197,205,1)',
+    color: 'rgba(0, 0, 0, 0.5)',
     letterSpacing: 0.4,
     marginTop: 15,
     marginBottom: 5,
@@ -55,7 +55,11 @@ const Input = React.forwardRef((props, ref) => {
   return (
     <>
       {props.label && <div className={classes.inputLabel}>{props.label}</div>}
-      <div className={classes.inputContainer} ref={ref}>
+      <div
+        className={classes.inputContainer}
+        ref={ref}
+        style={props.fullWidth ? { width: '100%' } : {}}
+      >
         {props.left}
         <input
           type={props.type ? props.type : 'text'}

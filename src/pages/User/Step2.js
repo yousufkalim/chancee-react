@@ -140,9 +140,9 @@ export default function Profile(props) {
         if (vehicles.has(1)) {
           vehicleType = 'Bike';
         } else if (vehicles.has(2)) {
-          vehicleType = 'Electric bike';
-        } else if (vehicles.has(3)) {
           vehicleType = 'Scooter';
+        } else if (vehicles.has(3)) {
+          vehicleType = 'Electric bike';
         } else if (vehicles.has(4)) {
           vehicleType = 'Car';
         } else if (vehicles.has(5)) {
@@ -151,8 +151,10 @@ export default function Profile(props) {
           vehicleType = 'Large volume permit';
         }
         var formdata = new FormData();
-        formdata.append('licence', license);
-        formdata.append('purchaseProof', vehicleProof);
+        if (!vehicles.has(1) && !vehicles.has(3)) {
+          formdata.append('licence', license);
+          formdata.append('purchaseProof', vehicleProof);
+        }
         formdata.append('timeslots', JSON.stringify(timeslots));
         formdata.append(
           'delivery',
@@ -175,7 +177,7 @@ export default function Profile(props) {
           token: store.token,
           body: formdata,
         });
-
+        alert('Profile was completed successfully!');
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,

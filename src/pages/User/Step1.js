@@ -16,11 +16,11 @@ import { ReactComponent as Attach } from '../../assets/images/Attach.svg';
 import { ReactComponent as JumboImage } from '../../assets/images/Home2.svg';
 import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
 
-import Input from './Input';
 import Steps from '../../components/Steps';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
+import Input from '../../components/ProfileInput';
 import Jumbotron from '../../components/Jumbotron';
 import Heading from '../../components/FormStepHeader';
 import DocumentUploading from '../../components/DocumentUploading';
@@ -178,7 +178,7 @@ export default function Profile(props) {
         identity === '' ||
         profile === '' ||
         KBIS === '' ||
-        phone.length < 10 ||
+        phone.length !== 10 ||
         SIRET.length !== 14 ||
         street === '' ||
         postal === '' ||
@@ -199,11 +199,11 @@ export default function Profile(props) {
         formdata.append(
           'address',
           JSON.stringify({
-            street: street,
-            location: [long, lat],
-            zipcode: postal,
-            complement: complement,
             city: city,
+            street: street,
+            zipcode: postal,
+            location: [long, lat],
+            complement: complement,
           }),
         );
 
@@ -215,6 +215,7 @@ export default function Profile(props) {
           },
           body: formdata,
         });
+        alert('Step 1 was completed successfully!');
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,

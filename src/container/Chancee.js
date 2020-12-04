@@ -62,7 +62,7 @@ const LFS = () => {
   };
 
   return loading ? (
-    <Loader.CenterProgress />
+    <Loader.CenterProgress color="primary" />
   ) : store.auth ? (
     store.user.role === 'company' ? (
       store.user.status === 'pending' ? (

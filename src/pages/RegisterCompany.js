@@ -94,15 +94,15 @@ export default function Register(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    compName: '',
-    workforce: '',
-    deliveries: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    date: '',
-    password: '',
-    confirmPassword: '',
+    compName: 'Test Company',
+    workforce: '6',
+    deliveries: '12',
+    firstName: 'Test',
+    lastName: 'Company',
+    email: 'test@company.com',
+    date: '2020-08-12',
+    password: 'password12',
+    confirmPassword: 'password12',
   });
   const [errors, setErrors] = React.useState({
     compName: false,
@@ -222,7 +222,7 @@ export default function Register(props) {
             <Input
               type="text"
               name="firstName"
-              placeholder="Pr nom"
+              placeholder="Prenom"
               value={values.firstName}
               onChange={(event) => {
                 if (

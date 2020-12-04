@@ -11,12 +11,12 @@ import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
 
-import Input from './Input';
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import Button from '../../components/Button';
 import Header from '../../components/Header2';
 import Flag from '../../assets/images/flag.png';
+import Input from '../../components/ProfileInput';
 import RateSlider from '../../components/RateSlider';
 import ProfileCard from '../../components/ProfileCard';
 import VolumeSlider from '../../components/VolumeSlider';
@@ -68,7 +68,7 @@ const Profile = (props) => {
   const [address, setAddress] = useState([]);
   const [loading, setLoading] = useState(false);
   const [addressLoading, setAddressLoading] = useState(false);
-  const [profileModal, setProfileModal] = React.useState(false);
+  const [profileModal, setProfileModal] = useState(false);
 
   const [lat, setLat] = useState('');
   const [city, setCity] = useState('');
@@ -219,8 +219,8 @@ const Profile = (props) => {
     const { user } = store;
     let vehicleType = 1;
     if (user.delivery.vehicle.vehicleType === 'Bike') vehicleType = 1;
-    if (user.delivery.vehicle.vehicleType === 'Electric bike') vehicleType = 2;
-    if (user.delivery.vehicle.vehicleType === 'Scooter') vehicleType = 3;
+    if (user.delivery.vehicle.vehicleType === 'Scooter') vehicleType = 2;
+    if (user.delivery.vehicle.vehicleType === 'Electric bike') vehicleType = 3;
     if (user.delivery.vehicle.vehicleType === 'Car') vehicleType = 4;
     if (user.delivery.vehicle.vehicleType === 'Truck') vehicleType = 5;
     if (user.delivery.vehicle.vehicleType === 'Large volume permit')
@@ -281,9 +281,9 @@ const Profile = (props) => {
         if (vehicles.has(1)) {
           vehicleType = 'Bike';
         } else if (vehicles.has(2)) {
-          vehicleType = 'Electric bike';
-        } else if (vehicles.has(3)) {
           vehicleType = 'Scooter';
+        } else if (vehicles.has(3)) {
+          vehicleType = 'Electric bike';
         } else if (vehicles.has(4)) {
           vehicleType = 'Car';
         } else if (vehicles.has(5)) {
@@ -293,46 +293,48 @@ const Profile = (props) => {
         }
 
         const timeslotsArray = timeslots.map((item) => {
-          console.log(item);
-          if (item._id) delete item._id;
+          item.slots.map((slot) => {
+            if (slot._id) {
+              delete slot._id;
+            }
+            return slot;
+          });
           return item;
         });
 
-        console.log({ timeslotsArray });
+        var formdata = new FormData();
+        typeof identity === 'object' && formdata.append('identity', identity);
+        typeof KBIS === 'object' && formdata.append('KBIS', KBIS);
+        typeof profile === 'object' && formdata.append('profile', profile);
+        typeof diploma === 'object' && formdata.append('diploma', diploma);
+        typeof training === 'object' && formdata.append('training', training);
+        typeof insurance === 'object' &&
+          formdata.append('insurance', insurance);
+        typeof license === 'object' && formdata.append('licence', license);
+        typeof vehicleProof === 'object' &&
+          formdata.append('purchaseProof', vehicleProof);
 
-        // var formdata = new FormData();
-        // typeof identity === 'object' && formdata.append('identity', identity);
-        // typeof KBIS === 'object' && formdata.append('KBIS', KBIS);
-        // typeof profile === 'object' && formdata.append('profile', profile);
-        // typeof diploma === 'object' && formdata.append('diploma', diploma);
-        // typeof training === 'object' && formdata.append('training', training);
-        // typeof insurance === 'object' &&
-        //   formdata.append('insurance', insurance);
-        // typeof license === 'object' && formdata.append('licence', license);
-        // typeof vehicleProof === 'object' &&
-        //   formdata.append('purchaseProof', vehicleProof);
+        formdata.append(
+          'address',
+          JSON.stringify({
+            street: street,
+            location: [lat, long],
+            zipcode: postal,
+            complement: complement,
+            city: city,
+          }),
+        );
+        formdata.append('phone', phone);
+        formdata.append('SIRET', SIRET);
+        formdata.append('perHour', rate);
+        formdata.append('vehicleType', vehicleType);
+        formdata.append('range', KM);
+        formdata.append('transportType', transportType);
+        formdata.append('timeslots', JSON.stringify(timeslotsArray));
 
-        // formdata.append(
-        //   'address',
-        //   JSON.stringify({
-        //     street: street,
-        //     location: [lat, long],
-        //     zipcode: postal,
-        //     complement: complement,
-        //     city: city,
-        //   }),
-        // );
-        // formdata.append('phone', phone);
-        // formdata.append('SIRET', SIRET);
-        // formdata.append('perHour', rate);
-        // formdata.append('vehicleType', vehicleType);
-        // formdata.append('range', KM);
-        // formdata.append('transportType', transportType);
-        // formdata.append('timeslots', JSON.stringify(timeslots));
-
-        // for (let value of formdata.entries()) {
-        //   console.log(value[0], value[1]);
-        // }
+        for (let value of formdata.entries()) {
+          console.log(value[0], value[1]);
+        }
 
         setLoading(false);
 
@@ -369,8 +371,9 @@ const Profile = (props) => {
               email={email}
               courses="485"
               street={street}
-              postal={complement}
-              city={city + ',' + postal}
+              complement={complement}
+              city={city}
+              postal={postal}
               phone={phone}
               siret={SIRET}
               rocket="32"
@@ -516,6 +519,7 @@ const Profile = (props) => {
                 }}
                 renderInput={(params) => (
                   <Input
+                    fullWidth
                     inputValue={street}
                     valid={postal !== ''}
                     label="N° DE RUE ET RUE *"
@@ -527,6 +531,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
+                fullWidth
                 disabled
                 value={postal}
                 label="CODE POSTAL *"
@@ -535,6 +540,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
+                fullWidth
                 value={complement}
                 valid={complement !== ''}
                 label="COMPLÉMENT D’ADRESSE"
@@ -543,6 +549,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
+                fullWidth
                 disabled
                 value={city}
                 label="VILLE *"
@@ -551,6 +558,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
+                fullWidth
                 type="number"
                 value={phone}
                 valid={phone.length === 10}
@@ -567,6 +575,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
+                fullWidth
                 type="number"
                 value={SIRET}
                 valid={SIRET.length === 14}

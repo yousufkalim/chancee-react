@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
-import Dialog from '@material-ui/core/Dialog';
-import CloseIcon from '@material-ui/icons/Close';
 import Checkbox from '@material-ui/core/Checkbox';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -10,24 +8,22 @@ import { ReactComponent as Calendar } from '../assets/images/event.svg';
 import { ReactComponent as Checked } from '../assets/images/checked.svg';
 import { ReactComponent as Unchecked } from '../assets/images/unchecked.svg';
 
-import Input from './Input';
+import Modal from './Modal';
 import Button from './Button';
+import Input from './ProfileInput';
 import Heading from './FormStepHeader';
 
 const useStyles = makeStyles((theme) => ({
-  step1Section2: {
-    flexDirection: 'column',
-  },
-  step1Section2stepText1: {
+  text: {
     fontWeight: '500',
     fontSize: '14px',
     color: '#000',
   },
-  step1Section2stepText2: {
+  text2: {
     fontSize: '10px',
     color: 'rgba(152,152,152,1)',
   },
-  step1Section2Checkbox: {
+  checkbox: {
     padding: 0,
     marginRight: 10,
     cursor: 'copy',
@@ -35,41 +31,8 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: 'transparent',
     },
   },
-  modalHeaderContainer: {
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  modalHeader: {
-    color: 'rgba(0, 0, 0, 0.54)',
-    margin: 0,
-  },
-  modalIcon: {
-    cursor: 'pointer',
-    color: 'rgba(0, 0, 0, 0.54)',
-  },
-  modalContent: {
-    padding: '0 20px',
-  },
-  modalChipContainer: {
+  chips: {
     marginBottom: 10,
-  },
-  modalForm: {
-    '& > *': {
-      padding: '10px 20px',
-    },
-  },
-  modalActions: {
-    padding: '10px 20px',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    '& > *': {
-      margin: '0px 10px',
-    },
   },
   marginVertical: {
     margin: '10px 0',
@@ -175,149 +138,142 @@ export default function Profile(props) {
                   setDayModal(true);
                 }}
                 checkedIcon={<Checked />}
-                className={classes.step1Section2Checkbox}
+                className={classes.checkbox}
               />
-              <span className={classes.step1Section2stepText1}>{day.name}</span>
+              <span className={classes.text}>{day.name}</span>
             </div>
-            <span className={classes.step1Section2stepText2}>
-              {day.description}
-            </span>
+            <span className={classes.text2}>{day.description}</span>
           </Grid>
         ))}
       </Grid>
-      <Dialog
+      <Modal
         open={dayModal}
-        maxWidth={'md'}
-        fullWidth={true}
         onClose={() => setDayModal((st) => !st)}
-      >
-        <div className={classes.modalHeaderContainer}>
-          <h2 className={classes.modalHeader}>Add Availability</h2>
-          <CloseIcon
-            onClick={() => setDayModal((st) => !st)}
-            className={classes.modalIcon}
-          />
-        </div>
-        <Grid container className={classes.modalContent}>
-          {timeslots[selectedDay - 1].slots.map((row, index) => (
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              md={3}
-              key={row.from + row.to}
-              className={classes.modalChipContainer}
-            >
-              <Chip
-                label={'start:' + row.from + ' ↔️ end:' + row.to}
-                onDelete={() => {
-                  let arry = timeslots;
-                  let newArray = arry[selectedDay - 1].slots.filter(
-                    (slo, index2) => index2 !== index,
-                  );
-                  arry[selectedDay - 1].slots = newArray;
-                  setTimeSlots(arry);
-                  setGetUpdate((st) => !st);
-                }}
-                color="default"
-              />
+        title="Add Availability"
+        body={
+          <>
+            <Grid container>
+              {timeslots[selectedDay - 1].slots.map((row, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  key={row.from + row.to}
+                  className={classes.chips}
+                >
+                  <Chip
+                    label={'start:' + row.from + ' ↔️ end:' + row.to}
+                    onDelete={() => {
+                      let arry = timeslots;
+                      let newArray = arry[selectedDay - 1].slots.filter(
+                        (slo, index2) => index2 !== index,
+                      );
+                      arry[selectedDay - 1].slots = newArray;
+                      setTimeSlots(arry);
+                      setGetUpdate((st) => !st);
+                    }}
+                    color="default"
+                  />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-        <div className={classes.modalForm}>
-          <div>
-            <span>Start Hour</span>
-            <Input
-              type="number"
-              color="#FC917C"
-              placeholder="Start Hour"
-              value={startHour}
-              onChange={(e) => {
-                if (e.target.value >= 0 && e.target.value < 23) {
-                  setStartHour(e.target.value);
-                }
-              }}
-            />
-          </div>
-          <div>
-            <span>End Hour</span>
-            <Input
-              type="number"
-              color="#FC917C"
-              placeholder="End Hour"
-              value={endHour}
-              onChange={(e) => {
-                if (e.target.value >= 0 && e.target.value < 24) {
-                  setEndHour(e.target.value);
-                }
-              }}
-            />
-          </div>
-        </div>
-        <div className={classes.modalActions}>
-          <Button
-            style={{ backgroundColor: '#FC917C' }}
-            onClick={() => {
-              if (timeslots[selectedDay - 1].slots.length > 0) {
-                let newSlots = timeslots;
-                newSlots[selectedDay - 1].checked = true;
-                setTimeSlots(newSlots);
-              } else {
-                let newSlots = timeslots;
-                newSlots[selectedDay - 1].checked = false;
-                setTimeSlots(newSlots);
-              }
-              setDayModal(false);
-              setEndHour('');
-              setStartHour('');
-            }}
-          >
-            Done
-          </Button>
-          <Button
-            style={{ backgroundColor: '#FC917C' }}
-            disabled={timeslots[selectedDay - 1].slots.length >= 3}
-            onClick={() => {
-              if (
-                parseInt(startHour) >= parseInt(endHour) ||
-                startHour === '' ||
-                endHour === ''
-              ) {
-                alert('Invalid Timestamp!');
-              } else {
-                let timeslotArray = timeslots;
-                let times = timeslotArray[selectedDay - 1].slots;
-                let shouldAdd = true;
-                times.map((timeslot) => {
-                  if (
-                    parseInt(startHour) === parseInt(timeslot.from) ||
-                    parseInt(endHour) <= parseInt(timeslot.to) ||
-                    (parseInt(startHour) > parseInt(timeslot.from) &&
-                      parseInt(startHour) < parseInt(timeslot.to))
-                  ) {
-                    shouldAdd = false;
+            <div>
+              <Input
+                fullWidth
+                type="number"
+                value={startHour}
+                label="Start Hour"
+                placeholder="Start Hour"
+                onChange={(e) => {
+                  if (e.target.value >= 0 && e.target.value < 23) {
+                    setStartHour(e.target.value);
                   }
-                });
-                if (shouldAdd) {
-                  times.push({
-                    from: startHour,
-                    to: endHour,
-                  });
-                  timeslotArray[selectedDay - 1].slots = times;
-                  setTimeSlots(timeslotArray);
+                }}
+                valid={startHour !== '' && startHour <= 23}
+              />
+              <Input
+                fullWidth
+                type="number"
+                value={endHour}
+                label="End Hour"
+                placeholder="End Hour"
+                onChange={(e) => {
+                  if (e.target.value >= 0 && e.target.value < 24) {
+                    setEndHour(e.target.value);
+                  }
+                }}
+                valid={endHour !== '' && endHour <= 23}
+              />
+            </div>
+          </>
+        }
+        actions={
+          <>
+            <Button
+              onClick={() => {
+                if (timeslots[selectedDay - 1].slots.length > 0) {
+                  let newSlots = timeslots;
+                  newSlots[selectedDay - 1].checked = true;
+                  setTimeSlots(newSlots);
                 } else {
-                  alert('Cannot add overlapping time slots!');
+                  let newSlots = timeslots;
+                  newSlots[selectedDay - 1].checked = false;
+                  setTimeSlots(newSlots);
                 }
-                setGetUpdate((st) => !st);
-              }
-            }}
-          >
-            {timeslots[selectedDay - 1].slots.length >= 3
-              ? 'Max 3 allowed!'
-              : 'Add Timestamp'}
-          </Button>
-        </div>
-      </Dialog>
+                setDayModal(false);
+                setEndHour('');
+                setStartHour('');
+              }}
+            >
+              Done
+            </Button>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              disabled={timeslots[selectedDay - 1].slots.length >= 3}
+              onClick={() => {
+                if (
+                  parseInt(startHour) >= parseInt(endHour) ||
+                  startHour === '' ||
+                  endHour === ''
+                ) {
+                  alert('Invalid Timestamp!');
+                } else {
+                  let timeslotArray = timeslots;
+                  let times = timeslotArray[selectedDay - 1].slots;
+                  let shouldAdd = true;
+                  times.map((timeslot) => {
+                    if (
+                      parseInt(startHour) === parseInt(timeslot.from) ||
+                      parseInt(endHour) <= parseInt(timeslot.to) ||
+                      (parseInt(startHour) > parseInt(timeslot.from) &&
+                        parseInt(startHour) < parseInt(timeslot.to))
+                    ) {
+                      shouldAdd = false;
+                    }
+                    return timeslot;
+                  });
+                  if (shouldAdd) {
+                    times.push({
+                      from: startHour,
+                      to: endHour,
+                    });
+                    timeslotArray[selectedDay - 1].slots = times;
+                    setTimeSlots(timeslotArray);
+                  } else {
+                    alert('Cannot add overlapping time slots!');
+                  }
+                  setGetUpdate((st) => !st);
+                }
+              }}
+            >
+              {timeslots[selectedDay - 1].slots.length >= 3
+                ? 'Max 3 allowed!'
+                : 'Add Timestamp'}
+            </Button>
+          </>
+        }
+      />
     </>
   );
 }

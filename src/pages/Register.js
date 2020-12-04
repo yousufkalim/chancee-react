@@ -94,12 +94,12 @@ export default function Register(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    date: '',
-    password: '',
-    confirmPassword: '',
+    firstName: 'Test',
+    lastName: 'User',
+    email: 'test@user.com',
+    date: '2020-08-12',
+    password: 'password12',
+    confirmPassword: 'password12',
   });
   const [errors, setErrors] = React.useState({
     firstName: false,

@@ -142,7 +142,6 @@ export default function DocumentUploading(props) {
                   hidden
                   id={`fileinput${item.title}`}
                   onChange={(e) => {
-                    console.log(item.id, e.target.files[0]);
                     props.getStep(item.id).fn(e.target.files[0]);
                   }}
                 />

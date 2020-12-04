@@ -149,9 +149,6 @@ const Header = (props) => {
                 <MenuItem component={NavLink} to="/profile">
                   Profile
                 </MenuItem>
-                <MenuItem component={NavLink} to="/account">
-                  My account
-                </MenuItem>
                 <MenuItem
                   onClick={() => dispatch({ type: actionTypes.LOGOUT })}
                 >
