@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
 
 import { ReactComponent as Star } from '../../assets/images/star.svg';
 import { ReactComponent as Tick } from '../../assets/images/Tick2.svg';
@@ -64,101 +65,46 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   tableButton: {
-    color: '#fff',
+    outline: 0,
+    fontSize: 15,
+    color: '#FFF',
     border: 'none',
     borderRadius: 6,
-    fontSize: '10px',
     cursor: 'pointer',
-    fontWeight: 'bold',
-    padding: '3px 6px',
+    padding: '10px 10px',
+    whiteSpace: 'nowrap',
     backgroundColor: '#c21d12',
   },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+  },
 }));
+
+const Row = (props) => {
+  const classes = useStyles();
+
+  return <div className={classes.row}>{props.children}</div>;
+};
 
 const Profile = (props) => {
   const classes = useStyles();
   const store = useSelector((state) => state);
 
   const [offers, setOffers] = useState([]);
-  const [value, setValue] = React.useState(2);
+  const [value, setValue] = useState(2);
   const [invitations, setInvitations] = useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
+  const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
   useEffect(() => {
-    const invitationsArray = [
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> Starbucks
-          </div>,
-        ],
-        '20/11/2020',
-        '8h - 13h',
-        'Moissy (77)',
-        '130€',
-        [
-          <div className={classes.itemRow}>
-            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-          </div>,
-        ],
-        [
-          <div className={classes.itemRow}>
-            <Tick
-              className={classes.rowIcon}
-              onClick={() => alert('Are you sure you want to do this? 1')}
-            />
-            <Cross
-              className={classes.rowIcon}
-              onClick={() => alert('Are you sure you want to do this? 1')}
-            />
-          </div>,
-        ],
-      ],
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> McDonalds
-          </div>,
-        ],
-        '20/11/2020',
-        '8h - 21h',
-        'Moissy (77)',
-        '240€',
-        [
-          <div className={classes.itemRow}>
-            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-          </div>,
-        ],
-        [
-          <div className={classes.itemRow}>
-            <Tick className={classes.rowIcon} />
-            <Cross className={classes.rowIcon} />
-          </div>,
-        ],
-      ],
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> McDonalds
-          </div>,
-        ],
-        '20/11/2020',
-        '8h - 21h',
-        'Moissy (77)',
-        '130€',
-        [
-          <div className={classes.itemRow}>
-            <Star className={classes.yellowIcon} /> 4.3/5 (43 notes)
-          </div>,
-        ],
-        [
-          <div className={classes.itemRow}>
-            <Tick className={classes.rowIcon} />
-            <Cross className={classes.rowIcon} />
-          </div>,
-        ],
-      ],
-    ];
     const offersArray = [
       [
         [
@@ -243,16 +189,59 @@ const Profile = (props) => {
 
   const getData = async () => {
     try {
-      const data = await API({
+      const offers = await API({
         uri: Constants.GET_OFFERS,
         token: store.token,
       });
-      console.log({ data });
-      // setInvitations(invitationsArray);
-      // setOffers(offersArray);
-      // setLoading(false)
+      const invites = await API({
+        uri: Constants.GET_INVITATIONS,
+        token: store.token,
+      });
+      setInvitations(invites.invites);
+      setOffers(offers.offers);
+      setLoading(false);
     } catch (err) {
       setLoading(false);
+    }
+  };
+  const acceptInvite = async (id) => {
+    try {
+      setAcceptRejectLoading(true);
+      const data = await API({
+        uri: Constants.ACCEPT_INVITE + `/${id}`,
+        token: store.token,
+      });
+      setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
+      setOffers((st) => [...st, data.offer]);
+      setAcceptRejectLoading(false);
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const rejectInvite = async (id) => {
+    try {
+      setAcceptRejectLoading(true);
+      const data = await API({
+        uri: Constants.REJECT_INVITE + `/${id}`,
+        token: store.token,
+      });
+      setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
+      setAcceptRejectLoading(false);
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const cancelOffer = async (id) => {
+    try {
+      setAcceptRejectLoading(true);
+      await API({
+        uri: Constants.CANCEL_OFFER + `/${id}`,
+        token: store.token,
+      });
+      setOffers((st) => st.filter((i) => i._id !== id));
+      setAcceptRejectLoading(false);
+    } catch (err) {
+      setAcceptRejectLoading(false);
     }
   };
 
@@ -284,7 +273,49 @@ const Profile = (props) => {
                     'STATUS',
                     'ACTION',
                   ]}
-                  values={invitations}
+                  values={invitations.map((item) => [
+                    [
+                      <Row>
+                        <img
+                          src={
+                            Constants.BASE_URL +
+                            '/' +
+                            item.company.proofs.profile
+                          }
+                          alt="Profile"
+                          className={classes.avatar}
+                        />
+                        {item.company.company.companyName}
+                      </Row>,
+                    ],
+                    moment(item.date).format('YYYY-MM-DD'),
+                    `${item.start}h - ${item.end}h`,
+                    `${item.company.address.city} (${item.company.address.zip})`,
+                    `${item.price}€`,
+                    [
+                      <div className={classes.itemRow}>
+                        <Star className={classes.yellowIcon} />{' '}
+                        {item.company.averageRating}/5 (
+                        {item.company.note.length} notes)
+                      </div>,
+                    ],
+                    [
+                      <div className={classes.itemRow}>
+                        <Tick
+                          className={classes.rowIcon}
+                          onClick={() =>
+                            !acceptRejectLoading && acceptInvite(item._id)
+                          }
+                        />
+                        <Cross
+                          className={classes.rowIcon}
+                          onClick={() =>
+                            !acceptRejectLoading && rejectInvite(item._id)
+                          }
+                        />
+                      </div>,
+                    ],
+                  ])}
                 />
               </div>
             </section>
@@ -303,10 +334,62 @@ const Profile = (props) => {
                     'STATUS',
                     'ACTION',
                   ]}
-                  values={offers}
-                  dateItem={2}
+                  values={offers.map((item) => [
+                    <Row>
+                      <img
+                        src={
+                          Constants.BASE_URL + '/' + item.company.proofs.profile
+                        }
+                        alt="Profile"
+                        className={classes.avatar}
+                      />
+                      {item.company.company.companyName}
+                    </Row>,
+                    moment(item.date).format('YYYY-MM-DD'),
+                    `${item.start}h - ${item.end}h`,
+                    `${item.company.address.city} (${item.company.address.zip})`,
+                    `${item.price}€`,
+                    `${item.status === 'pending' ? 'Confirmée' : 'Started'}€`,
+                    <div
+                      className={classes.tableButton}
+                      onClick={() =>
+                        !acceptRejectLoading && rejectInvite(item._id)
+                      }
+                    >
+                      ANNULER
+                    </div>,
+                  ])}
+                  // dateItem={2}
                 />
               </div>
+              {console.log(
+                offers,
+                offers.map((item) => [
+                  <Row>
+                    <img
+                      src={
+                        Constants.BASE_URL + '/' + item.company.proofs.profile
+                      }
+                      alt="Profile"
+                      className={classes.avatar}
+                    />
+                    {item.company.company.companyName}
+                  </Row>,
+                  moment(item.date).format('YYYY-MM-DD'),
+                  `${item.start}h - ${item.end}h`,
+                  `${item.company.address.city} (${item.company.address.zip})`,
+                  `${item.price}€`,
+                  `${item.status === 'pending' ? 'Confirmée' : 'Started'}`,
+                  <div
+                    className={classes.tableButton}
+                    onClick={() =>
+                      !acceptRejectLoading && cancelOffer(item._id)
+                    }
+                  >
+                    ANNULER
+                  </div>,
+                ]),
+              )}
             </section>
           </>
         )}

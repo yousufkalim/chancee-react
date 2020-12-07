@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(props) {
   const classes = useStyles();
-  const [endHour, setEndHour] = useState('');
-  const [startHour, setStartHour] = useState('');
+  const [endHour, setEndHour] = useState('23');
+  const [startHour, setStartHour] = useState('2');
   const [selectedDay, setSelectedDay] = useState(1);
   const [getUpdate, setGetUpdate] = useState(false);
   const [dayModal, setDayModal] = React.useState(false);
@@ -222,8 +222,8 @@ export default function Profile(props) {
                   setTimeSlots(newSlots);
                 }
                 setDayModal(false);
-                setEndHour('');
-                setStartHour('');
+                // setEndHour('');
+                // setStartHour('');
               }}
             >
               Done

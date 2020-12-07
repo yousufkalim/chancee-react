@@ -82,27 +82,43 @@ const useStyles = makeStyles((theme) => ({
   },
   tableButton: {
     outline: 0,
-    fontSize: 10,
+    fontSize: 15,
     color: '#FFF',
     border: 'none',
     borderRadius: 6,
     cursor: 'pointer',
-    padding: '5px 10px',
+    padding: '10px 10px',
     whiteSpace: 'nowrap',
     backgroundColor: '#000',
-    '&:hover': {
-      opacity: '0.9',
-    },
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
 }));
+
+const Row = (props) => {
+  const classes = useStyles();
+
+  return <div className={classes.row}>{props.children}</div>;
+};
 
 const Search = (props) => {
   const classes = useStyles();
   const store = useSelector((state) => state);
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState('');
   const [filters, setFilters] = useState({});
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
+  const [inviteLoading, setInviteLoading] = useState(false);
+  const [invitedUsers, setInvitedUsers] = useState([]);
 
   useEffect(() => {
     const filtersData = {
@@ -115,24 +131,6 @@ const Search = (props) => {
       deliveries: '2 livreurs',
     };
     const rows = [
-      [
-        'Henry Lafford',
-        'PETIT',
-        'Voiture',
-        '19€',
-        '220€',
-        '3.5/5',
-        <button className={classes.tableButton}>INVITER</button>,
-      ],
-      [
-        'Henry Lafford',
-        'PETIT',
-        'Voiture',
-        '19€',
-        '220€',
-        '3.5/5',
-        <button className={classes.tableButton}>INVITER</button>,
-      ],
       [
         'Henry Lafford',
         'PETIT',
@@ -181,20 +179,39 @@ const Search = (props) => {
         method: 'POST',
         uri: Constants.SEARCH,
         body: JSON.stringify({
-          vehicleType: vehicles,
-          transportType: volume,
+          start: filters.from,
+          end: filters.to,
+          date: filters.day,
           range: filters.KM,
-          perHour: filters.rate,
-          desiredPerson: filters.deliveries,
+          vehicle: vehicles,
+          volume: volume,
+          price: filters.rate,
+          requiredPerson: filters.deliveries,
           rating: filters.rating,
-          day: filters.day,
-          startTime: filters.from,
-          endTime: filters.to,
         }),
         token: store.token,
       });
-      setData(data.users);
+
+      setData(data);
       setLoading(false);
+    } catch (err) {}
+  };
+
+  const onSendInvite = async (offerId, userId) => {
+    try {
+      setInviteLoading(true);
+      const data = await API({
+        method: 'POST',
+        uri: Constants.SEND_INVITE,
+        body: JSON.stringify({
+          _id: userId,
+          offerId: offerId,
+        }),
+        token: store.token,
+      });
+
+      setInvitedUsers((ar) => [...ar, data.user._id]);
+      setInviteLoading(false);
     } catch (err) {}
   };
 
@@ -218,7 +235,6 @@ const Search = (props) => {
             Modifier
           </button>
         </div>
-
         {loading ? (
           <Loader.Progress />
         ) : (
@@ -232,7 +248,37 @@ const Search = (props) => {
               'NOTE MOYENNE',
               'ACTION',
             ]}
-            values={data}
+            values={data.users.map((item) => [
+              <Row>
+                <img
+                  src={Constants.BASE_URL + '/' + item.proofs.profile}
+                  alt="Profile"
+                  className={classes.avatar}
+                />
+                {item.firstName} {item.lastName}
+              </Row>,
+              item.delivery.transportType,
+              item.delivery.vehicle.vehicleType,
+              `${item.delivery.perHour}€`,
+              '220€',
+              `${item.averageRating}/5`,
+              <button
+                className={classes.tableButton}
+                onClick={() => onSendInvite(data.offer._id, item._id)}
+                disabled={
+                  inviteLoading ||
+                  invitedUsers.some(
+                    (item2) => String(item2) === String(item._id),
+                  )
+                }
+              >
+                {invitedUsers.some(
+                  (item2) => String(item2) === String(item._id),
+                )
+                  ? 'INVITED'
+                  : 'INVITER'}
+              </button>,
+            ])}
           />
         )}
       </div>

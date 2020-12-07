@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
+import moment from 'moment';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -164,7 +165,7 @@ const Profile = (props) => {
   const getData = async () => {
     try {
       const data = await API({
-        uri: Constants.GET_OFFERS,
+        uri: Constants.GET_COMPANY_OFFERS,
         token: store.token,
       });
       setData(data.offers);
@@ -178,7 +179,7 @@ const Profile = (props) => {
     <div className={classes.root}>
       <Header />
       <div className={classes.content}>
-        {loading ? (
+        {/* {loading ? (
           <Loader.Progress />
         ) : (
           <section id="table">
@@ -198,7 +199,7 @@ const Profile = (props) => {
               />
             </div>
           </section>
-        )}
+        )} */}
       </div>
     </div>
   );

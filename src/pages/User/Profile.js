@@ -257,6 +257,8 @@ const Profile = (props) => {
     setLastName(user.lastName);
     setEmail(user.email);
     setDate(moment(user.dob).format('YYYY-MM-DD'));
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, [store]);
 
@@ -318,7 +320,7 @@ const Profile = (props) => {
           'address',
           JSON.stringify({
             street: street,
-            location: [lat, long],
+            location: [long, lat],
             zipcode: postal,
             complement: complement,
             city: city,
@@ -326,32 +328,26 @@ const Profile = (props) => {
         );
         formdata.append('phone', phone);
         formdata.append('SIRET', SIRET);
-        formdata.append('perHour', rate);
+        formdata.append('perHour', parseInt(rate));
         formdata.append('vehicleType', vehicleType);
-        formdata.append('range', KM);
+        formdata.append('range', parseInt(KM));
         formdata.append('transportType', transportType);
         formdata.append('timeslots', JSON.stringify(timeslotsArray));
 
-        for (let value of formdata.entries()) {
-          console.log(value[0], value[1]);
-        }
-
+        const data = await API({
+          method: 'PUT',
+          uri: Constants.UPDATE_PROFILE,
+          headers: {
+            Authorization: `Bearer ${store.token}`,
+          },
+          body: formdata,
+        });
+        alert('Profile Update was successfull!');
         setLoading(false);
-
-        // const data = await API({
-        //   method: 'POST',
-        //   uri: Constants.REGISTER_USER,
-        // headers: {
-        //   Authorization: `Bearer ${store.token}`,
-        // },
-        //   body: formdata,
-        // });
-        // alert('Registration was successfull!');
-        // dispatch({
-        //   type: actionTypes.LOGIN,
-        //   user: data.user,
-        //   token: data.token,
-        // });
+        dispatch({
+          type: actionTypes.SET_USER,
+          user: data.user,
+        });
       }
     } catch (err) {
       setLoading(false);
@@ -519,7 +515,6 @@ const Profile = (props) => {
                 }}
                 renderInput={(params) => (
                   <Input
-                    fullWidth
                     inputValue={street}
                     valid={postal !== ''}
                     label="N° DE RUE ET RUE *"
@@ -531,7 +526,6 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                fullWidth
                 disabled
                 value={postal}
                 label="CODE POSTAL *"
@@ -540,7 +534,6 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                fullWidth
                 value={complement}
                 valid={complement !== ''}
                 label="COMPLÉMENT D’ADRESSE"
@@ -549,7 +542,6 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                fullWidth
                 disabled
                 value={city}
                 label="VILLE *"
@@ -558,10 +550,9 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                fullWidth
                 type="number"
                 value={phone}
-                valid={phone.length === 10}
+                valid={String(phone).length === 10}
                 label="NUMÉRO DE TÉLÉPHONE *"
                 onChange={(e) => {
                   e.target.value.length <= 10 && setPhone(e.target.value);
@@ -575,10 +566,9 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                fullWidth
                 type="number"
                 value={SIRET}
-                valid={SIRET.length === 14}
+                valid={String(SIRET).length === 14}
                 label="SIRET *"
                 onChange={(e) => {
                   e.target.value.length <= 14 && setSIRET(e.target.value);
@@ -594,8 +584,8 @@ const Profile = (props) => {
               if (
                 street === '' ||
                 postal === '' ||
-                phone.length !== 10 ||
-                SIRET.length !== 14 ||
+                String(phone).length !== 10 ||
+                String(SIRET).length !== 14 ||
                 city === ''
               ) {
                 alert('Fields are required!');

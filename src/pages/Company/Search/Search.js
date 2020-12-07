@@ -142,11 +142,11 @@ const Search = (props) => {
   const [rate, setRate] = useState(18);
   const [volume, setVolume] = useState(2);
   const [rating, setRating] = useState(3);
-  const [vehicles, setVehicles] = useState(new Set());
+  const [vehicles, setVehicles] = useState(new Set([4]));
   const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
   const [from, setFrom] = useState(6);
   const [to, setTo] = useState(8);
-  const [deliveries, setDeliveries] = useState('');
+  const [deliveries, setDeliveries] = useState('1');
 
   return (
     <div className={classes.root}>
@@ -279,7 +279,7 @@ const Search = (props) => {
                   name="deliveries"
                   value={deliveries}
                   onChange={({ target: { name, value } }) =>
-                    Number(value) >= Number(0) &&
+                    Number(value) > Number(0) &&
                     Number(value) <= 50 &&
                     setDeliveries(value)
                   }

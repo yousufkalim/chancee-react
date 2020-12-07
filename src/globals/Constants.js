@@ -1,5 +1,5 @@
 // const BASE_URL = 'https://cors-anywhere.herokuapp.com/http://localhost:5000';
-const BASE_URL = 'http://localhost:5000';
+const BASE_URL = 'http://192.168.18.8:5000';
 
 const endpoints = {
   BASE_URL,
@@ -12,9 +12,10 @@ const endpoints = {
   USER_STEP2: BASE_URL + '/api/v1/user/vehicle-info',
   UPDATE_PROFILE: BASE_URL + '/api/v1/user/update',
   GET_OFFERS: BASE_URL + '/api/v1/user/offers',
-  GET_INVITATIONS: BASE_URL + '/api/v1/user/all-invites',
+  GET_INVITATIONS: BASE_URL + '/api/v1/user/invites',
   ACCEPT_INVITE: BASE_URL + '/api/v1/user/accept',
   REJECT_INVITE: BASE_URL + '/api/v1/user/reject',
+  CANCEL_OFFER: BASE_URL + '/api/v1/user/cancel',
   RATE_COMPANY: BASE_URL + '/api/v1/user/rate-user',
   // Company
   REGISTER_COMPANY: BASE_URL + '/api/v1/company/create-company',
@@ -23,7 +24,8 @@ const endpoints = {
   GET_COMPANY_OFFERS: BASE_URL + '/api/v1/company/all-offers',
   GET_COMPANY_USER: BASE_URL + '/api/v1/company/get-user',
   RATE_USER: BASE_URL + '/api/v1/company/rate-user',
-  SEARCH: BASE_URL + '/api/v1/company/search',
+  SEND_INVITE: BASE_URL + '/api/v1/offer/invite',
+  SEARCH: BASE_URL + '/api/v1/offer/new-offer',
   // Admin
   REGISTER_ADMIN: BASE_URL + '/api/v1/admin',
   DELETE_USER: BASE_URL + '/api/v1/admin/delete-user',
