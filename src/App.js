@@ -1,13 +1,14 @@
-import React from "react";
-import { Provider } from "react-redux";
-import { createStore } from "redux";
-import { BrowserRouter } from "react-router-dom";
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
-import CssBaseline from "@material-ui/core/CssBaseline";
+import React from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { BrowserRouter } from 'react-router-dom';
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
 
-import authReducer from "./store/reducers/auth";
-import Chancee from "./container/Chancee";
+import authReducer from './store/reducers/auth';
+import Chancee from './container/Chancee';
+import ErrorBoundary from './components/ErrorBoundary';
 
 const store = createStore(authReducer);
 
@@ -29,9 +30,11 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <BrowserRouter>
-          <Chancee />
-        </BrowserRouter>
+        <ErrorBoundary>
+          <BrowserRouter>
+            <Chancee />
+          </BrowserRouter>
+        </ErrorBoundary>
       </ThemeProvider>
     </Provider>
   );

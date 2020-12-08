@@ -57,15 +57,15 @@ const Search = (props) => {
         <TableBody>
           {props.values.length === 0 ? (
             <TableRow>
-              <TableCell align="center" colspan={props.headers.length}>
-                We come up empty!
+              <TableCell align="center" colSpan={props.headers.length}>
+                We came up empty!
               </TableCell>
             </TableRow>
           ) : (
             props.values.map((row) => (
               <TableRow key={row}>
-                {row.map((i) => (
-                  <TableCell key={i} align="center">
+                {row.map((i, index) => (
+                  <TableCell key={i + index} align="center">
                     {i}
                   </TableCell>
                 ))}

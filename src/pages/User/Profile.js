@@ -3,9 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
-import moment from 'moment';
-
-import ProfileImage from '../../assets/images/avatar.svg';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -13,7 +10,7 @@ import * as actionTypes from '../../store/actions/actionTypes';
 
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
-import Button from '../../components/Button';
+import TableButton from '../../components/TableButton';
 import Header from '../../components/Header2';
 import Flag from '../../assets/images/flag.png';
 import Input from '../../components/ProfileInput';
@@ -103,7 +100,7 @@ const Profile = (props) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
 
   // can add a name field also to differentiate
   const documentSteps = [
@@ -214,6 +211,7 @@ const Profile = (props) => {
         timeslotsArray[index].slots = timeslot.slots;
         timeslotsArray[index].checked = true;
       }
+      return timeslot;
     });
 
     const { user } = store;
@@ -256,7 +254,7 @@ const Profile = (props) => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
-    setDate(moment(user.dob).format('YYYY-MM-DD'));
+    // setDate(moment(user.dob).format('YYYY-MM-DD'));
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
@@ -362,7 +360,7 @@ const Profile = (props) => {
           <Grid item xs={12} xl={4}>
             <ProfileCard
               isUser={true}
-              image={ProfileImage}
+              image={Constants.BASE_URL + '/' + store.user.proofs.profile}
               name={firstName + ' ' + lastName}
               email={email}
               courses="485"
@@ -471,10 +469,9 @@ const Profile = (props) => {
           className={classes.buttonContainer}
           style={{ justifyContent: 'flex-end' }}
         >
-          <Button
-            color="#000"
-            type="button"
-            text={loading ? 'Loading...' : 'UPDATE'}
+          <TableButton
+            color="black"
+            text={'UPDATE'}
             disabled={loading}
             onClick={onSubmit}
             style={{ width: 150, fontSize: 18 }}
@@ -578,7 +575,8 @@ const Profile = (props) => {
           </Grid>
         }
         actions={
-          <Button
+          <TableButton
+            fullWidth
             text="Done"
             onClick={() => {
               if (

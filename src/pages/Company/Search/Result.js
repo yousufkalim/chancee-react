@@ -9,6 +9,7 @@ import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
 import Header from '../../../components/HeaderCompany';
 import PageHeading from '../../../components/PageHeading';
+import TableButton from '../../../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,20 +67,6 @@ const useStyles = makeStyles((theme) => ({
       height: 0,
     },
   },
-  filterButton: {
-    outline: 0,
-    color: '#FFF',
-    border: 'none',
-    borderRadius: 6,
-    cursor: 'pointer',
-    marginRight: '10px',
-    padding: '15px 30px',
-    whiteSpace: 'nowrap',
-    backgroundColor: '#000',
-    '&:hover': {
-      opacity: '0.7',
-    },
-  },
   tableButton: {
     outline: 0,
     fontSize: 15,
@@ -121,26 +108,6 @@ const Search = (props) => {
   const [invitedUsers, setInvitedUsers] = useState([]);
 
   useEffect(() => {
-    const filtersData = {
-      time: '13/04/2020, 12h - 22h',
-      KM: '40 km',
-      weight: 'Moyenne taille',
-      vehicles: 'Vélo / Vélo électrique',
-      max: 'Max 18€/h',
-      min: 'Min. 3/5',
-      deliveries: '2 livreurs',
-    };
-    const rows = [
-      [
-        'Henry Lafford',
-        'PETIT',
-        'Voiture',
-        '19€',
-        '220€',
-        '3.5/5',
-        <button className={classes.tableButton}>INVITER</button>,
-      ],
-    ];
     getData();
     // eslint-disable-next-line
   }, []);
@@ -228,12 +195,11 @@ const Search = (props) => {
               </div>
             ))}
           </div>
-          <button
-            className={classes.filterButton}
+          <TableButton
+            color="black"
             onClick={() => props.history.goBack()}
-          >
-            Modifier
-          </button>
+            text="Modifier"
+          />
         </div>
         {loading ? (
           <Loader.Progress />
@@ -262,8 +228,8 @@ const Search = (props) => {
               `${item.delivery.perHour}€`,
               '220€',
               `${item.averageRating}/5`,
-              <button
-                className={classes.tableButton}
+              <TableButton
+                color="black"
                 onClick={() => onSendInvite(data.offer._id, item._id)}
                 disabled={
                   inviteLoading ||
@@ -271,13 +237,14 @@ const Search = (props) => {
                     (item2) => String(item2) === String(item._id),
                   )
                 }
-              >
-                {invitedUsers.some(
-                  (item2) => String(item2) === String(item._id),
-                )
-                  ? 'INVITED'
-                  : 'INVITER'}
-              </button>,
+                text={
+                  invitedUsers.some(
+                    (item2) => String(item2) === String(item._id),
+                  )
+                    ? 'INVITED'
+                    : 'INVITER'
+                }
+              />,
             ])}
           />
         )}

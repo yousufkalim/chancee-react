@@ -8,7 +8,7 @@ import Constants from '../globals/Constants';
 
 import LoginBG from '../assets/images/login.png';
 import Input from '../components/Input';
-import Button from '../components/Button';
+import TableButton from '../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -137,9 +137,10 @@ export default function PasswordForgot(props) {
           />
         </div>
         <div className={classes.submitButton}>
-          <Button
-            type="submit"
-            text={loading ? 'Loading...' : 'Submit'}
+          <TableButton
+            fullWidth
+            style={{ height: 46, borderRadius: 4, fontWeight: 'bold' }}
+            text={'Submit'}
             onClick={onSubmit}
             disabled={loading}
           />

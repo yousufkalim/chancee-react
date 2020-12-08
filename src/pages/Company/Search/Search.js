@@ -5,13 +5,13 @@ import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 
 import Card from '../../../components/Card';
-import Button from '../../../components/Button';
 import Header from '../../../components/HeaderCompany';
 import RateSlider from '../../../components/RateSlider';
 import PageHeading from '../../../components/PageHeading';
 import VolumeSlider from '../../../components/VolumeSlider';
 import DistanceSlider from '../../../components/DistanceSlider';
 import VehicleSelector from '../../../components/VehicleSelector';
+import TableButton from '../../../components/TableButton';
 
 import { ReactComponent as Calendar } from '../../../assets/images/calendar.svg';
 import { ReactComponent as SearchAvatar } from '../../../assets/images/searchavatar.svg';
@@ -305,7 +305,8 @@ const Search = (props) => {
             <Grid item xs={12} xl={6}>
               <div className={classes.center}>
                 <SearchAvatar />
-                <Button
+                <TableButton
+                  fullWidth
                   text="RECHERCHER"
                   style={{ marginTop: 20 }}
                   onClick={() =>

@@ -9,7 +9,7 @@ import { ReactComponent as Checked } from '../assets/images/checked.svg';
 import { ReactComponent as Unchecked } from '../assets/images/unchecked.svg';
 
 import Modal from './Modal';
-import Button from './Button';
+import TableButton from './TableButton';
 import Input from './ProfileInput';
 import Heading from './FormStepHeader';
 
@@ -210,7 +210,8 @@ export default function Profile(props) {
         }
         actions={
           <>
-            <Button
+            <TableButton
+              fullWidth
               onClick={() => {
                 if (timeslots[selectedDay - 1].slots.length > 0) {
                   let newSlots = timeslots;
@@ -225,11 +226,11 @@ export default function Profile(props) {
                 // setEndHour('');
                 // setStartHour('');
               }}
-            >
-              Done
-            </Button>
+              text="Done"
+            />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button
+            <TableButton
+              fullWidth
               disabled={timeslots[selectedDay - 1].slots.length >= 3}
               onClick={() => {
                 if (
@@ -266,11 +267,12 @@ export default function Profile(props) {
                   setGetUpdate((st) => !st);
                 }
               }}
-            >
-              {timeslots[selectedDay - 1].slots.length >= 3
-                ? 'Max 3 allowed!'
-                : 'Add Timestamp'}
-            </Button>
+              text={
+                timeslots[selectedDay - 1].slots.length >= 3
+                  ? 'Max 3 allowed!'
+                  : 'Add Timestamp'
+              }
+            />
           </>
         }
       />

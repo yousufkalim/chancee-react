@@ -10,7 +10,7 @@ import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
 
 import Input from '../components/Input';
-import Button from '../components/Button';
+import TableButton from '../components/TableButton';
 import LoginBG from '../assets/images/login.png';
 
 const useStyles = makeStyles((theme) => ({
@@ -175,9 +175,10 @@ export default function Login(props) {
           </Input>
         </div>
         <div className={classes.submitButton}>
-          <Button
-            type="submit"
-            text={loading ? 'Loading...' : 'Connexion'}
+          <TableButton
+            fullWidth
+            style={{ height: 46, borderRadius: 4, fontWeight: 'bold' }}
+            text={'Connexion'}
             onClick={onSubmit}
             disabled={loading}
           />

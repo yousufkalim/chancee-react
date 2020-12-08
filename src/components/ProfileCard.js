@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
     width: 80,
     height: 80,
     marginBottom: 10,
+    borderRadius: '50%',
   },
   profileName: {
     fontSize: 16,

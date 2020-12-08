@@ -15,6 +15,7 @@ import Constants from '../../globals/Constants';
 import Header from '../../components/Header2';
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
+import TableButton from '../../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,17 +65,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 22,
     fontWeight: 'bold',
   },
-  tableButton: {
-    outline: 0,
-    fontSize: 15,
-    color: '#FFF',
-    border: 'none',
-    borderRadius: 6,
-    cursor: 'pointer',
-    padding: '10px 10px',
-    whiteSpace: 'nowrap',
-    backgroundColor: '#c21d12',
-  },
   row: {
     display: 'flex',
     flexDirection: 'row',
@@ -112,40 +102,6 @@ const Profile = (props) => {
             <CompanyIcon /> Starbucks
           </div>,
         ],
-        '20/11/2020',
-        '8h - 13h',
-        'Moissy (77)',
-        '130€',
-        'Confirmée',
-        [
-          <div className={classes.itemRow}>
-            <div className={classes.tableButton}>ANNULER</div>
-          </div>,
-        ],
-      ],
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> Starbucks
-          </div>,
-        ],
-        '19/11/2020',
-        '8h - 21h',
-        'Moissy (77)',
-        '240€',
-        'Confirmée',
-        [
-          <div className={classes.itemRow}>
-            <div className={classes.tableButton}>ANNULER</div>
-          </div>,
-        ],
-      ],
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> Starbucks
-          </div>,
-        ],
         '14/11/2020',
         '8h - 13h',
         'Moissy (77)',
@@ -168,19 +124,6 @@ const Profile = (props) => {
             </div>
           </div>,
         ],
-      ],
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> Starbucks
-          </div>,
-        ],
-        '14/11/2020',
-        '8h - 13h',
-        'Moissy (77)',
-        '130€',
-        'Réalisée',
-        'Noté 4/5',
       ],
     ];
     getData();
@@ -206,43 +149,62 @@ const Profile = (props) => {
   };
   const acceptInvite = async (id) => {
     try {
-      setAcceptRejectLoading(true);
-      const data = await API({
-        uri: Constants.ACCEPT_INVITE + `/${id}`,
-        token: store.token,
-      });
-      setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
-      setOffers((st) => [...st, data.offer]);
-      setAcceptRejectLoading(false);
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const data = await API({
+          uri: Constants.ACCEPT_INVITE + `/${id}`,
+          token: store.token,
+        });
+        setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
+        setOffers((st) => [...st, data.offer]);
+        setAcceptRejectLoading(false);
+      }
     } catch (err) {
+      if (err.message === "Offer reached it's required person limit") {
+        setInvitations((st) => st.filter((i) => i._id !== id));
+      }
       setAcceptRejectLoading(false);
     }
   };
   const rejectInvite = async (id) => {
     try {
-      setAcceptRejectLoading(true);
-      const data = await API({
-        uri: Constants.REJECT_INVITE + `/${id}`,
-        token: store.token,
-      });
-      setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
-      setAcceptRejectLoading(false);
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const data = await API({
+          uri: Constants.REJECT_INVITE + `/${id}`,
+          token: store.token,
+        });
+        setInvitations((st) => st.filter((i) => i._id !== data.offer._id));
+        setAcceptRejectLoading(false);
+      }
     } catch (err) {
       setAcceptRejectLoading(false);
     }
   };
   const cancelOffer = async (id) => {
     try {
-      setAcceptRejectLoading(true);
-      await API({
-        uri: Constants.CANCEL_OFFER + `/${id}`,
-        token: store.token,
-      });
-      setOffers((st) => st.filter((i) => i._id !== id));
-      setAcceptRejectLoading(false);
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        await API({
+          method: 'POST',
+          uri: Constants.CANCEL_OFFER,
+          token: store.token,
+          body: JSON.stringify({
+            userId: store.user._id,
+            offerId: id,
+          }),
+        });
+        setOffers((st) => st.filter((i) => i._id !== id));
+        setAcceptRejectLoading(false);
+      }
     } catch (err) {
       setAcceptRejectLoading(false);
     }
+  };
+
+  const calcPrice = (start, end, rate) => {
+    let hours = end - start;
+    return hours * rate;
   };
 
   return (
@@ -274,47 +236,43 @@ const Profile = (props) => {
                     'ACTION',
                   ]}
                   values={invitations.map((item) => [
-                    [
-                      <Row>
-                        <img
-                          src={
-                            Constants.BASE_URL +
-                            '/' +
-                            item.company.proofs.profile
-                          }
-                          alt="Profile"
-                          className={classes.avatar}
-                        />
-                        {item.company.company.companyName}
-                      </Row>,
-                    ],
+                    <Row>
+                      <img
+                        src={
+                          Constants.BASE_URL + '/' + item.company.proofs.profile
+                        }
+                        alt="Profile"
+                        className={classes.avatar}
+                      />
+                      {item.company.company.companyName}
+                    </Row>,
                     moment(item.date).format('YYYY-MM-DD'),
                     `${item.start}h - ${item.end}h`,
                     `${item.company.address.city} (${item.company.address.zip})`,
-                    `${item.price}€`,
-                    [
-                      <div className={classes.itemRow}>
-                        <Star className={classes.yellowIcon} />{' '}
-                        {item.company.averageRating}/5 (
-                        {item.company.note.length} notes)
-                      </div>,
-                    ],
-                    [
-                      <div className={classes.itemRow}>
-                        <Tick
-                          className={classes.rowIcon}
-                          onClick={() =>
-                            !acceptRejectLoading && acceptInvite(item._id)
-                          }
-                        />
-                        <Cross
-                          className={classes.rowIcon}
-                          onClick={() =>
-                            !acceptRejectLoading && rejectInvite(item._id)
-                          }
-                        />
-                      </div>,
-                    ],
+                    `${calcPrice(
+                      item.start,
+                      item.end,
+                      store.user.delivery.perHour,
+                    )}€`,
+                    <div className={classes.itemRow}>
+                      <Star className={classes.yellowIcon} />{' '}
+                      {item.company.averageRating}/5 ({item.company.note.length}{' '}
+                      notes)
+                    </div>,
+                    <div className={classes.itemRow}>
+                      <Tick
+                        className={classes.rowIcon}
+                        onClick={() =>
+                          !acceptRejectLoading && acceptInvite(item._id)
+                        }
+                      />
+                      <Cross
+                        className={classes.rowIcon}
+                        onClick={() =>
+                          !acceptRejectLoading && rejectInvite(item._id)
+                        }
+                      />
+                    </div>,
                   ])}
                 />
               </div>
@@ -348,48 +306,22 @@ const Profile = (props) => {
                     moment(item.date).format('YYYY-MM-DD'),
                     `${item.start}h - ${item.end}h`,
                     `${item.company.address.city} (${item.company.address.zip})`,
-                    `${item.price}€`,
-                    `${item.status === 'pending' ? 'Confirmée' : 'Started'}€`,
-                    <div
-                      className={classes.tableButton}
-                      onClick={() =>
-                        !acceptRejectLoading && rejectInvite(item._id)
-                      }
-                    >
-                      ANNULER
-                    </div>,
+                    `${calcPrice(
+                      item.start,
+                      item.end,
+                      store.user.delivery.perHour,
+                    )}€`,
+                    `${item.status === 'pending' ? 'Confirmée' : 'Started'}`,
+                    <TableButton
+                      error
+                      text="ANNULER"
+                      disabled={acceptRejectLoading}
+                      onClick={() => cancelOffer(item._id)}
+                    />,
                   ])}
                   // dateItem={2}
                 />
               </div>
-              {console.log(
-                offers,
-                offers.map((item) => [
-                  <Row>
-                    <img
-                      src={
-                        Constants.BASE_URL + '/' + item.company.proofs.profile
-                      }
-                      alt="Profile"
-                      className={classes.avatar}
-                    />
-                    {item.company.company.companyName}
-                  </Row>,
-                  moment(item.date).format('YYYY-MM-DD'),
-                  `${item.start}h - ${item.end}h`,
-                  `${item.company.address.city} (${item.company.address.zip})`,
-                  `${item.price}€`,
-                  `${item.status === 'pending' ? 'Confirmée' : 'Started'}`,
-                  <div
-                    className={classes.tableButton}
-                    onClick={() =>
-                      !acceptRejectLoading && cancelOffer(item._id)
-                    }
-                  >
-                    ANNULER
-                  </div>,
-                ]),
-              )}
             </section>
           </>
         )}

@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Flag from '../../assets/images/flag.png';
-import ProfileImage from '../../assets/images/avatar.svg';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -14,7 +12,7 @@ import * as actionTypes from '../../store/actions/actionTypes';
 
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
-import Button from '../../components/Button';
+import TableButton from '../../components/TableButton';
 import Input from '../../components/ProfileInput';
 import Header from '../../components/HeaderCompany';
 import ProfileCard from '../../components/ProfileCard';
@@ -30,11 +28,10 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: 30,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   buttonContainer: {
     paddingTop: 20,
-    paddingBottom: 50,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -90,7 +87,7 @@ const Profile = (props) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
-  const [date, setDate] = useState('');
+  // const [date, setDate] = useState('');
 
   const documentSteps = [
     {
@@ -176,7 +173,7 @@ const Profile = (props) => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
-    setDate(moment(user.dob).format('YYYY-MM-DD'));
+    // setDate(moment(user.dob).format('YYYY-MM-DD'));
     // eslint-disable-next-line
   }, [store]);
 
@@ -218,10 +215,6 @@ const Profile = (props) => {
         formdata.append('SIRET', SIRET);
         formdata.append('timeslots', JSON.stringify(timeslotsArray));
 
-        for (let value of formdata.entries()) {
-          console.log(value[0], value[1]);
-        }
-
         const data = await API({
           method: 'PUT',
           uri: Constants.UPDATE_COMPANY_PROFILE,
@@ -249,7 +242,7 @@ const Profile = (props) => {
         <Grid container spacing={4}>
           <Grid item xs={12} xl={4}>
             <ProfileCard
-              image={ProfileImage}
+              image={Constants.BASE_URL + '/' + store.user.proofs.profile}
               name={firstName + ' ' + lastName}
               email={email}
               street={street}
@@ -286,13 +279,12 @@ const Profile = (props) => {
           className={classes.buttonContainer}
           style={{ justifyContent: 'flex-end' }}
         >
-          <Button
-            color="#000"
-            type="button"
+          <TableButton
+            color="black"
+            text={'UPDATE'}
             disabled={loading}
             onClick={onSubmit}
             style={{ width: 150, fontSize: 18 }}
-            text={loading ? 'Loading...' : 'UPDATE'}
           />
         </div>
       </div>
@@ -409,7 +401,8 @@ const Profile = (props) => {
           </Grid>
         }
         actions={
-          <Button
+          <TableButton
+            fullWidth
             text="Done"
             onClick={() => {
               if (

@@ -3,6 +3,10 @@ import { useSelector } from 'react-redux';
 import Rating from '@material-ui/lab/Rating';
 import { makeStyles } from '@material-ui/core/styles';
 import moment from 'moment';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import IconButton from '@material-ui/core/IconButton';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -10,6 +14,7 @@ import Constants from '../../globals/Constants';
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
 import Header from '../../components/HeaderCompany';
+import TableButton from '../../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,68 +53,44 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '15px',
     margin: '20px 0',
   },
-  tableButton: {
-    color: '#fff',
-    border: 'none',
-    borderRadius: 4,
-    fontSize: '10px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    padding: '5px 6px',
-    backgroundColor: '#c21d12',
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
   },
 }));
 
-const Profile = (props) => {
+const Row = (props) => {
+  const classes = useStyles();
+
+  return <div className={classes.row}>{props.children}</div>;
+};
+
+const Offers = (props) => {
   const classes = useStyles();
   const store = useSelector((state) => state);
 
   const [data, setData] = useState([]);
   const [value, setValue] = React.useState(2);
   const [loading, setLoading] = React.useState(true);
+  const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   useEffect(() => {
     const rows = [
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Confirmée',
-        [
-          <div className={classes.itemRow}>
-            <div className={classes.tableButton}>ANNULER</div>
-          </div>,
-        ],
-      ],
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Confirmée',
-        'Noté 4/5',
-      ],
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Annulé par le livreur',
-        'Pas d’action',
-      ],
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Annulé par moi',
-        'Pas d’action',
-      ],
       [
         '21/02/2020',
         '12h - 16h',
@@ -135,28 +116,6 @@ const Profile = (props) => {
           </div>,
         ],
       ],
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Invité, non confirmé',
-        [
-          <div className={classes.itemRow}>
-            <div className={classes.tableButton}>ANNULER</div>
-          </div>,
-        ],
-      ],
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Invité, non confirmé',
-        'Mission passée',
-      ],
     ];
     getData();
     // eslint-disable-next-line
@@ -174,16 +133,149 @@ const Profile = (props) => {
       setLoading(false);
     }
   };
+  const cancelOffer = async (offerId, userId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        await API({
+          method: 'POST',
+          uri: Constants.CANCEL_OFFER,
+          token: store.token,
+          body: JSON.stringify({
+            userId: userId,
+            offerId: offerId,
+          }),
+        });
+
+        const newData = data.map((offer) => {
+          let desiredPersons = [];
+          if (offer._id === offerId) {
+            offer.desiredPersons.map(
+              (person) =>
+                person.userId._id !== userId && desiredPersons.push(person),
+            );
+            offer.desiredPersons = desiredPersons;
+          }
+          return offer;
+        });
+
+        setData(newData);
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const calcPrice = (start, end, rate) => {
+    let hours = end - start;
+    return hours * rate;
+  };
+
+  function renderData() {
+    let newArray = [];
+    data.map((item) =>
+      item.desiredPersons.map(
+        (person) =>
+          person.status === 'pending' &&
+          newArray.push([
+            <Row>
+              <img
+                src={Constants.BASE_URL + '/' + person.userId.proofs.profile}
+                alt="Profile"
+                className={classes.avatar}
+              />
+              {person.userId.firstName + ' ' + person.userId.lastName}
+            </Row>,
+            moment(item.date).format('YYYY-MM-DD'),
+            `${item.start}h - ${item.end}h`,
+            `${person.userId.address.city} (${person.userId.address.zip})`,
+            `${calcPrice(
+              item.start,
+              item.end,
+              person.userId.delivery.perHour,
+            )}€`,
+            `${person.status}`,
+            <TableButton
+              error
+              text="ANNULER"
+              disabled={acceptRejectLoading}
+              onClick={() => cancelOffer(item._id, person.userId._id)}
+            />,
+          ]),
+      ),
+    );
+    return newArray;
+  }
+  function renderData2() {
+    let newArray = [];
+    data.map((item) =>
+      item.deliveryMen.map((person) =>
+        newArray.push([
+          <Row>
+            <img
+              src={Constants.BASE_URL + '/' + person.personId.proofs.profile}
+              alt="Profile"
+              className={classes.avatar}
+            />
+            {person.personId.firstName + ' ' + person.personId.lastName}
+          </Row>,
+          moment(item.date).format('YYYY-MM-DD'),
+          `${item.start}h - ${item.end}h`,
+          `${person.personId.address.city} (${person.personId.address.zip})`,
+          `${calcPrice(
+            item.start,
+            item.end,
+            person.personId.delivery.perHour,
+          )}€`,
+          `${person.status}`,
+          <>
+            <IconButton onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => console.log(item._id, person.personId._id)}
+              >
+                Start
+              </MenuItem>
+              <MenuItem
+                onClick={() => console.log(item._id, person.personId._id)}
+              >
+                Complete
+              </MenuItem>
+              <MenuItem
+                onClick={() =>
+                  !acceptRejectLoading &&
+                  cancelOffer(item._id, person.personId._id)
+                }
+              >
+                Reject
+              </MenuItem>
+            </Menu>
+          </>,
+        ]),
+      ),
+    );
+    return newArray;
+  }
 
   return (
     <div className={classes.root}>
       <Header />
       <div className={classes.content}>
-        {/* {loading ? (
+        {loading ? (
           <Loader.Progress />
         ) : (
           <section id="table">
-            <div className={classes.tableHeader}>TOUTES LES MISSIONS</div>
+            <div className={classes.tableHeader}>
+              INVITED: TOUTES LES MISSIONS
+            </div>
             <div className={classes.tableContainer}>
               <Table
                 headers={[
@@ -195,14 +287,31 @@ const Profile = (props) => {
                   'STATUS',
                   'ACTION',
                 ]}
-                values={data}
+                values={renderData()}
+              />
+            </div>
+            <div className={classes.tableHeader}>
+              DELIVERERS: TOUTES LES MISSIONS
+            </div>
+            <div className={classes.tableContainer}>
+              <Table
+                headers={[
+                  'DATE',
+                  'HEURE',
+                  'NOM DU LIVREUR',
+                  'TYPE DE VEHICULE',
+                  'MONTANT TOTAL',
+                  'STATUS',
+                  'ACTION',
+                ]}
+                values={renderData2()}
               />
             </div>
           </section>
-        )} */}
+        )}
       </div>
     </div>
   );
 };
 
-export default Profile;
+export default Offers;

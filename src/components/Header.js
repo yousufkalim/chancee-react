@@ -12,9 +12,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import * as actionTypes from '../store/actions/actionTypes';
-import ProfileImage from '../assets/images/avatar.svg';
+import Constants from '../globals/Constants';
 import Logo from '../assets/images/Logo.png';
+import * as actionTypes from '../store/actions/actionTypes';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -138,7 +138,7 @@ export default function Login(props) {
         <div>
           <div className={classes.profile} onClick={handleClick}>
             <img
-              src={ProfileImage}
+              src={Constants.BASE_URL + '/' + store.user.proofs.profile}
               alt="profileImage"
               className={classes.profileImage}
             />

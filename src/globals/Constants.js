@@ -15,7 +15,7 @@ const endpoints = {
   GET_INVITATIONS: BASE_URL + '/api/v1/user/invites',
   ACCEPT_INVITE: BASE_URL + '/api/v1/user/accept',
   REJECT_INVITE: BASE_URL + '/api/v1/user/reject',
-  CANCEL_OFFER: BASE_URL + '/api/v1/user/cancel',
+  CANCEL_OFFER: BASE_URL + '/api/v1/offer/cancel',
   RATE_COMPANY: BASE_URL + '/api/v1/user/rate-user',
   // Company
   REGISTER_COMPANY: BASE_URL + '/api/v1/company/create-company',

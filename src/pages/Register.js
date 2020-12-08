@@ -10,7 +10,7 @@ import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
 
 import Input from '../components/Input';
-import Button from '../components/Button';
+import TableButton from '../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -268,12 +268,17 @@ export default function Register(props) {
           />
         </div>
         <div className={classes.submitButton}>
-          <Button
-            type="submit"
-            text={loading ? 'Loading...' : 'ENREGISTREMENT'}
+          <TableButton
+            fullWidth
+            style={{
+              width: '70%',
+              height: 46,
+              borderRadius: 4,
+              fontWeight: 'bold',
+            }}
+            text={'ENREGISTREMENT'}
             disabled={loading}
             onClick={onSubmit}
-            style={{ width: '70%' }}
           >
             <SvgIcon className={classes.icon}>
               <path
@@ -333,7 +338,7 @@ export default function Register(props) {
                 fill="currentColor"
               />
             </SvgIcon>
-          </Button>
+          </TableButton>
         </div>
       </div>
       <div className={classes.forgotRow}>

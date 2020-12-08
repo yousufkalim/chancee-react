@@ -14,7 +14,7 @@ import { ReactComponent as Home } from '../assets/images/home.svg';
 import { ReactComponent as Search } from '../assets/images/Search.svg';
 import { ReactComponent as Users } from '../assets/images/users.svg';
 import * as actionTypes from '../store/actions/actionTypes';
-import ProfileImage from '../assets/images/avatar.svg';
+import Constants from '../globals/Constants';
 
 const drawerWidth = 90;
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +131,7 @@ const Header = (props) => {
               </NavLink>
             </span>
             <img
-              src={ProfileImage}
+              src={Constants.BASE_URL + '/' + store.user.proofs.profile}
               alt="profileImage"
               className={classes.profileImage}
             />
