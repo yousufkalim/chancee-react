@@ -252,7 +252,7 @@ const Profile = (props) => {
               phone={phone}
               siret={SIRET}
               rocket="32"
-              rating="32"
+              rating={store.user.averageRating}
               notes="32"
               onClick={() => setProfileModal(true)}
             />

@@ -7,7 +7,6 @@ import moment from 'moment';
 import { ReactComponent as Star } from '../../assets/images/star.svg';
 import { ReactComponent as Tick } from '../../assets/images/Tick2.svg';
 import { ReactComponent as Cross } from '../../assets/images/Cross.svg';
-import { ReactComponent as CompanyIcon } from '../../assets/images/diamond.svg';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -95,37 +94,6 @@ const Profile = (props) => {
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
   useEffect(() => {
-    const offersArray = [
-      [
-        [
-          <div className={classes.itemRow}>
-            <CompanyIcon /> Starbucks
-          </div>,
-        ],
-        '14/11/2020',
-        '8h - 13h',
-        'Moissy (77)',
-        '130€',
-        'Réalisée',
-        [
-          <div className={classes.itemRow}>
-            <Rating
-              value={value}
-              onChange={(event, newValue) => {
-                setValue(newValue);
-              }}
-              size="small"
-            />
-            <div
-              className={classes.tableButton}
-              style={{ backgroundColor: '#000', marginLeft: 5 }}
-            >
-              NOTER
-            </div>
-          </div>,
-        ],
-      ],
-    ];
     getData();
     // eslint-disable-next-line
   }, []);
@@ -201,10 +169,44 @@ const Profile = (props) => {
       setAcceptRejectLoading(false);
     }
   };
+  const rateUser = async (offerId, companyId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const response = await API({
+          method: 'POST',
+          uri: Constants.RATE_COMPANY,
+          token: store.token,
+          body: JSON.stringify({
+            note: '',
+            strength: value,
+            offerId: offerId,
+            toUserId: companyId,
+          }),
+        });
+
+        let newData = offers.map((offer) => {
+          if (String(offer._id) === String(offerId)) {
+            offer.company = response.user;
+          }
+          return offer;
+        });
+
+        setOffers(newData);
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
 
   const calcPrice = (start, end, rate) => {
     let hours = end - start;
     return hours * rate;
+  };
+  const checkStatus = (offer) => {
+    return offer.deliveryMen.find((item) => item.personId === store.user._id)
+      .status;
   };
 
   return (
@@ -221,7 +223,7 @@ const Profile = (props) => {
                   INVITATIONS RECUES
                 </div>
                 <div className={classes.tableHeaderRight}>
-                  MONTANT TOTAL ACQUIS : 43.540€
+                  MONTANT TOTAL ACQUIS : {store.user.totalEaring}€
                 </div>
               </div>
               <div className={classes.tableContainer}>
@@ -236,7 +238,7 @@ const Profile = (props) => {
                     'ACTION',
                   ]}
                   values={invitations.map((item) => [
-                    <Row>
+                    <Row key={item._id}>
                       <img
                         src={
                           Constants.BASE_URL + '/' + item.company.proofs.profile
@@ -293,7 +295,7 @@ const Profile = (props) => {
                     'ACTION',
                   ]}
                   values={offers.map((item) => [
-                    <Row>
+                    <Row key={item._id}>
                       <img
                         src={
                           Constants.BASE_URL + '/' + item.company.proofs.profile
@@ -311,13 +313,50 @@ const Profile = (props) => {
                       item.end,
                       store.user.delivery.perHour,
                     )}€`,
-                    `${item.status === 'pending' ? 'Confirmée' : 'Started'}`,
-                    <TableButton
-                      error
-                      text="ANNULER"
-                      disabled={acceptRejectLoading}
-                      onClick={() => cancelOffer(item._id)}
-                    />,
+                    checkStatus(item),
+                    checkStatus(item) === 'completed' ? (
+                      item.company.rating &&
+                      item.company.rating.rating.some(
+                        (rating) => rating.offerId === item._id,
+                      ) ? (
+                        <div>
+                          Noté{' '}
+                          {
+                            item.company.rating.rating.filter(
+                              (rating) => rating.offerId === item._id,
+                            )[0].strength
+                          }
+                          /5
+                        </div>
+                      ) : (
+                        <div className={classes.itemRow}>
+                          <Rating
+                            name="rating"
+                            value={value}
+                            onChange={(event, newValue) => {
+                              setValue(newValue);
+                            }}
+                            size="small"
+                          />
+                          <TableButton
+                            color="black"
+                            text="NOTER"
+                            disabled={acceptRejectLoading}
+                            onClick={() => rateUser(item._id, item.company._id)}
+                            style={{ marginLeft: 5, height: 25 }}
+                          />
+                        </div>
+                      )
+                    ) : checkStatus(item) === 'pending' ? (
+                      <TableButton
+                        color="error"
+                        text="ANNULER"
+                        disabled={acceptRejectLoading}
+                        onClick={() => cancelOffer(item._id)}
+                      />
+                    ) : (
+                      'Pas d’action'
+                    ),
                   ])}
                   // dateItem={2}
                 />

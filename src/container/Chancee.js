@@ -56,6 +56,7 @@ const LFS = () => {
         setLoading(false);
       }
     } catch (err) {
+      console.log('CheckLogin Error');
       localStorage.removeItem('chanceeToken');
       setLoading(false);
     }

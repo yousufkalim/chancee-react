@@ -16,7 +16,7 @@ const endpoints = {
   ACCEPT_INVITE: BASE_URL + '/api/v1/user/accept',
   REJECT_INVITE: BASE_URL + '/api/v1/user/reject',
   CANCEL_OFFER: BASE_URL + '/api/v1/offer/cancel',
-  RATE_COMPANY: BASE_URL + '/api/v1/user/rate-user',
+  RATE_COMPANY: BASE_URL + '/api/v1/user/rate-company',
   // Company
   REGISTER_COMPANY: BASE_URL + '/api/v1/company/create-company',
   COMPANY_STEP1: BASE_URL + '/api/v1/company/update-companyinfo',
@@ -26,6 +26,10 @@ const endpoints = {
   RATE_USER: BASE_URL + '/api/v1/company/rate-user',
   SEND_INVITE: BASE_URL + '/api/v1/offer/invite',
   SEARCH: BASE_URL + '/api/v1/offer/new-offer',
+  ACTIVE_OFFER_USER: BASE_URL + '/api/v1/company/active',
+  START_OFFER_USER: BASE_URL + '/api/v1/company/start',
+  COMPLETE_OFFER_USER: BASE_URL + '/api/v1/company/completed',
+
   // Admin
   REGISTER_ADMIN: BASE_URL + '/api/v1/admin',
   DELETE_USER: BASE_URL + '/api/v1/admin/delete-user',

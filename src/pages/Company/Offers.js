@@ -77,8 +77,8 @@ const Offers = (props) => {
   const store = useSelector((state) => state);
 
   const [data, setData] = useState([]);
-  const [value, setValue] = React.useState(2);
-  const [loading, setLoading] = React.useState(true);
+  const [value, setValue] = useState(2);
+  const [loading, setLoading] = useState(true);
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -90,33 +90,6 @@ const Offers = (props) => {
   };
 
   useEffect(() => {
-    const rows = [
-      [
-        '21/02/2020',
-        '12h - 16h',
-        'Ahmad Jami',
-        'Voitures',
-        '220€',
-        'Completé',
-        [
-          <div className={classes.itemRow}>
-            <Rating
-              value={value}
-              onChange={(event, newValue) => {
-                setValue(newValue);
-              }}
-              size="small"
-            />
-            <div
-              className={classes.tableButton}
-              style={{ backgroundColor: '#000', marginLeft: 5 }}
-            >
-              NOTER
-            </div>
-          </div>,
-        ],
-      ],
-    ];
     getData();
     // eslint-disable-next-line
   }, []);
@@ -166,6 +139,127 @@ const Offers = (props) => {
       setAcceptRejectLoading(false);
     }
   };
+  const activeOffer = async (offerId, userId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const response = await API({
+          method: 'POST',
+          uri: Constants.ACTIVE_OFFER_USER,
+          token: store.token,
+          body: JSON.stringify({
+            userId: userId,
+            offerId: offerId,
+          }),
+        });
+
+        let newData = data.map((offer) => {
+          if (String(offer._id) === String(offerId)) {
+            offer = response.offer;
+          }
+          return offer;
+        });
+
+        setData(newData);
+        handleClose();
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const startOffer = async (offerId, userId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const response = await API({
+          method: 'POST',
+          uri: Constants.START_OFFER_USER,
+          token: store.token,
+          body: JSON.stringify({
+            userId: userId,
+            offerId: offerId,
+          }),
+        });
+
+        let newData = data.map((offer) => {
+          if (String(offer._id) === String(offerId)) {
+            offer = response.offer;
+          }
+          return offer;
+        });
+        setData(newData);
+        handleClose();
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const completeOffer = async (offerId, userId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const response = await API({
+          method: 'POST',
+          uri: Constants.COMPLETE_OFFER_USER,
+          token: store.token,
+          body: JSON.stringify({
+            userId: userId,
+            offerId: offerId,
+          }),
+        });
+        let newData = data.map((offer) => {
+          if (String(offer._id) === String(offerId)) {
+            offer = response.offer;
+          }
+          return offer;
+        });
+        console.log(newData, response);
+        setData(newData);
+        handleClose();
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
+  const rateUser = async (offerId, userId) => {
+    try {
+      if (window.confirm('Are you sure about this action?')) {
+        setAcceptRejectLoading(true);
+        const response = await API({
+          method: 'POST',
+          uri: Constants.RATE_USER,
+          token: store.token,
+          body: JSON.stringify({
+            note: '',
+            strength: value,
+            offerId: offerId,
+            toUserId: userId,
+          }),
+        });
+
+        let newData = data.map((offer) => {
+          if (String(offer._id) === String(offerId)) {
+            offer.deliveryMen.map((person) => {
+              if (person.personId._id === userId) {
+                person.personId = response.user;
+              }
+              return person;
+            });
+          }
+          return offer;
+        });
+
+        setData(newData);
+
+        setAcceptRejectLoading(false);
+      }
+    } catch (err) {
+      setAcceptRejectLoading(false);
+    }
+  };
   const calcPrice = (start, end, rate) => {
     let hours = end - start;
     return hours * rate;
@@ -178,7 +272,7 @@ const Offers = (props) => {
         (person) =>
           person.status === 'pending' &&
           newArray.push([
-            <Row>
+            <Row key={person._id}>
               <img
                 src={Constants.BASE_URL + '/' + person.userId.proofs.profile}
                 alt="Profile"
@@ -196,7 +290,7 @@ const Offers = (props) => {
             )}€`,
             `${person.status}`,
             <TableButton
-              error
+              color="error"
               text="ANNULER"
               disabled={acceptRejectLoading}
               onClick={() => cancelOffer(item._id, person.userId._id)}
@@ -211,7 +305,7 @@ const Offers = (props) => {
     data.map((item) =>
       item.deliveryMen.map((person) =>
         newArray.push([
-          <Row>
+          <Row key={person._id}>
             <img
               src={Constants.BASE_URL + '/' + person.personId.proofs.profile}
               alt="Profile"
@@ -229,35 +323,95 @@ const Offers = (props) => {
           )}€`,
           `${person.status}`,
           <>
-            <IconButton onClick={handleClick}>
-              <MoreVertIcon />
-            </IconButton>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
-              <MenuItem
-                onClick={() => console.log(item._id, person.personId._id)}
-              >
-                Start
-              </MenuItem>
-              <MenuItem
-                onClick={() => console.log(item._id, person.personId._id)}
-              >
-                Complete
-              </MenuItem>
-              <MenuItem
-                onClick={() =>
-                  !acceptRejectLoading &&
-                  cancelOffer(item._id, person.personId._id)
+            {person.status !== 'completed' ? (
+              <>
+                <IconButton onClick={handleClick}>
+                  <MoreVertIcon />
+                </IconButton>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  {person.status === 'pending' && (
+                    <MenuItem
+                      disabled={acceptRejectLoading}
+                      onClick={() =>
+                        !acceptRejectLoading &&
+                        activeOffer(item._id, person.personId._id)
+                      }
+                    >
+                      Active
+                    </MenuItem>
+                  )}
+                  {(person.status === 'pending' ||
+                    person.status === 'active') && (
+                    <MenuItem
+                      disabled={acceptRejectLoading}
+                      onClick={() =>
+                        !acceptRejectLoading &&
+                        startOffer(item._id, person.personId._id)
+                      }
+                    >
+                      Start
+                    </MenuItem>
+                  )}
+                  {person.status === 'started' && (
+                    <MenuItem
+                      disabled={acceptRejectLoading}
+                      onClick={() =>
+                        !acceptRejectLoading &&
+                        completeOffer(item._id, person.personId._id)
+                      }
+                    >
+                      Complete
+                    </MenuItem>
+                  )}
+                  <MenuItem
+                    disabled={acceptRejectLoading}
+                    onClick={() =>
+                      !acceptRejectLoading &&
+                      cancelOffer(item._id, person.personId._id)
+                    }
+                  >
+                    Reject
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : person.personId.rating &&
+              person.personId.rating.rating.some(
+                (rating) => rating.offerId === item._id,
+              ) ? (
+              <div>
+                Noté{' '}
+                {
+                  person.personId.rating.rating.filter(
+                    (rating) => rating.offerId === item._id,
+                  )[0].strength
                 }
-              >
-                Reject
-              </MenuItem>
-            </Menu>
+                /5
+              </div>
+            ) : (
+              <div className={classes.itemRow}>
+                <Rating
+                  name="rating"
+                  value={value}
+                  onChange={(event, newValue) => {
+                    setValue(newValue);
+                  }}
+                  size="small"
+                />
+                <TableButton
+                  color="black"
+                  text="NOTER"
+                  disabled={acceptRejectLoading}
+                  onClick={() => rateUser(item._id, person.personId._id)}
+                  style={{ marginLeft: 5, height: 25 }}
+                />
+              </div>
+            )}
           </>,
         ]),
       ),

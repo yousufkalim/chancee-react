@@ -26,15 +26,15 @@ const useStyles = makeStyles((theme) => ({
   root: {
     paddingTop: 90,
     paddingLeft: 90,
+    minHeight: '100vh',
     backgroundColor: '#F5F7FB',
   },
   content: {
     padding: 30,
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   buttonContainer: {
     paddingTop: 20,
-    paddingBottom: 50,
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -230,8 +230,9 @@ const Profile = (props) => {
         ? 2
         : 3;
 
-    setLicense(user.delivery.vehicle.licence);
-    setVehicleProof(user.delivery.vehicle.purchaseProof);
+    user.delivery.vehicle.licence && setLicense(user.delivery.vehicle.licence);
+    user.delivery.vehicle.purchaseProof &&
+      setVehicleProof(user.delivery.vehicle.purchaseProof);
     setVehicles(new Set([vehicleType]));
     setLat(user.address.location[1]);
     setCity(user.address.city);
@@ -371,7 +372,7 @@ const Profile = (props) => {
               phone={phone}
               siret={SIRET}
               rocket="32"
-              rating="32"
+              rating={store.user.averageRating}
               notes="32"
               onClick={() => setProfileModal(true)}
             />
