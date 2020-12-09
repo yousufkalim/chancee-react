@@ -215,7 +215,6 @@ const Offers = (props) => {
           }
           return offer;
         });
-        console.log(newData, response);
         setData(newData);
         handleClose();
         setAcceptRejectLoading(false);

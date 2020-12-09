@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -93,6 +93,10 @@ export default function Profile(props) {
   const [conditions, setConditions] = useState(false);
   const [rateCheckbox, setRateCheckbox] = useState(false);
 
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
+  const [average, setAverage] = useState(0);
+
   const documentSteps = [
     {
       id: 1,
@@ -114,6 +118,25 @@ export default function Profile(props) {
       case 3:
       default:
         console.log('default');
+    }
+  };
+
+  useEffect(() => {
+    getRates();
+    // eslint-disable-next-line
+  }, []);
+
+  const getRates = async () => {
+    try {
+      const rates = await API({
+        uri: Constants.GET_AVERAGE_RATES,
+        token: store.token,
+      });
+      setMin(rates.min);
+      setMax(rates.max);
+      setAverage(rates.average);
+    } catch (err) {
+      getRates();
     }
   };
 
@@ -264,9 +287,9 @@ export default function Profile(props) {
           </section>
           <section id="rate">
             <RateSlider
-              minimum="10"
-              average="10"
-              maximum="10"
+              minimum={min}
+              average={average}
+              maximum={max}
               value={rate}
               rateCheckbox={rateCheckbox}
               onChange={(e, value) => setRate(value)}

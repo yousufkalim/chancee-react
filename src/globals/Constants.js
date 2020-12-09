@@ -1,5 +1,4 @@
-// const BASE_URL = 'https://cors-anywhere.herokuapp.com/http://localhost:5000';
-const BASE_URL = 'http://192.168.18.8:5000';
+const BASE_URL = process.env.REACT_APP_SERVER_URL;
 
 const endpoints = {
   BASE_URL,
@@ -17,6 +16,7 @@ const endpoints = {
   REJECT_INVITE: BASE_URL + '/api/v1/user/reject',
   CANCEL_OFFER: BASE_URL + '/api/v1/offer/cancel',
   RATE_COMPANY: BASE_URL + '/api/v1/user/rate-company',
+  GET_AVERAGE_RATES: BASE_URL + '/api/v1/user/get-rates',
   // Company
   REGISTER_COMPANY: BASE_URL + '/api/v1/company/create-company',
   COMPANY_STEP1: BASE_URL + '/api/v1/company/update-companyinfo',

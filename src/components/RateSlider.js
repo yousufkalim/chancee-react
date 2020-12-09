@@ -93,7 +93,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sliderInfoText: {
     color: 'red',
-    fontSize: 10,
+    fontSize: 12,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -116,6 +116,13 @@ const useStyles = makeStyles((theme) => ({
   link: {
     color: '#00A1FF',
     textDecoration: 'none',
+  },
+  label: {
+    fontSize: 16,
+    float: 'right',
+    color: '#FC917C',
+    marginBottom: -10,
+    fontWeight: 'bold',
   },
 }));
 
@@ -165,6 +172,7 @@ const RateSlider = (props) => {
               </span>
             </>
           )}
+          <span className={classes.label}>{props.value} €</span>
           <Slider
             min={8}
             step={1}
@@ -179,7 +187,7 @@ const RateSlider = (props) => {
                 label: '26€',
               },
             ]}
-            valueLabelDisplay="on"
+            // valueLabelDisplay="on"
             className={classes.slider}
             value={props.value}
             onChange={props.onChange}
@@ -188,15 +196,15 @@ const RateSlider = (props) => {
             <Grid item xs={12} className={classes.sliderInfo} container>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MINIMUM PAR LES AUTRES LIVREURS:</span>
-                <span>{props.minimum}€</span>
+                <span style={{ fontWeight: 'bold' }}>{props.minimum} €</span>
               </Grid>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MOYEN PAR LES AUTRES LIVREURS:</span>
-                <span>{props.average}€</span>
+                <span style={{ fontWeight: 'bold' }}>{props.average} €</span>
               </Grid>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MAXIMAL PAR LES AUTRES LIVREURS:</span>
-                <span>{props.maximum}€</span>
+                <span style={{ fontWeight: 'bold' }}>{props.maximum} €</span>
               </Grid>
             </Grid>
           )}

@@ -102,6 +102,10 @@ const Profile = (props) => {
   const [email, setEmail] = useState('');
   // const [date, setDate] = useState('');
 
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
+  const [average, setAverage] = useState(0);
+
   // can add a name field also to differentiate
   const documentSteps = [
     {
@@ -205,6 +209,7 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
+    getRates();
     let timeslotsArray = defaultTimeslots;
     store.user.timeslots.map((timeslot, index) => {
       if (timeslot.slots.length > 0) {
@@ -260,6 +265,19 @@ const Profile = (props) => {
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, [store]);
+  const getRates = async () => {
+    try {
+      const rates = await API({
+        uri: Constants.GET_AVERAGE_RATES,
+        token: store.token,
+      });
+      setMin(rates.min);
+      setMax(rates.max);
+      setAverage(rates.average);
+    } catch (err) {
+      getRates();
+    }
+  };
 
   const onSubmit = async () => {
     try {
@@ -377,93 +395,93 @@ const Profile = (props) => {
               onClick={() => setProfileModal(true)}
             />
           </Grid>
+          {/* <section id="vehicles"> */}
           <Grid item xs={12} xl={8}>
-            <section id="vehicles">
-              <Card>
-                <Grid container>
-                  <Grid item xs={8}>
-                    <VehicleSelector
-                      checkbox={false}
-                      values={vehicles}
-                      onChange={(value) => {
-                        let newVehicles = new Set(vehicles);
-                        newVehicles.clear();
-                        newVehicles.add(value);
-                        setVehicles(newVehicles);
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
-                    {!vehicles.has(1) && !vehicles.has(3) && (
-                      <DocumentUploading
-                        justCheckbox={true}
-                        steps={documentSteps2}
-                        getStep={getDocumentStep2}
-                      />
-                    )}
-                  </Grid>
+            <Card>
+              <Grid container>
+                <Grid item xs={8}>
+                  <VehicleSelector
+                    checkbox={false}
+                    values={vehicles}
+                    onChange={(value) => {
+                      let newVehicles = new Set(vehicles);
+                      newVehicles.clear();
+                      newVehicles.add(value);
+                      setVehicles(newVehicles);
+                    }}
+                  />
                 </Grid>
-              </Card>
-            </section>
+                <Grid item xs={4}>
+                  {!vehicles.has(1) && !vehicles.has(3) && (
+                    <DocumentUploading
+                      justCheckbox={true}
+                      steps={documentSteps2}
+                      getStep={getDocumentStep2}
+                    />
+                  )}
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+          {/* </section> */}
+          <Grid item xs={12} xl={6}>
+            {/* <section id="rate"> */}
+            <Card>
+              <RateSlider
+                fullWidth
+                minimum={min}
+                average={average}
+                maximum={max}
+                value={rate}
+                noCheckbox={true}
+                onChange={(e, value) => setRate(value)}
+              />
+            </Card>
+            {/* </section> */}
           </Grid>
           <Grid item xs={12} xl={6}>
-            <section id="rate">
-              <Card>
-                <RateSlider
-                  fullWidth
-                  minimum="10"
-                  average="10"
-                  maximum="10"
-                  value={rate}
-                  noCheckbox={true}
-                  onChange={(e, value) => setRate(value)}
-                />
-              </Card>
-            </section>
+            {/* <section id="documentUploading"> */}
+            <Card>
+              <DocumentUploading
+                justCheckbox={true}
+                steps={documentSteps}
+                getStep={getDocumentStep}
+              />
+            </Card>
+            {/* </section> */}
           </Grid>
           <Grid item xs={12} xl={6}>
-            <section id="documentUploading">
-              <Card>
-                <DocumentUploading
-                  justCheckbox={true}
-                  steps={documentSteps}
-                  getStep={getDocumentStep}
-                />
-              </Card>
-            </section>
+            {/* <section id="volume"> */}
+            <Card>
+              <VolumeSlider
+                value={volume}
+                onChange={(e, value) => setVolume(value)}
+              />
+            </Card>
+            {/* </section> */}
           </Grid>
           <Grid item xs={12} xl={6}>
-            <section id="volume">
-              <Card>
-                <VolumeSlider
-                  value={volume}
-                  onChange={(e, value) => setVolume(value)}
-                />
-              </Card>
-            </section>
-          </Grid>
-          <Grid item xs={12} xl={6}>
-            <section id="distance">
-              <Card>
-                <DistanceSlider
-                  value={KM}
-                  onChange={(e, value) => value >= 2 && setKM(value)}
-                />
-              </Card>
-            </section>
+            {/* <section id="distance"> */}
+            <Card>
+              <DistanceSlider
+                value={KM}
+                onChange={(e, value) => value >= 2 && setKM(value)}
+              />
+            </Card>
+            {/* </section> */}
           </Grid>
           <Grid item xs={12}>
-            <section id="availability">
-              <Card>
-                <AvailabilitySelector
-                  defaultValue={defaultTimeslots}
-                  value={timeslots}
-                  onChange={(value) => {
-                    setTimeSlots(value);
-                  }}
-                />
-              </Card>
-            </section>
+            {/* <section id="availability"> */}
+            <Card>
+              <AvailabilitySelector
+                defaultValue={defaultTimeslots}
+                value={timeslots}
+                onChange={(value) => {
+                  setTimeSlots(value);
+                }}
+              />
+            </Card>
+            {/* </section> */}
           </Grid>
         </Grid>
         <div

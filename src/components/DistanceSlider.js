@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     color: '#8B9AFC',
     height: 54,
+    // overflow: 'hidden',
     '& .MuiSlider-track': {
       height: 65,
       borderRadius: 6,
@@ -70,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiSlider-valueLabel': {
       marginTop: 38,
-      marginLeft: -104,
+      marginLeft: 55,
       color: 'transparent',
       fontSize: 20,
       '&::after': {
@@ -79,10 +80,23 @@ const useStyles = makeStyles((theme) => ({
         top: 4,
         left: 30,
         whiteSpace: 'nowrap',
-        color: '#FFF',
+        color: 'red',
         fontSize: 20,
       },
+      '& .PrivateValueLabel-circle-65': {
+        color: '#fff',
+      },
+      '& .PrivateValueLabel-label-66': {
+        color: 'red',
+      },
     },
+  },
+  label: {
+    fontSize: 16,
+    float: 'right',
+    color: '#8B9AFC',
+    marginBottom: -10,
+    fontWeight: 'bold',
   },
 }));
 
@@ -102,6 +116,7 @@ const DistanceSlider = (props) => {
       />
       <Grid container>
         <Grid item xs={12}>
+          <span className={classes.label}>{props.value} km</span>
           <Slider
             min={0}
             step={1}
@@ -117,7 +132,7 @@ const DistanceSlider = (props) => {
               },
             ]}
             value={props.value}
-            valueLabelDisplay="on"
+            // valueLabelDisplay="on"
             onChange={props.onChange}
             className={classes.slider}
           />
