@@ -5,6 +5,7 @@ const endpoints = {
   LOGIN: BASE_URL + '/api/v1/auth/login',
   PASSWORD_RECOVER: BASE_URL + '/api/v1/auth/reset',
   PROFILE: BASE_URL + '/api/v1/user/get-user-by-token',
+  GET_RATINGS_OFFERS: BASE_URL + '/api/v1/offer/total',
   // User
   REGISTER_USER: BASE_URL + '/api/v1/user/create-deliveryman',
   USER_STEP1: BASE_URL + '/api/v1/user/update-personalinfo',

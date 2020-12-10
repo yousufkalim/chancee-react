@@ -16,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'grid',
     placeItems: 'center',
   },
+  pageProgress: {
+    height: 'calc(100vh - 90px)',
+    width: '100%',
+    display: 'grid',
+    placeItems: 'center',
+  },
 }));
 
 const Progress = (props) => {
@@ -43,8 +49,23 @@ const CenterProgress = (props) => {
     </div>
   );
 };
+const PageProgress = (props) => {
+  const classes = useStyles();
 
-export default {
+  return (
+    <div className={classes.pageProgress}>
+      <CircularProgress
+        color={props.color || 'inherit'}
+        size={props.size || 40}
+      />
+    </div>
+  );
+};
+
+let obj = {
   Progress,
   CenterProgress,
+  PageProgress,
 };
+
+export default obj;

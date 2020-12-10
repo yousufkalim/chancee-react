@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { makeStyles } from '@material-ui/core/styles';
@@ -90,6 +90,11 @@ export default function Profile(props) {
   const [logo, setLogo] = useState('');
   const [identity, setIdentity] = useState('');
   const [timeslots, setTimeSlots] = useState([]);
+
+  useEffect(() => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }, []);
 
   const documentSteps = [
     {

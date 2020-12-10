@@ -41,8 +41,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile(props) {
   const classes = useStyles();
-  const [endHour, setEndHour] = useState('23');
-  const [startHour, setStartHour] = useState('2');
+  const [endHour, setEndHour] = useState('');
+  const [startHour, setStartHour] = useState('');
   const [selectedDay, setSelectedDay] = useState(1);
   const [getUpdate, setGetUpdate] = useState(false);
   const [dayModal, setDayModal] = React.useState(false);
@@ -149,7 +149,7 @@ export default function Profile(props) {
       <Modal
         open={dayModal}
         onClose={() => setDayModal((st) => !st)}
-        title="Add Availability"
+        title="Ajouter la disponibilité"
         body={
           <>
             <Grid container>
@@ -183,8 +183,8 @@ export default function Profile(props) {
                 fullWidth
                 type="number"
                 value={startHour}
-                label="Start Hour"
-                placeholder="Start Hour"
+                label="Heure de début"
+                placeholder="Heure de début"
                 onChange={(e) => {
                   if (e.target.value >= 0 && e.target.value < 23) {
                     setStartHour(e.target.value);
@@ -196,8 +196,8 @@ export default function Profile(props) {
                 fullWidth
                 type="number"
                 value={endHour}
-                label="End Hour"
-                placeholder="End Hour"
+                label="Heure de fin"
+                placeholder="Heure de fin"
                 onChange={(e) => {
                   if (e.target.value >= 0 && e.target.value < 24) {
                     setEndHour(e.target.value);
@@ -223,10 +223,10 @@ export default function Profile(props) {
                   setTimeSlots(newSlots);
                 }
                 setDayModal(false);
-                // setEndHour('');
-                // setStartHour('');
+                setEndHour('');
+                setStartHour('');
               }}
-              text="Done"
+              text="Terminé"
             />
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <TableButton
@@ -238,7 +238,7 @@ export default function Profile(props) {
                   startHour === '' ||
                   endHour === ''
                 ) {
-                  alert('Invalid Timestamp!');
+                  alert('Horodatage invalide!');
                 } else {
                   let timeslotArray = timeslots;
                   let times = timeslotArray[selectedDay - 1].slots;
@@ -262,15 +262,17 @@ export default function Profile(props) {
                     timeslotArray[selectedDay - 1].slots = times;
                     setTimeSlots(timeslotArray);
                   } else {
-                    alert('Cannot add overlapping time slots!');
+                    alert(
+                      "Impossible d'ajouter des plages horaires qui se chevauchent!",
+                    );
                   }
                   setGetUpdate((st) => !st);
                 }
               }}
               text={
                 timeslots[selectedDay - 1].slots.length >= 3
-                  ? 'Max 3 allowed!'
-                  : 'Add Timestamp'
+                  ? 'Max 3 permis!'
+                  : 'Ajouter un horodatage'
               }
             />
           </>

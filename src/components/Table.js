@@ -31,11 +31,15 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: '#FFF',
         '& .MuiTableCell-body': {
           fontSize: 16,
-          fontWeight: 600,
+          fontWeight: 500,
           whiteSpace: 'nowrap',
         },
       },
     },
+  },
+  error: {
+    fontSize: 12,
+    color: '#c21d12',
   },
 }));
 
@@ -58,19 +62,39 @@ const Search = (props) => {
           {props.values.length === 0 ? (
             <TableRow>
               <TableCell align="center" colSpan={props.headers.length}>
-                We came up empty!
+                Nous sommes montés vides!
               </TableCell>
             </TableRow>
           ) : (
-            props.values.map((row) => (
-              <TableRow key={row}>
-                {row.map((i, index) => (
-                  <TableCell key={i + index} align="center">
-                    {i}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))
+            props.values.map((row, index) => {
+              return (
+                <TableRow key={row + index}>
+                  {row.map((i, index) => {
+                    let show = false;
+                    if (parseInt(index) === parseInt(props.dateItem - 1)) {
+                      let startHour = i.split(' -')[0].split('h')[0];
+                      let endHour = i.split('- ')[1].split('h')[0];
+                      if (parseInt(startHour) >= 0 && parseInt(startHour) < 8) {
+                        show = true;
+                      }
+                      if (parseInt(endHour) >= 20 && parseInt(endHour) < 24) {
+                        show = true;
+                      }
+                    }
+                    return (
+                      <TableCell key={i + index} align="center">
+                        {i}
+                        {show && (
+                          <div className={classes.error}>
+                            (Inclut tarif de nuit)
+                          </div>
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })
           )}
         </TableBody>
       </Table>

@@ -1,23 +1,35 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+
+import LoginBG from '../assets/images/login.png';
 
 const styles = (theme) => ({
   ErrorBoundary: {
-    display: 'flex',
     height: '100vh',
+    width: '100vw',
+    backgroundImage: `url(${LoginBG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+    display: 'flex',
+    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-around',
+    justifyContent: 'center',
   },
-  ErrorBoundaryContent: {
-    boxSizing: 'border-box',
-    width: '680px',
-    padding: '10px 10px',
+  Text404: {
+    margin: '0',
     color: '#fff',
-    backgroundColor: '#cc0000',
-    boxShadow: '0 0.313rem 0.719rem #cc0000, 0 0.156rem 0.125rem #cc0000',
-    '& hr': {
-      margin: '10px 0',
-    },
+    fontSize: '24px',
+    letterSpacing: '.2px',
+    fontFamily: 'Roboto Mono, monospace',
+  },
+  button: {
+    minWidth: 150,
+    color: '#fff',
+    borderColor: '#fff',
+    backgroundColor: 'transparent',
+    marginTop: '2em',
   },
 });
 
@@ -46,15 +58,14 @@ class ErrorBoundary extends Component {
       // Error path
       return (
         <div className={classes.ErrorBoundary}>
-          <div className={classes.ErrorBoundaryContent}>
-            <h2>Something went wrong.</h2>
-            <hr />
-            <details style={{ whiteSpace: 'pre-wrap' }}>
-              {this.state.error && this.state.error.toString()}
-              <br />
-              {this.state.errorInfo.componentStack}
-            </details>
-          </div>
+          <p className={classes.Text404}>404, page not found.</p>
+          <Button
+            variant="outlined"
+            className={classes.button}
+            onClick={() => (window.location = '/')}
+          >
+            Home
+          </Button>
         </div>
       );
     }

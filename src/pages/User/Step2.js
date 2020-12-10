@@ -123,6 +123,8 @@ export default function Profile(props) {
 
   useEffect(() => {
     getRates();
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, []);
 

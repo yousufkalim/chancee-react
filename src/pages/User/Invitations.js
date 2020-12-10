@@ -10,6 +10,7 @@ import { ReactComponent as Cross } from '../../assets/images/Cross.svg';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
+import StatusInFrench from '../../globals/StatusInFr';
 
 import Header from '../../components/Header2';
 import Table from '../../components/Table';
@@ -25,8 +26,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: 30,
-    height: '100%',
-    paddingBottom: 100,
+    paddingBottom: 50,
   },
   itemRow: {
     display: 'flex',
@@ -95,6 +95,8 @@ const Profile = (props) => {
 
   useEffect(() => {
     getData();
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, []);
 
@@ -201,8 +203,19 @@ const Profile = (props) => {
   };
 
   const calcPrice = (start, end, rate) => {
-    let hours = end - start;
-    return hours * rate;
+    let hoursToAddPerc = 0;
+    if (parseInt(start) >= 0 && parseInt(start) < 8) {
+      hoursToAddPerc = hoursToAddPerc + (8 - start);
+    }
+    if (parseInt(end) >= 20 && parseInt(end) < 24) {
+      hoursToAddPerc = hoursToAddPerc + (24 - end);
+    }
+    let hours = Math.abs(end - start);
+    let NewRate = hours * rate;
+    if (hoursToAddPerc > 0) {
+      NewRate = NewRate + rate * 0.1 * hoursToAddPerc;
+    }
+    return NewRate;
   };
   const checkStatus = (offer) => {
     return offer.deliveryMen.find((item) => item.personId === store.user._id)
@@ -212,159 +225,156 @@ const Profile = (props) => {
   return (
     <div className={classes.root}>
       <Header />
-      <div className={classes.content}>
-        {loading ? (
-          <Loader.Progress />
-        ) : (
-          <>
-            <section id="invitations">
-              <div className={classes.tableHeader}>
-                <div className={classes.tableHeaderLeft}>
-                  INVITATIONS RECUES
-                </div>
-                <div className={classes.tableHeaderRight}>
-                  MONTANT TOTAL ACQUIS : {store.user.totalEaring}€
-                </div>
+      {loading ? (
+        <Loader.PageProgress />
+      ) : (
+        <div className={classes.content}>
+          <section id="invitations">
+            <div className={classes.tableHeader}>
+              <div className={classes.tableHeaderLeft}>INVITATIONS RECUES</div>
+              <div className={classes.tableHeaderRight}>
+                MONTANT TOTAL ACQUIS : {store.user.totalEaring}€
               </div>
-              <div className={classes.tableContainer}>
-                <Table
-                  headers={[
-                    'ENTREPRISE',
-                    'DATE',
-                    'HORAIRES',
-                    'VILLE',
-                    'MONTANT TOTAL',
-                    'STATUS',
-                    'ACTION',
-                  ]}
-                  values={invitations.map((item) => [
-                    <Row key={item._id}>
-                      <img
-                        src={
-                          Constants.BASE_URL + '/' + item.company.proofs.profile
+            </div>
+            <div className={classes.tableContainer}>
+              <Table
+                headers={[
+                  'ENTREPRISE',
+                  'DATE',
+                  'HORAIRES',
+                  'VILLE',
+                  'MONTANT TOTAL',
+                  'STATUS',
+                  'ACTION',
+                ]}
+                values={invitations.map((item) => [
+                  <Row key={item._id}>
+                    <img
+                      src={
+                        Constants.BASE_URL + '/' + item.company.proofs.profile
+                      }
+                      alt="Profile"
+                      className={classes.avatar}
+                    />
+                    {item.company.company.companyName}
+                  </Row>,
+                  moment(item.date).format('YYYY-MM-DD'),
+                  `${item.start}h - ${item.end}h`,
+                  `${item.company.address.city} (${item.company.address.zip})`,
+                  `${calcPrice(
+                    item.start,
+                    item.end,
+                    store.user.delivery.perHour,
+                  )}€`,
+                  <div className={classes.itemRow}>
+                    <Star className={classes.yellowIcon} />{' '}
+                    {item.company.averageRating}/5 ({item.company.note.length}{' '}
+                    notes)
+                  </div>,
+                  <div className={classes.itemRow}>
+                    <Tick
+                      className={classes.rowIcon}
+                      onClick={() =>
+                        !acceptRejectLoading && acceptInvite(item._id)
+                      }
+                    />
+                    <Cross
+                      className={classes.rowIcon}
+                      onClick={() =>
+                        !acceptRejectLoading && rejectInvite(item._id)
+                      }
+                    />
+                  </div>,
+                ])}
+                dateItem={3}
+              />
+            </div>
+          </section>
+          <section id="offers">
+            <div className={classes.tableHeader}>
+              <div className={classes.tableHeaderLeft}>MISSIONS VALIDÉES</div>
+            </div>
+            <div className={classes.tableContainer}>
+              <Table
+                headers={[
+                  'ENTREPRISE',
+                  'DATE',
+                  'HORAIRES',
+                  'VILLE',
+                  'MONTANT TOTAL',
+                  'STATUS',
+                  'ACTION',
+                ]}
+                values={offers.map((item) => [
+                  <Row key={item._id}>
+                    <img
+                      src={
+                        Constants.BASE_URL + '/' + item.company.proofs.profile
+                      }
+                      alt="Profile"
+                      className={classes.avatar}
+                    />
+                    {item.company.company.companyName}
+                  </Row>,
+                  moment(item.date).format('YYYY-MM-DD'),
+                  `${item.start}h - ${item.end}h`,
+                  `${item.company.address.city} (${item.company.address.zip})`,
+                  `${calcPrice(
+                    item.start,
+                    item.end,
+                    store.user.delivery.perHour,
+                  )}€`,
+                  StatusInFrench(checkStatus(item)),
+                  checkStatus(item) === 'completed' ? (
+                    item.company.rating &&
+                    item.company.rating.rating.some(
+                      (rating) => rating.offerId === item._id,
+                    ) ? (
+                      <div>
+                        Noté{' '}
+                        {
+                          item.company.rating.rating.filter(
+                            (rating) => rating.offerId === item._id,
+                          )[0].strength
                         }
-                        alt="Profile"
-                        className={classes.avatar}
-                      />
-                      {item.company.company.companyName}
-                    </Row>,
-                    moment(item.date).format('YYYY-MM-DD'),
-                    `${item.start}h - ${item.end}h`,
-                    `${item.company.address.city} (${item.company.address.zip})`,
-                    `${calcPrice(
-                      item.start,
-                      item.end,
-                      store.user.delivery.perHour,
-                    )}€`,
-                    <div className={classes.itemRow}>
-                      <Star className={classes.yellowIcon} />{' '}
-                      {item.company.averageRating}/5 ({item.company.note.length}{' '}
-                      notes)
-                    </div>,
-                    <div className={classes.itemRow}>
-                      <Tick
-                        className={classes.rowIcon}
-                        onClick={() =>
-                          !acceptRejectLoading && acceptInvite(item._id)
-                        }
-                      />
-                      <Cross
-                        className={classes.rowIcon}
-                        onClick={() =>
-                          !acceptRejectLoading && rejectInvite(item._id)
-                        }
-                      />
-                    </div>,
-                  ])}
-                />
-              </div>
-            </section>
-            <section id="offers">
-              <div className={classes.tableHeader}>
-                <div className={classes.tableHeaderLeft}>MISSIONS VALIDÉES</div>
-              </div>
-              <div className={classes.tableContainer}>
-                <Table
-                  headers={[
-                    'ENTREPRISE',
-                    'DATE',
-                    'HORAIRES',
-                    'VILLE',
-                    'MONTANT TOTAL',
-                    'STATUS',
-                    'ACTION',
-                  ]}
-                  values={offers.map((item) => [
-                    <Row key={item._id}>
-                      <img
-                        src={
-                          Constants.BASE_URL + '/' + item.company.proofs.profile
-                        }
-                        alt="Profile"
-                        className={classes.avatar}
-                      />
-                      {item.company.company.companyName}
-                    </Row>,
-                    moment(item.date).format('YYYY-MM-DD'),
-                    `${item.start}h - ${item.end}h`,
-                    `${item.company.address.city} (${item.company.address.zip})`,
-                    `${calcPrice(
-                      item.start,
-                      item.end,
-                      store.user.delivery.perHour,
-                    )}€`,
-                    checkStatus(item),
-                    checkStatus(item) === 'completed' ? (
-                      item.company.rating &&
-                      item.company.rating.rating.some(
-                        (rating) => rating.offerId === item._id,
-                      ) ? (
-                        <div>
-                          Noté{' '}
-                          {
-                            item.company.rating.rating.filter(
-                              (rating) => rating.offerId === item._id,
-                            )[0].strength
-                          }
-                          /5
-                        </div>
-                      ) : (
-                        <div className={classes.itemRow}>
-                          <Rating
-                            name="rating"
-                            value={value}
-                            onChange={(event, newValue) => {
-                              setValue(newValue);
-                            }}
-                            size="small"
-                          />
-                          <TableButton
-                            color="black"
-                            text="NOTER"
-                            disabled={acceptRejectLoading}
-                            onClick={() => rateUser(item._id, item.company._id)}
-                            style={{ marginLeft: 5, height: 25 }}
-                          />
-                        </div>
-                      )
-                    ) : checkStatus(item) === 'pending' ? (
-                      <TableButton
-                        color="error"
-                        text="ANNULER"
-                        disabled={acceptRejectLoading}
-                        onClick={() => cancelOffer(item._id)}
-                      />
+                        /5
+                      </div>
                     ) : (
-                      'Pas d’action'
-                    ),
-                  ])}
-                  // dateItem={2}
-                />
-              </div>
-            </section>
-          </>
-        )}
-      </div>
+                      <div className={classes.itemRow}>
+                        <Rating
+                          name="rating"
+                          value={value}
+                          onChange={(event, newValue) => {
+                            setValue(newValue);
+                          }}
+                          size="small"
+                        />
+                        <TableButton
+                          color="black"
+                          text="NOTER"
+                          disabled={acceptRejectLoading}
+                          onClick={() => rateUser(item._id, item.company._id)}
+                          style={{ marginLeft: 5, height: 25 }}
+                        />
+                      </div>
+                    )
+                  ) : checkStatus(item) === 'pending' ? (
+                    <TableButton
+                      color="error"
+                      text="ANNULER"
+                      disabled={acceptRejectLoading}
+                      onClick={() => cancelOffer(item._id)}
+                    />
+                  ) : (
+                    'Pas d’action'
+                  ),
+                ])}
+                dateItem={3}
+              />
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 };

@@ -84,15 +84,16 @@ export default function Login(props) {
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
-    email: 'test@user.com',
-    password: 'password12',
+    email: '',
+    password: '',
   });
   const [errors, setErrors] = React.useState({
     email: false,
     password: false,
   });
 
-  const onSubmit = async () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
     try {
       if (values.email === '') {
         setErrors({ ...errors, email: true });
@@ -122,7 +123,7 @@ export default function Login(props) {
   return (
     <div className={classes.root}>
       <Typography className={classes.header}>Connexion à Chancee</Typography>
-      <div className={classes.form}>
+      <form className={classes.form} onSubmit={onSubmit}>
         <div className={classes.formItem}>
           <Input
             type="email"
@@ -177,13 +178,13 @@ export default function Login(props) {
         <div className={classes.submitButton}>
           <TableButton
             fullWidth
-            style={{ height: 46, borderRadius: 4, fontWeight: 'bold' }}
+            type="submit"
             text={'Connexion'}
-            onClick={onSubmit}
             disabled={loading}
+            style={{ height: 46, borderRadius: 4, fontWeight: 'bold' }}
           />
         </div>
-      </div>
+      </form>
       <Link to="/password-forgot" className={classes.forgotText}>
         Mot de passe oublié ?
       </Link>

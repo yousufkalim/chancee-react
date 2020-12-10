@@ -106,6 +106,9 @@ const Profile = (props) => {
   const [max, setMax] = useState(0);
   const [average, setAverage] = useState(0);
 
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [totalOffers, setTotalOffers] = useState(0);
+
   // can add a name field also to differentiate
   const documentSteps = [
     {
@@ -209,6 +212,7 @@ const Profile = (props) => {
   };
 
   useEffect(() => {
+    GET_RATINGS_OFFERS();
     getRates();
     let timeslotsArray = defaultTimeslots;
     store.user.timeslots.map((timeslot, index) => {
@@ -277,6 +281,16 @@ const Profile = (props) => {
     } catch (err) {
       getRates();
     }
+  };
+  const GET_RATINGS_OFFERS = async () => {
+    try {
+      const response = await API({
+        uri: Constants.GET_RATINGS_OFFERS,
+        token: store.token,
+      });
+      setTotalRatings(response.totalRatings);
+      setTotalOffers(response.totalOffers);
+    } catch (err) {}
   };
 
   const onSubmit = async () => {
@@ -389,9 +403,9 @@ const Profile = (props) => {
               postal={postal}
               phone={phone}
               siret={SIRET}
-              rocket="32"
+              rocket={totalOffers}
               rating={store.user.averageRating}
-              notes="32"
+              notes={totalRatings}
               onClick={() => setProfileModal(true)}
             />
           </Grid>

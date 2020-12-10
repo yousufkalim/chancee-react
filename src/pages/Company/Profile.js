@@ -89,6 +89,9 @@ const Profile = (props) => {
   const [email, setEmail] = useState('');
   // const [date, setDate] = useState('');
 
+  const [totalRatings, setTotalRatings] = useState(0);
+  const [totalOffers, setTotalOffers] = useState(0);
+
   const documentSteps = [
     {
       id: 1,
@@ -147,8 +150,19 @@ const Profile = (props) => {
       setAddress([]);
     }
   };
+  const GET_RATINGS_OFFERS = async () => {
+    try {
+      const response = await API({
+        uri: Constants.GET_RATINGS_OFFERS,
+        token: store.token,
+      });
+      setTotalRatings(response.totalRatings);
+      setTotalOffers(response.totalOffers);
+    } catch (err) {}
+  };
 
   useEffect(() => {
+    GET_RATINGS_OFFERS();
     let timeslotsArray = defaultTimeslots;
     store.user.timeslots.map((timeslot, index) => {
       if (timeslot.slots.length > 0) {
@@ -174,6 +188,8 @@ const Profile = (props) => {
     setLastName(user.lastName);
     setEmail(user.email);
     // setDate(moment(user.dob).format('YYYY-MM-DD'));
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, [store]);
 
@@ -251,9 +267,9 @@ const Profile = (props) => {
               postal={postal}
               phone={phone}
               siret={SIRET}
-              rocket="32"
+              rocket={totalOffers}
               rating={store.user.averageRating}
-              notes="32"
+              notes={totalRatings}
               onClick={() => setProfileModal(true)}
             />
           </Grid>

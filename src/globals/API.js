@@ -23,7 +23,7 @@ const api = ({ method = 'GET', uri, body, headers, token }) =>
         console.log('[API Error]:', error);
         reject(error);
       } else {
-        alert('Network Problem!');
+        alert('Network Connection Problem!');
         console.log('[API Error]:', err);
         reject(err);
       }

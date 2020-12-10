@@ -13,14 +13,13 @@ import TableButton from '../../../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: '#F5F7FB',
     paddingTop: 90,
     paddingLeft: 90,
     minHeight: '100vh',
+    backgroundColor: '#F5F7FB',
   },
   content: {
     padding: 30,
-    height: '100%',
     paddingBottom: 100,
   },
   filters: {
@@ -109,6 +108,9 @@ const Search = (props) => {
 
   useEffect(() => {
     getData();
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
     // eslint-disable-next-line
   }, []);
 
@@ -163,7 +165,6 @@ const Search = (props) => {
       setLoading(false);
     } catch (err) {}
   };
-
   const onSendInvite = async (offerId, userId) => {
     try {
       setInviteLoading(true);
@@ -182,28 +183,44 @@ const Search = (props) => {
     } catch (err) {}
   };
 
+  const calcPrice = (start, end, rate) => {
+    let hoursToAddPerc = 0;
+    if (parseInt(start) >= 0 && parseInt(start) < 8) {
+      hoursToAddPerc = hoursToAddPerc + (8 - start);
+    }
+    if (parseInt(end) >= 20 && parseInt(end) < 24) {
+      hoursToAddPerc = hoursToAddPerc + (24 - end);
+    }
+    let hours = Math.abs(end - start);
+    let NewRate = hours * rate;
+    if (hoursToAddPerc > 0) {
+      NewRate = NewRate + rate * 0.1 * hoursToAddPerc;
+    }
+    return NewRate;
+  };
+
   return (
     <div className={classes.root}>
       <Header />
-      <div className={classes.content}>
-        <PageHeading left="RESULTATS DE LA RECHERCHE" />
-        <div className={classes.filters}>
-          <div className={classes.filtersRow}>
-            {Object.values(filters).map((i) => (
-              <div key={i} className={classes.filter}>
-                {i}
-              </div>
-            ))}
+      {loading ? (
+        <Loader.PageProgress />
+      ) : (
+        <div className={classes.content}>
+          <PageHeading left="RESULTATS DE LA RECHERCHE" />
+          <div className={classes.filters}>
+            <div className={classes.filtersRow}>
+              {Object.values(filters).map((i) => (
+                <div key={i} className={classes.filter}>
+                  {i}
+                </div>
+              ))}
+            </div>
+            <TableButton
+              color="black"
+              onClick={() => props.history.goBack()}
+              text="Modifier"
+            />
           </div>
-          <TableButton
-            color="black"
-            onClick={() => props.history.goBack()}
-            text="Modifier"
-          />
-        </div>
-        {loading ? (
-          <Loader.Progress />
-        ) : (
           <Table
             headers={[
               'LIVREUR',
@@ -226,7 +243,11 @@ const Search = (props) => {
               item.delivery.transportType,
               item.delivery.vehicle.vehicleType,
               `${item.delivery.perHour}€`,
-              '220€',
+              `${calcPrice(
+                data.offer.start,
+                data.offer.end,
+                item.delivery.perHour,
+              )}€`,
               `${item.averageRating}/5`,
               <TableButton
                 color="black"
@@ -247,8 +268,8 @@ const Search = (props) => {
               />,
             ])}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -10,6 +10,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
+import StatusInFrench from '../../globals/StatusInFr';
 
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
@@ -25,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     padding: 30,
-    height: '100%',
     paddingBottom: 100,
   },
   itemRow: {
@@ -91,6 +91,8 @@ const Offers = (props) => {
 
   useEffect(() => {
     getData();
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line
   }, []);
 
@@ -102,9 +104,7 @@ const Offers = (props) => {
       });
       setData(data.offers);
       setLoading(false);
-    } catch (err) {
-      setLoading(false);
-    }
+    } catch (err) {}
   };
   const cancelOffer = async (offerId, userId) => {
     try {
@@ -260,8 +260,19 @@ const Offers = (props) => {
     }
   };
   const calcPrice = (start, end, rate) => {
-    let hours = end - start;
-    return hours * rate;
+    let hoursToAddPerc = 0;
+    if (parseInt(start) >= 0 && parseInt(start) < 8) {
+      hoursToAddPerc = hoursToAddPerc + (8 - start);
+    }
+    if (parseInt(end) >= 20 && parseInt(end) < 24) {
+      hoursToAddPerc = hoursToAddPerc + (24 - end);
+    }
+    let hours = Math.abs(end - start);
+    let NewRate = hours * rate;
+    if (hoursToAddPerc > 0) {
+      NewRate = NewRate + rate * 0.1 * hoursToAddPerc;
+    }
+    return NewRate;
   };
 
   function renderData() {
@@ -287,7 +298,7 @@ const Offers = (props) => {
               item.end,
               person.userId.delivery.perHour,
             )}€`,
-            `${person.status}`,
+            `${StatusInFrench(person.status)}`,
             <TableButton
               color="error"
               text="ANNULER"
@@ -320,7 +331,7 @@ const Offers = (props) => {
             item.end,
             person.personId.delivery.perHour,
           )}€`,
-          `${person.status}`,
+          `${StatusInFrench(person.status)}`,
           <>
             {person.status !== 'completed' ? (
               <>
@@ -421,10 +432,10 @@ const Offers = (props) => {
   return (
     <div className={classes.root}>
       <Header />
-      <div className={classes.content}>
-        {loading ? (
-          <Loader.Progress />
-        ) : (
+      {loading ? (
+        <Loader.PageProgress />
+      ) : (
+        <div className={classes.content}>
           <section id="table">
             <div className={classes.tableHeader}>
               INVITED: TOUTES LES MISSIONS
@@ -441,6 +452,7 @@ const Offers = (props) => {
                   'ACTION',
                 ]}
                 values={renderData()}
+                dateItem={3}
               />
             </div>
             <div className={classes.tableHeader}>
@@ -458,11 +470,12 @@ const Offers = (props) => {
                   'ACTION',
                 ]}
                 values={renderData2()}
+                dateItem={3}
               />
             </div>
           </section>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

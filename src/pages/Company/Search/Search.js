@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import Grid from '@material-ui/core/Grid';
 import Rating from '@material-ui/lab/Rating';
@@ -147,6 +147,11 @@ const Search = (props) => {
   const [from, setFrom] = useState(6);
   const [to, setTo] = useState(8);
   const [deliveries, setDeliveries] = useState('1');
+
+  useEffect(() => {
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }, [props.history.action]);
 
   return (
     <div className={classes.root}>

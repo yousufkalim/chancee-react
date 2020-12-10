@@ -30,11 +30,11 @@ const App = () => {
     <Provider store={store}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <ErrorBoundary>
-          <BrowserRouter>
+        <BrowserRouter>
+          <ErrorBoundary>
             <Chancee />
-          </BrowserRouter>
-        </ErrorBoundary>
+          </ErrorBoundary>
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   );

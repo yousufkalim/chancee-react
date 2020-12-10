@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-const Offers = (props) => {
+const ButtonComponent = (props) => {
   let color;
   switch (props.color) {
     case 'error':
@@ -48,4 +48,4 @@ const Offers = (props) => {
   );
 };
 
-export default Offers;
+export default ButtonComponent;
