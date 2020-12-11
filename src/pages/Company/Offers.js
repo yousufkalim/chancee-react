@@ -77,7 +77,6 @@ const Offers = (props) => {
   const store = useSelector((state) => state);
 
   const [data, setData] = useState([]);
-  const [value, setValue] = useState(2);
   const [loading, setLoading] = useState(true);
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
 
@@ -196,7 +195,7 @@ const Offers = (props) => {
       setAcceptRejectLoading(false);
     }
   };
-  const completeOffer = async (offerId, userId) => {
+  const completeOffer = async (e, offerId, userId) => {
     try {
       if (window.confirm('Are you sure about this action?')) {
         setAcceptRejectLoading(true);
@@ -223,17 +222,23 @@ const Offers = (props) => {
       setAcceptRejectLoading(false);
     }
   };
-  const rateUser = async (offerId, userId) => {
+  const rateUser = async (e, offerId, userId) => {
+    e.preventDefault();
     try {
       if (window.confirm('Are you sure about this action?')) {
         setAcceptRejectLoading(true);
+        const formData = new FormData(e.target);
+        let rating = 0;
+        for (let value of formData.values()) {
+          rating = value;
+        }
         const response = await API({
           method: 'POST',
           uri: Constants.RATE_USER,
           token: store.token,
           body: JSON.stringify({
             note: '',
-            strength: value,
+            strength: rating,
             offerId: offerId,
             toUserId: userId,
           }),
@@ -252,7 +257,6 @@ const Offers = (props) => {
         });
 
         setData(newData);
-
         setAcceptRejectLoading(false);
       }
     } catch (err) {
@@ -331,7 +335,11 @@ const Offers = (props) => {
             item.end,
             person.personId.delivery.perHour,
           )}€`,
-          `${StatusInFrench(person.status)}`,
+          `${StatusInFrench(
+            person.status === 'pending'
+              ? person.status + 'user'
+              : person.status,
+          )}`,
           <>
             {person.status !== 'completed' ? (
               <>
@@ -404,23 +412,23 @@ const Offers = (props) => {
                 /5
               </div>
             ) : (
-              <div className={classes.itemRow}>
+              <form
+                className={classes.itemRow}
+                onSubmit={(e) => rateUser(e, item._id, person.personId._id)}
+              >
                 <Rating
-                  name="rating"
-                  value={value}
-                  onChange={(event, newValue) => {
-                    setValue(newValue);
-                  }}
+                  name={item._id + person.personId._id}
                   size="small"
+                  defaultValue={3}
                 />
                 <TableButton
                   color="black"
                   text="NOTER"
+                  type="submit"
                   disabled={acceptRejectLoading}
-                  onClick={() => rateUser(item._id, person.personId._id)}
                   style={{ marginLeft: 5, height: 25 }}
                 />
-              </div>
+              </form>
             )}
           </>,
         ]),

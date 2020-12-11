@@ -1,4 +1,5 @@
-const BASE_URL = process.env.REACT_APP_SERVER_URL;
+// const BASE_URL = process.env.REACT_APP_SERVER_URL;
+const BASE_URL = 'http://192.168.1.17:5000';
 
 const endpoints = {
   BASE_URL,

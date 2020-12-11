@@ -88,7 +88,6 @@ const Profile = (props) => {
   const store = useSelector((state) => state);
 
   const [offers, setOffers] = useState([]);
-  const [value, setValue] = useState(2);
   const [invitations, setInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
@@ -171,17 +170,23 @@ const Profile = (props) => {
       setAcceptRejectLoading(false);
     }
   };
-  const rateUser = async (offerId, companyId) => {
+  const rateUser = async (e, offerId, companyId) => {
+    e.preventDefault();
     try {
       if (window.confirm('Are you sure about this action?')) {
         setAcceptRejectLoading(true);
+        const formData = new FormData(e.target);
+        let rating = 0;
+        for (let value of formData.values()) {
+          rating = value;
+        }
         const response = await API({
           method: 'POST',
           uri: Constants.RATE_COMPANY,
           token: store.token,
           body: JSON.stringify({
             note: '',
-            strength: value,
+            strength: rating,
             offerId: offerId,
             toUserId: companyId,
           }),
@@ -324,7 +329,11 @@ const Profile = (props) => {
                     item.end,
                     store.user.delivery.perHour,
                   )}€`,
-                  StatusInFrench(checkStatus(item)),
+                  StatusInFrench(
+                    checkStatus(item) === 'pending'
+                      ? checkStatus(item) + 'user'
+                      : checkStatus(item),
+                  ),
                   checkStatus(item) === 'completed' ? (
                     item.company.rating &&
                     item.company.rating.rating.some(
@@ -340,23 +349,25 @@ const Profile = (props) => {
                         /5
                       </div>
                     ) : (
-                      <div className={classes.itemRow}>
+                      <form
+                        className={classes.itemRow}
+                        onSubmit={(e) =>
+                          rateUser(e, item._id, item.company._id)
+                        }
+                      >
                         <Rating
-                          name="rating"
-                          value={value}
-                          onChange={(event, newValue) => {
-                            setValue(newValue);
-                          }}
+                          name={item._id + item.company._id}
                           size="small"
+                          defaultValue={3}
                         />
                         <TableButton
                           color="black"
                           text="NOTER"
+                          type="submit"
                           disabled={acceptRejectLoading}
-                          onClick={() => rateUser(item._id, item.company._id)}
                           style={{ marginLeft: 5, height: 25 }}
                         />
-                      </div>
+                      </form>
                     )
                   ) : checkStatus(item) === 'pending' ? (
                     <TableButton
