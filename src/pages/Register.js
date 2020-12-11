@@ -8,6 +8,7 @@ import SvgIcon from '@material-ui/core/SvgIcon';
 import API from '../globals/API';
 import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
+import Texts from '../globals/Texts';
 
 import Input from '../components/Input';
 import TableButton from '../components/TableButton';
@@ -138,7 +139,7 @@ export default function Register(props) {
             password: values.password,
           }),
         });
-        alert('Registration was successfull!');
+        alert(Texts.registerSuccess);
         dispatch({
           type: actionTypes.LOGIN,
           user: data.user,

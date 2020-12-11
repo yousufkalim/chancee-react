@@ -11,6 +11,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import StatusInFrench from '../../globals/StatusInFr';
+import Texts from '../../globals/Texts';
 
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
@@ -107,7 +108,7 @@ const Offers = (props) => {
   };
   const cancelOffer = async (offerId, userId) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         await API({
           method: 'POST',
@@ -140,7 +141,7 @@ const Offers = (props) => {
   };
   const activeOffer = async (offerId, userId) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const response = await API({
           method: 'POST',
@@ -169,7 +170,7 @@ const Offers = (props) => {
   };
   const startOffer = async (offerId, userId) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const response = await API({
           method: 'POST',
@@ -197,7 +198,7 @@ const Offers = (props) => {
   };
   const completeOffer = async (e, offerId, userId) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const response = await API({
           method: 'POST',
@@ -225,7 +226,7 @@ const Offers = (props) => {
   const rateUser = async (e, offerId, userId) => {
     e.preventDefault();
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const formData = new FormData(e.target);
         let rating = 0;
@@ -361,7 +362,7 @@ const Offers = (props) => {
                         activeOffer(item._id, person.personId._id)
                       }
                     >
-                      Active
+                      {Texts.active}
                     </MenuItem>
                   )}
                   {(person.status === 'pending' ||
@@ -373,7 +374,7 @@ const Offers = (props) => {
                         startOffer(item._id, person.personId._id)
                       }
                     >
-                      Start
+                      {Texts.start}
                     </MenuItem>
                   )}
                   {person.status === 'started' && (
@@ -384,7 +385,7 @@ const Offers = (props) => {
                         completeOffer(item._id, person.personId._id)
                       }
                     >
-                      Complete
+                      {Texts.complete}
                     </MenuItem>
                   )}
                   <MenuItem
@@ -394,7 +395,7 @@ const Offers = (props) => {
                       cancelOffer(item._id, person.personId._id)
                     }
                   >
-                    Reject
+                    {Texts.reject}
                   </MenuItem>
                 </Menu>
               </>

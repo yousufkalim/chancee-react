@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 
 import API from '../globals/API';
 import Constants from '../globals/Constants';
+import Texts from '../globals/Texts';
 
 import LoginBG from '../assets/images/login.png';
 import Input from '../components/Input';
@@ -103,7 +104,7 @@ export default function PasswordForgot(props) {
             email: values.email,
           }),
         });
-        alert('Email sent successfully!');
+        alert(Texts.emailSent);
         props.history.replace('/');
       }
     } catch (err) {
@@ -113,10 +114,8 @@ export default function PasswordForgot(props) {
 
   return (
     <div className={classes.root}>
-      <Typography className={classes.header}>Forgot Password</Typography>
-      <Typography className={classes.subHeading}>
-        Enter your email to reset password
-      </Typography>
+      <Typography className={classes.header}>{Texts.forgotPass}</Typography>
+      <Typography className={classes.subHeading}>{Texts.enterEmail}</Typography>
       <div className={classes.form}>
         <div className={classes.formItem}>
           <Input

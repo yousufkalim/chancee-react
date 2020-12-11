@@ -26,8 +26,12 @@ import Search from '../pages/Company/Search';
 import CStep1 from '../pages/Company/Step1';
 
 import VerifyScreen from '../pages/VerifyScreen';
+import RejectScreen from '../pages/RejectScreen';
 
-const LFS = () => {
+// Admin
+import Admin from '../pages/Admin';
+
+const Chancee = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
   const [loading, setLoading] = useState(true);
@@ -56,7 +60,6 @@ const LFS = () => {
         setLoading(false);
       }
     } catch (err) {
-      console.log('CheckLogin Error');
       localStorage.removeItem('chanceeToken');
       setLoading(false);
     }
@@ -78,6 +81,12 @@ const LFS = () => {
           <Route exact path="/" component={VerifyScreen} />
           <Redirect from="*" to="/" />
         </Switch>
+      ) : store.user.status === 'rejected' ? (
+        <Switch>
+          {/* User Profile to rejected */}
+          <Route exact path="/" component={RejectScreen} />
+          <Redirect from="*" to="/" />
+        </Switch>
       ) : (
         <Switch>
           {/* Company Active */}
@@ -87,29 +96,43 @@ const LFS = () => {
           <Redirect from="*" to="/" />
         </Switch>
       )
-    ) : store.user.status === 'pending' ? (
-      <Switch>
-        {/* User Profile at step 1 */}
-        <Route exact path="/" component={UStep1} />
-        <Redirect from="*" to="/" />
-      </Switch>
-    ) : store.user.status === 'step1' ? (
-      <Switch>
-        {/* User Profile to verified */}
-        <Route exact path="/" component={VerifyScreen} />
-        <Redirect from="*" to="/" />
-      </Switch>
-    ) : store.user.status === 'verified' ? (
-      <Switch>
-        {/* User Profile at step 2 */}
-        <Route exact path="/" component={UStep2} />
-        <Redirect from="*" to="/" />
-      </Switch>
+    ) : store.user.role === 'user' ? (
+      store.user.status === 'pending' ? (
+        <Switch>
+          {/* User Profile at step 1 */}
+          <Route exact path="/" component={UStep1} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : store.user.status === 'step1' ? (
+        <Switch>
+          {/* User Profile to verified */}
+          <Route exact path="/" component={VerifyScreen} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : store.user.status === 'rejected' ? (
+        <Switch>
+          {/* User Profile to rejected */}
+          <Route exact path="/" component={RejectScreen} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : store.user.status === 'verified' ? (
+        <Switch>
+          {/* User Profile at step 2 */}
+          <Route exact path="/" component={UStep2} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      ) : (
+        <Switch>
+          {/* User Active */}
+          <Route exact path="/" component={Profile} />
+          <Route exact path="/invitations" component={Invitations} />
+          <Redirect from="*" to="/" />
+        </Switch>
+      )
     ) : (
       <Switch>
-        {/* User Active */}
-        <Route exact path="/" component={Profile} />
-        <Route exact path="/invitations" component={Invitations} />
+        {/* Admin Routes */}
+        <Route path="/" component={Admin} />
         <Redirect from="*" to="/" />
       </Switch>
     )
@@ -124,4 +147,4 @@ const LFS = () => {
   );
 };
 
-export default LFS;
+export default Chancee;

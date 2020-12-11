@@ -93,6 +93,7 @@ const useStyles = makeStyles((theme) => ({
     height: 45,
     borderRadius: 50,
     marginRight: 10,
+    objectFit: 'cover',
   },
   link: {
     color: '#00A1FF',

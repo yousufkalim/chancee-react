@@ -49,7 +49,8 @@ const useStyles = makeStyles((theme) => ({
   },
   icon: {
     height: 20,
-    marginLeft: 12,
+    marginLeft: 8,
+    marginRight: 4,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',

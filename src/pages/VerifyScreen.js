@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#fff',
   },
+  bottomM: { marginBottom: 40 },
 }));
 
 export default function Verifiy(props) {
@@ -30,14 +31,14 @@ export default function Verifiy(props) {
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
-          head="Profile submitted for"
-          head2="verification !"
+          head="Profil soumis pour"
+          head2="vérification !"
           buttonText="DÉMARRER"
-          description="Wait for the admin to verify your account !"
+          description="Attendez que l'administrateur vérifie votre compte !"
         />
       </section>
       <Container maxWidth="xl">
-        <section id="Steps">
+        <section id="Steps" className={classes.bottomM}>
           <Steps
             steps={
               store.user.role === 'company'

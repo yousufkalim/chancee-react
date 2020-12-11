@@ -8,6 +8,7 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
+import Texts from '../../globals/Texts';
 
 import { ReactComponent as Point } from '../../assets/images/Point.svg';
 import { ReactComponent as Flash } from '../../assets/images/flash.svg';
@@ -184,7 +185,7 @@ export default function Profile(props) {
         postal === '' ||
         city === ''
       ) {
-        alert('Fields are required!');
+        alert(Texts.fieldsRequired);
       } else {
         setLoading(true);
         var formdata = new FormData();
@@ -215,7 +216,7 @@ export default function Profile(props) {
           },
           body: formdata,
         });
-        alert('Step 1 was completed successfully!');
+        alert(Texts.profileSuccess);
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,
@@ -269,7 +270,7 @@ export default function Profile(props) {
                   inputValue={street}
                   loading={addressLoading}
                   onInputChange={getAddress}
-                  noOptionsText="Input your address!"
+                  noOptionsText={Texts.inputAddress}
                   onChange={(event, value) => {
                     setLat(value.lat);
                     setLong(value.lng);

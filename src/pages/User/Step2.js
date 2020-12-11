@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
+import Texts from '../../globals/Texts';
 
 import { ReactComponent as Flash } from '../../assets/images/flash.svg';
 import { ReactComponent as Checked } from '../../assets/images/checked.svg';
@@ -137,9 +138,7 @@ export default function Profile(props) {
       setMin(rates.min);
       setMax(rates.max);
       setAverage(rates.average);
-    } catch (err) {
-      getRates();
-    }
+    } catch (err) {}
   };
 
   const onSubmit = async () => {
@@ -152,7 +151,7 @@ export default function Profile(props) {
         !timeslots.some((item) => item.checked) ||
         !conditions
       ) {
-        alert('Fields are required!');
+        alert(Texts.fieldsRequired);
       } else {
         setLoading(true);
         let transportType =
@@ -202,7 +201,7 @@ export default function Profile(props) {
           token: store.token,
           body: formdata,
         });
-        alert('Profile was completed successfully!');
+        alert(Texts.profileSuccess);
         dispatch({
           type: actionTypes.SET_USER,
           user: data.user,

@@ -12,7 +12,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import Constants from '../globals/Constants';
 import Logo from '../assets/images/Logo.png';
 import * as actionTypes from '../store/actions/actionTypes';
 import ProfileImage from '../assets/images/Profile.svg';
@@ -28,10 +27,11 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     height: 35,
+    objectFit: 'cover',
   },
   link: {
     color: '#000',
-    fontSize: 12,
+    fontSize: 16,
     fontWeight: 'light',
     margin: '0 12px',
     textDecoration: 'none',
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   profileName: {
     color: '#000',
-    fontSize: 10,
+    fontSize: 14,
     fontWeight: 'bold',
     textDecoration: 'none',
   },

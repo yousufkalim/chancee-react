@@ -9,6 +9,7 @@ import Flag from '../../assets/images/flag.png';
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import * as actionTypes from '../../store/actions/actionTypes';
+import Texts from '../../globals/Texts';
 
 import Card from '../../components/Card';
 import Modal from '../../components/Modal';
@@ -196,7 +197,7 @@ const Profile = (props) => {
   const onSubmit = async () => {
     try {
       if (!timeslots.some((item) => item.checked)) {
-        alert('Fields are required!');
+        alert(Texts.fieldsRequired);
       } else {
         setLoading(true);
 
@@ -239,7 +240,7 @@ const Profile = (props) => {
           },
           body: formdata,
         });
-        alert('Profile Update was successfull!');
+        alert(Texts.profileSuccess);
         setLoading(false);
         dispatch({
           type: actionTypes.SET_USER,
@@ -307,7 +308,7 @@ const Profile = (props) => {
       <Modal
         open={profileModal}
         onClose={() => setProfileModal((st) => !st)}
-        title="Edit Profile"
+        title={Texts.editProfile}
         body={
           <Grid container>
             <Grid item xs={12} md={6}>
@@ -339,7 +340,7 @@ const Profile = (props) => {
                 inputValue={street}
                 loading={addressLoading}
                 onInputChange={getAddress}
-                noOptionsText="Input your address!"
+                noOptionsText={Texts.inputAddress}
                 onChange={(event, value) => {
                   if (value) {
                     setLat(value.lat);
@@ -430,7 +431,7 @@ const Profile = (props) => {
                 String(SIRET).length !== 14 ||
                 city === ''
               ) {
-                alert('Fields are required!');
+                alert(Texts.fieldsRequired);
               } else {
                 setProfileModal((st) => !st);
               }

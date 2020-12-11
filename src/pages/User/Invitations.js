@@ -11,6 +11,7 @@ import { ReactComponent as Cross } from '../../assets/images/Cross.svg';
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
 import StatusInFrench from '../../globals/StatusInFr';
+import Texts from '../../globals/Texts';
 
 import Header from '../../components/Header2';
 import Table from '../../components/Table';
@@ -118,7 +119,7 @@ const Profile = (props) => {
   };
   const acceptInvite = async (id) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const data = await API({
           uri: Constants.ACCEPT_INVITE + `/${id}`,
@@ -129,7 +130,7 @@ const Profile = (props) => {
         setAcceptRejectLoading(false);
       }
     } catch (err) {
-      if (err.message === "Offer reached it's required person limit") {
+      if (err.message === Texts.offerLimited) {
         setInvitations((st) => st.filter((i) => i._id !== id));
       }
       setAcceptRejectLoading(false);
@@ -137,7 +138,7 @@ const Profile = (props) => {
   };
   const rejectInvite = async (id) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const data = await API({
           uri: Constants.REJECT_INVITE + `/${id}`,
@@ -152,7 +153,7 @@ const Profile = (props) => {
   };
   const cancelOffer = async (id) => {
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         await API({
           method: 'POST',
@@ -173,7 +174,7 @@ const Profile = (props) => {
   const rateUser = async (e, offerId, companyId) => {
     e.preventDefault();
     try {
-      if (window.confirm('Are you sure about this action?')) {
+      if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
         const formData = new FormData(e.target);
         let rating = 0;
