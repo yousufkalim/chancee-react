@@ -7,6 +7,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import InfoIcon from '@material-ui/icons/Info';
 
 import API from '../../globals/API';
 import Constants from '../../globals/Constants';
@@ -17,6 +18,7 @@ import Table from '../../components/Table';
 import Loader from '../../components/Loader';
 import Header from '../../components/HeaderCompany';
 import TableButton from '../../components/TableButton';
+import ProfileCardModal from '../../components/ProfileCardModal';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,7 +72,11 @@ const useStyles = makeStyles((theme) => ({
 const Row = (props) => {
   const classes = useStyles();
 
-  return <div className={classes.row}>{props.children}</div>;
+  return (
+    <div className={classes.row} style={props.style}>
+      {props.children}
+    </div>
+  );
 };
 
 const Offers = (props) => {
@@ -80,6 +86,9 @@ const Offers = (props) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [acceptRejectLoading, setAcceptRejectLoading] = useState(false);
+
+  const [userSelectData, setUserSelectedData] = useState('');
+  const [userModal, setUserModal] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const handleClick = (event) => {
@@ -196,7 +205,7 @@ const Offers = (props) => {
       setAcceptRejectLoading(false);
     }
   };
-  const completeOffer = async (e, offerId, userId) => {
+  const completeOffer = async (offerId, userId) => {
     try {
       if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
@@ -287,17 +296,26 @@ const Offers = (props) => {
         (person) =>
           person.status === 'pending' &&
           newArray.push([
-            <Row key={person._id}>
-              <img
-                src={Constants.BASE_URL + '/' + person.userId.proofs.profile}
-                alt="Profile"
-                className={classes.avatar}
-              />
-              {person.userId.firstName + ' ' + person.userId.lastName}
-            </Row>,
-            moment(item.date).format('YYYY-MM-DD'),
+            moment(item.date).format('DD-MM-YYYY'),
             `${item.start}h - ${item.end}h`,
-            `${person.userId.address.city} (${person.userId.address.zip})`,
+            <Row key={person._id} style={{ justifyContent: 'center' }}>
+              <span style={{ position: 'relative' }}>
+                {person.userId.firstName + ' ' + person.userId.lastName}
+                <InfoIcon
+                  style={{
+                    position: 'absolute',
+                    top: -18,
+                    right: -15,
+                    cursor: 'pointer',
+                  }}
+                  onClick={() => {
+                    setUserSelectedData(person.userId);
+                    setUserModal(true);
+                  }}
+                />
+              </span>
+            </Row>,
+            `${person.userId.delivery.vehicle.vehicleType}`,
             `${calcPrice(
               item.start,
               item.end,
@@ -320,17 +338,26 @@ const Offers = (props) => {
     data.map((item) =>
       item.deliveryMen.map((person) =>
         newArray.push([
-          <Row key={person._id}>
-            <img
-              src={Constants.BASE_URL + '/' + person.personId.proofs.profile}
-              alt="Profile"
-              className={classes.avatar}
-            />
-            {person.personId.firstName + ' ' + person.personId.lastName}
-          </Row>,
-          moment(item.date).format('YYYY-MM-DD'),
+          moment(item.date).format('DD-MM-YYYY'),
           `${item.start}h - ${item.end}h`,
-          `${person.personId.address.city} (${person.personId.address.zip})`,
+          <Row key={person._id} style={{ justifyContent: 'center' }}>
+            <span style={{ position: 'relative' }}>
+              {person.personId.firstName + ' ' + person.personId.lastName}
+              <InfoIcon
+                style={{
+                  position: 'absolute',
+                  top: -18,
+                  right: -15,
+                  cursor: 'pointer',
+                }}
+                onClick={() => {
+                  setUserSelectedData(person.personId);
+                  setUserModal(true);
+                }}
+              />
+            </span>
+          </Row>,
+          `${person.personId.delivery.vehicle.vehicleType}`,
           `${calcPrice(
             item.start,
             item.end,
@@ -355,18 +382,28 @@ const Offers = (props) => {
                   onClose={handleClose}
                 >
                   {person.status === 'pending' && (
-                    <MenuItem
-                      disabled={acceptRejectLoading}
-                      onClick={() =>
-                        !acceptRejectLoading &&
-                        activeOffer(item._id, person.personId._id)
-                      }
-                    >
-                      {Texts.active}
-                    </MenuItem>
+                    <>
+                      <MenuItem
+                        disabled={acceptRejectLoading}
+                        onClick={() =>
+                          !acceptRejectLoading &&
+                          activeOffer(item._id, person.personId._id)
+                        }
+                      >
+                        {Texts.active}
+                      </MenuItem>
+                      <MenuItem
+                        disabled={acceptRejectLoading}
+                        onClick={() =>
+                          !acceptRejectLoading &&
+                          startOffer(item._id, person.personId._id)
+                        }
+                      >
+                        {Texts.start}
+                      </MenuItem>
+                    </>
                   )}
-                  {(person.status === 'pending' ||
-                    person.status === 'active') && (
+                  {person.status === 'active' && (
                     <MenuItem
                       disabled={acceptRejectLoading}
                       onClick={() =>
@@ -461,7 +498,7 @@ const Offers = (props) => {
                   'ACTION',
                 ]}
                 values={renderData()}
-                dateItem={3}
+                dateItem={2}
               />
             </div>
             <div className={classes.tableHeader}>
@@ -479,11 +516,29 @@ const Offers = (props) => {
                   'ACTION',
                 ]}
                 values={renderData2()}
-                dateItem={3}
+                dateItem={2}
               />
             </div>
           </section>
         </div>
+      )}
+      {userSelectData !== '' && (
+        <ProfileCardModal
+          open={userModal}
+          onClose={() => setUserModal((st) => !st)}
+          title="Utilisateur Profil"
+          isUser={true}
+          image={Constants.BASE_URL + '/' + userSelectData.proofs.profile}
+          name={userSelectData.firstName + ' ' + userSelectData.lastName}
+          email={userSelectData.email}
+          street={userSelectData.address.street}
+          complement={userSelectData.address.complement}
+          city={userSelectData.address.city}
+          postal={userSelectData.address.zip}
+          phone={userSelectData.phone}
+          siret={userSelectData.SIRET}
+          rating={userSelectData.averageRating}
+        />
       )}
     </div>
   );

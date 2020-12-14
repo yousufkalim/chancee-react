@@ -38,7 +38,7 @@ const Modal = (props) => {
 
   return (
     <Dialog
-      maxWidth={'md'}
+      maxWidth={props.maxWidth || 'md'}
       fullWidth={true}
       open={props.open}
       onClose={props.onClose}
@@ -49,7 +49,9 @@ const Modal = (props) => {
           <CloseIcon onClick={props.onClose} className={classes.icon} />
         </div>
         <div className={classes.body}>{props.body}</div>
-        <div className={classes.actions}>{props.actions}</div>
+        {props.actions && (
+          <div className={classes.actions}>{props.actions}</div>
+        )}
       </div>
     </Dialog>
   );

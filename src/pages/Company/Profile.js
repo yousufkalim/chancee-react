@@ -188,7 +188,7 @@ const Profile = (props) => {
     setFirstName(user.firstName);
     setLastName(user.lastName);
     setEmail(user.email);
-    // setDate(moment(user.dob).format('YYYY-MM-DD'));
+    // setDate(moment(user.dob).format('DD-MM-YYYY'));
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
     // eslint-disable-next-line

@@ -107,13 +107,13 @@ const Search = (props) => {
   const [invitedUsers, setInvitedUsers] = useState([]);
 
   useEffect(() => {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       props.history.goBack();
     }, 880000);
     getData();
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-
+    return () => clearTimeout(timeout);
     // eslint-disable-next-line
   }, []);
 

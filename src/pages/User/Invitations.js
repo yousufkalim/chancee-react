@@ -264,7 +264,7 @@ const Profile = (props) => {
                     />
                     {item.company.company.companyName}
                   </Row>,
-                  moment(item.date).format('YYYY-MM-DD'),
+                  moment(item.date).format('DD-MM-YYYY'),
                   `${item.start}h - ${item.end}h`,
                   `${item.company.address.city} (${item.company.address.zip})`,
                   `${calcPrice(
@@ -322,7 +322,7 @@ const Profile = (props) => {
                     />
                     {item.company.company.companyName}
                   </Row>,
-                  moment(item.date).format('YYYY-MM-DD'),
+                  moment(item.date).format('DD-MM-YYYY'),
                   `${item.start}h - ${item.end}h`,
                   `${item.company.address.city} (${item.company.address.zip})`,
                   `${calcPrice(
