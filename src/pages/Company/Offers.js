@@ -119,7 +119,7 @@ const Offers = (props) => {
     try {
       if (window.confirm(Texts.sure)) {
         setAcceptRejectLoading(true);
-        await API({
+        const response = await API({
           method: 'POST',
           uri: Constants.CANCEL_OFFER,
           token: store.token,
@@ -130,18 +130,14 @@ const Offers = (props) => {
         });
 
         const newData = data.map((offer) => {
-          let desiredPersons = [];
-          if (offer._id === offerId) {
-            offer.desiredPersons.map(
-              (person) =>
-                person.userId._id !== userId && desiredPersons.push(person),
-            );
-            offer.desiredPersons = desiredPersons;
+          if (String(offer._id) === String(offerId)) {
+            offer = response.offer;
           }
           return offer;
         });
 
         setData(newData);
+        handleClose();
         setAcceptRejectLoading(false);
       }
     } catch (err) {
@@ -369,7 +365,7 @@ const Offers = (props) => {
               : person.status,
           )}`,
           <>
-            {person.status !== 'completed' ? (
+            {person.status !== 'completed' && person.status !== 'rejected' ? (
               <>
                 <IconButton onClick={handleClick}>
                   <MoreVertIcon />
@@ -436,6 +432,8 @@ const Offers = (props) => {
                   </MenuItem>
                 </Menu>
               </>
+            ) : person.status === 'rejected' ? (
+              'Pas d’action'
             ) : person.personId.rating &&
               person.personId.rating.rating.some(
                 (rating) => rating.offerId === item._id,
