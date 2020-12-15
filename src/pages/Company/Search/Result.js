@@ -7,17 +7,10 @@ import Constants from '../../../globals/Constants';
 
 import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
-import Header from '../../../components/HeaderCompany';
 import PageHeading from '../../../components/PageHeading';
 import TableButton from '../../../components/TableButton';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: 90,
-    paddingLeft: 90,
-    minHeight: '100vh',
-    backgroundColor: '#F5F7FB',
-  },
   content: {
     padding: 30,
     paddingBottom: 100,
@@ -202,77 +195,68 @@ const Search = (props) => {
     return NewRate;
   };
 
-  return (
-    <div className={classes.root}>
-      <Header />
-      {loading ? (
-        <Loader.PageProgress />
-      ) : (
-        <div className={classes.content}>
-          <PageHeading left="RESULTATS DE LA RECHERCHE" />
-          <div className={classes.filters}>
-            <div className={classes.filtersRow}>
-              {Object.values(filters).map((i) => (
-                <div key={i} className={classes.filter}>
-                  {i}
-                </div>
-              ))}
+  return loading ? (
+    <Loader.PageProgress />
+  ) : (
+    <div className={classes.content}>
+      <PageHeading left="RESULTATS DE LA RECHERCHE" />
+      <div className={classes.filters}>
+        <div className={classes.filtersRow}>
+          {Object.values(filters).map((i) => (
+            <div key={i} className={classes.filter}>
+              {i}
             </div>
-            <TableButton
-              color="black"
-              onClick={() => props.history.goBack()}
-              text="Modifier"
-            />
-          </div>
-          <Table
-            headers={[
-              'LIVREUR',
-              'VOLUME',
-              'TYPE DE VEHICULE',
-              'TARIF HORAIRE',
-              'MONTANT TOTAL',
-              'NOTE MOYENNE',
-              'ACTION',
-            ]}
-            values={data.users.map((item) => [
-              <Row>
-                <img
-                  src={Constants.BASE_URL + '/' + item.proofs.profile}
-                  alt="Profile"
-                  className={classes.avatar}
-                />
-                {item.firstName} {item.lastName}
-              </Row>,
-              item.delivery.transportType,
-              item.delivery.vehicle.vehicleType,
-              `${item.delivery.perHour}€`,
-              `${calcPrice(
-                data.offer.start,
-                data.offer.end,
-                item.delivery.perHour,
-              )}€`,
-              `${item.averageRating}/5`,
-              <TableButton
-                color="black"
-                onClick={() => onSendInvite(data.offer._id, item._id)}
-                disabled={
-                  inviteLoading ||
-                  invitedUsers.some(
-                    (item2) => String(item2) === String(item._id),
-                  )
-                }
-                text={
-                  invitedUsers.some(
-                    (item2) => String(item2) === String(item._id),
-                  )
-                    ? 'INVITED'
-                    : 'INVITER'
-                }
-              />,
-            ])}
-          />
+          ))}
         </div>
-      )}
+        <TableButton
+          color="black"
+          onClick={() => props.history.goBack()}
+          text="Modifier"
+        />
+      </div>
+      <Table
+        headers={[
+          'LIVREUR',
+          'VOLUME',
+          'TYPE DE VEHICULE',
+          'TARIF HORAIRE',
+          'MONTANT TOTAL',
+          'NOTE MOYENNE',
+          'ACTION',
+        ]}
+        values={data.users.map((item) => [
+          <Row>
+            <img
+              src={Constants.BASE_URL + '/' + item.proofs.profile}
+              alt="Profile"
+              className={classes.avatar}
+            />
+            {item.firstName} {item.lastName}
+          </Row>,
+          item.delivery.transportType,
+          item.delivery.vehicle.vehicleType,
+          `${item.delivery.perHour}€`,
+          `${calcPrice(
+            data.offer.start,
+            data.offer.end,
+            item.delivery.perHour,
+          )}€`,
+          `${item.averageRating}/5`,
+          <TableButton
+            color="black"
+            onClick={() => onSendInvite(data.offer._id, item._id)}
+            disabled={
+              inviteLoading ||
+              invitedUsers.some((item2) => String(item2) === String(item._id))
+            }
+            text={
+              invitedUsers.some((item2) => String(item2) === String(item._id))
+                ? 'INVITED'
+                : 'INVITER'
+            }
+          />,
+        ])}
+      />
     </div>
   );
 };

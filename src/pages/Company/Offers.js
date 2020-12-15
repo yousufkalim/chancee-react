@@ -16,17 +16,10 @@ import Texts from '../../globals/Texts';
 
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
-import Header from '../../components/HeaderCompany';
 import TableButton from '../../components/TableButton';
 import ProfileCardModal from '../../components/ProfileCardModal';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: 90,
-    paddingLeft: 90,
-    minHeight: '100vh',
-    backgroundColor: '#F5F7FB',
-  },
   content: {
     padding: 30,
     paddingBottom: 100,
@@ -474,8 +467,7 @@ const Offers = (props) => {
   }
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       {loading ? (
         <Loader.PageProgress />
       ) : (
@@ -538,7 +530,7 @@ const Offers = (props) => {
           rating={userSelectData.averageRating}
         />
       )}
-    </div>
+    </>
   );
 };
 

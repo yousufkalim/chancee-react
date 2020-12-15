@@ -6,13 +6,9 @@ import { useSelector } from 'react-redux';
 import { ReactComponent as JumboImage } from '../assets/images/Home2.svg';
 
 import Steps from '../components/Steps';
-import Header from '../components/Header';
 import Jumbotron from '../components/Jumbotron';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#fff',
-  },
   bottomM: { marginBottom: 40 },
 }));
 
@@ -26,8 +22,7 @@ export default function Verifiy(props) {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
@@ -71,6 +66,6 @@ export default function Verifiy(props) {
           />
         </section>
       </Container>
-    </div>
+    </>
   );
 }

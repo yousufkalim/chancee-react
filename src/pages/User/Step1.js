@@ -18,7 +18,6 @@ import { ReactComponent as JumboImage } from '../../assets/images/Home2.svg';
 import { ReactComponent as Microphone } from '../../assets/images/microphone.svg';
 
 import Steps from '../../components/Steps';
-import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
 import Input from '../../components/ProfileInput';
@@ -27,9 +26,6 @@ import Heading from '../../components/FormStepHeader';
 import DocumentUploading from '../../components/DocumentUploading';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#fff',
-  },
   formContainer: {
     marginTop: 50,
   },
@@ -233,8 +229,7 @@ export default function Profile(props) {
   }, []);
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
@@ -377,6 +372,6 @@ export default function Profile(props) {
           </div>
         </section>
       </Container>
-    </div>
+    </>
   );
 }

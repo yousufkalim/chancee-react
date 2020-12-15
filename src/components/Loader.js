@@ -41,7 +41,7 @@ const CenterProgress = (props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.center}>
+    <div className={classes.center} style={props.style}>
       <CircularProgress
         color={props.color || 'inherit'}
         size={props.size || 40}

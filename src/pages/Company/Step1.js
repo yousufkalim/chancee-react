@@ -17,7 +17,6 @@ import { ReactComponent as Microphone } from '../../assets/images/microphone.svg
 import { ReactComponent as JumboImage } from '../../assets/images/ProfileStep1.svg';
 
 import Steps from '../../components/Steps';
-import Header from '../../components/Header';
 import Button from '../../components/Button';
 import Flag from '../../assets/images/flag.png';
 import Input from '../../components/ProfileInput';
@@ -27,9 +26,6 @@ import DocumentUploading from '../../components/DocumentUploading';
 import AvailabilitySelector from '../../components/AvailabilitySelector';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#fff',
-  },
   formContainer: {
     marginTop: 50,
   },
@@ -210,8 +206,7 @@ export default function Profile(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
@@ -356,6 +351,6 @@ export default function Profile(props) {
           </div>
         </section>
       </Container>
-    </div>
+    </>
   );
 }

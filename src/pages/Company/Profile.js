@@ -15,18 +15,11 @@ import Card from '../../components/Card';
 import Modal from '../../components/Modal';
 import TableButton from '../../components/TableButton';
 import Input from '../../components/ProfileInput';
-import Header from '../../components/HeaderCompany';
 import ProfileCard from '../../components/ProfileCard';
 import DocumentUploading from '../../components/DocumentUploading';
 import AvailabilitySelector from '../../components/AvailabilitySelector';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    paddingTop: 90,
-    paddingLeft: 90,
-    minHeight: '100vh',
-    backgroundColor: '#F5F7FB',
-  },
   content: {
     padding: 30,
     paddingBottom: 50,
@@ -253,8 +246,7 @@ const Profile = (props) => {
   };
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       <div className={classes.content}>
         <Grid container spacing={4}>
           <Grid item xs={12} xl={4}>
@@ -269,7 +261,7 @@ const Profile = (props) => {
               phone={phone}
               siret={SIRET}
               rocket={totalOffers}
-              rating={store.user.averageRating}
+              rating={Math.floor(store.user.averageRating * 100) / 100}
               notes={totalRatings}
               onClick={() => setProfileModal(true)}
             />
@@ -439,7 +431,7 @@ const Profile = (props) => {
           />
         }
       />
-    </div>
+    </>
   );
 };
 

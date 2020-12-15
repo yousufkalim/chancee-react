@@ -17,7 +17,6 @@ import { ReactComponent as JumboImage } from '../../assets/images/Fusee.svg';
 import { ReactComponent as Unchecked } from '../../assets/images/unchecked.svg';
 
 import Steps from '../../components/Steps';
-import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import Button from '../../components/Button';
 import Jumbotron from '../../components/Jumbotron';
@@ -29,10 +28,6 @@ import DocumentUploading from '../../components/DocumentUploading';
 import AvailabilitySelector from '../../components/AvailabilitySelector';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    backgroundColor: '#fff',
-    paddingBottom: 20,
-  },
   formContainer: {
     marginTop: 50,
   },
@@ -213,8 +208,7 @@ export default function Profile(props) {
   };
 
   return (
-    <div className={classes.root}>
-      <Header />
+    <>
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
@@ -331,6 +325,6 @@ export default function Profile(props) {
         </section>
       </Container>
       <Footer />
-    </div>
+    </>
   );
 }
