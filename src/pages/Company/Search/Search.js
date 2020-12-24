@@ -131,20 +131,20 @@ const Select = (props) => {
 
 const Search = (props) => {
   const classes = useStyles();
-  const [KM, setKM] = useState(60);
-  const [rate, setRate] = useState(18);
-  const [volume, setVolume] = useState(2);
-  const [rating, setRating] = useState(3);
-  const [vehicles, setVehicles] = useState(new Set([4]));
-  const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
-  const [from, setFrom] = useState(6);
-  const [to, setTo] = useState(8);
-  const [deliveries, setDeliveries] = useState('1');
+  // const [KM, setKM] = useState(60);
+  // const [rate, setRate] = useState(18);
+  // const [volume, setVolume] = useState(2);
+  // const [rating, setRating] = useState(3);
+  // const [vehicles, setVehicles] = useState(new Set([4]));
+  // const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
+  // const [from, setFrom] = useState(6);
+  // const [to, setTo] = useState(8);
+  // const [deliveries, setDeliveries] = useState('1');
 
   useEffect(() => {
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-  }, [props.history.action]);
+  }, [props.page]);
 
   return (
     <div className={classes.content}>
@@ -153,30 +153,30 @@ const Search = (props) => {
         <Grid container spacing={8}>
           <Grid item xs={12} xl={6}>
             <DistanceSlider
-              value={KM}
-              onChange={(e, value) => value >= 2 && setKM(value)}
+              value={props.KM}
+              onChange={(e, value) => value >= 2 && props.setKM(value)}
             />
           </Grid>
           <Grid item xs={12} xl={6}>
             <RateSlider
               search={true}
-              value={rate}
-              onChange={(e, value) => setRate(value)}
+              value={props.rate}
+              onChange={(e, value) => props.setRate(value)}
             />
           </Grid>
           <Grid item xs={12} xl={6}>
             <VolumeSlider
-              value={volume}
-              onChange={(e, value) => setVolume(value)}
+              value={props.volume}
+              onChange={(e, value) => props.setVolume(value)}
             />
           </Grid>
           <Grid item xs={12} xl={6}>
             <div id="rating" style={{ marginBottom: '20px' }}>
               <div className={classes.subHeading}>NOTE MINIMUM :</div>
               <Rating
-                value={rating}
+                value={props.rating}
                 onChange={(event, newValue) => {
-                  setRating(newValue);
+                  newValue && props.setRating(newValue);
                 }}
                 style={{ fontSize: '3.5rem' }}
                 name="ratging"
@@ -191,21 +191,22 @@ const Search = (props) => {
                   DATE ET HEURE DE LA MISSION:
                 </div>
               </div>
+
               <Input
                 type="date"
                 name="day"
-                value={day}
+                value={props.day}
                 label="JOUR :"
                 min={moment().format('YYYY-MM-DD')}
-                onChange={({ target: { name, value } }) => setDay(value)}
+                onChange={({ target: { name, value } }) => props.setDay(value)}
               />
               <Select
                 label="HEURE DE DEMARRAGE :"
-                value={from}
+                value={props.from}
                 onChange={({ target: { name, value } }) =>
                   Number(value) >= Number(0) &&
                   Number(value) <= Number(23) &&
-                  setFrom(value)
+                  props.setFrom(value)
                 }
                 values={[
                   0,
@@ -236,11 +237,11 @@ const Search = (props) => {
               />
               <Select
                 label="HEURE DE FIN :"
-                value={to}
+                value={props.to}
                 onChange={({ target: { name, value } }) =>
                   Number(value) >= Number(0) &&
                   Number(value) <= Number(23) &&
-                  setTo(value)
+                  props.setTo(value)
                 }
                 values={[
                   0,
@@ -273,11 +274,11 @@ const Search = (props) => {
                 label="NOMBRE DE LIVREURS SOUHAITES :"
                 type="number"
                 name="deliveries"
-                value={deliveries}
+                value={props.deliveries}
                 onChange={({ target: { name, value } }) =>
                   Number(value) > Number(0) &&
                   Number(value) <= 50 &&
-                  setDeliveries(value)
+                  props.setDeliveries(value)
                 }
               />
             </div>
@@ -285,16 +286,16 @@ const Search = (props) => {
           <Grid item xs={12} xl={6}>
             <VehicleSelector
               checkbox={false}
-              values={vehicles}
+              values={props.vehicles}
               onChange={(value) => {
-                let newVehicles = new Set(vehicles);
+                let newVehicles = new Set(props.vehicles);
                 let isPresent = newVehicles.has(value);
                 if (isPresent) {
                   newVehicles.delete(value);
                 } else {
                   newVehicles.add(value);
                 }
-                setVehicles(newVehicles);
+                props.setVehicles(newVehicles);
               }}
             />
           </Grid>
@@ -306,19 +307,8 @@ const Search = (props) => {
                 text="RECHERCHER"
                 style={{ marginTop: 20 }}
                 onClick={() =>
-                  props.history.push(`${props.match.url}/result`, {
-                    filters: {
-                      KM,
-                      rate,
-                      volume,
-                      rating,
-                      vehicles,
-                      day,
-                      from,
-                      to,
-                      deliveries,
-                    },
-                  })
+                  // props.history.push(`${props.match.url}/result`,
+                  props.setPage(2)
                 }
               />
             </div>

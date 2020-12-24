@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import API from '../../../globals/API';
 import Constants from '../../../globals/Constants';
+import moment from 'moment';
 
 import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
@@ -89,7 +90,7 @@ const Row = (props) => {
   return <div className={classes.row}>{props.children}</div>;
 };
 
-const Search = (props) => {
+const Result = (props) => {
   const classes = useStyles();
   const store = useSelector((state) => state);
 
@@ -101,7 +102,16 @@ const Search = (props) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      props.history.goBack();
+      props.setPage(1);
+      props.setKM(60);
+      props.setRate(18);
+      props.setVolume(2);
+      props.setRating(3);
+      props.setVehicles(new Set([4]));
+      props.setDay(moment().format('YYYY-MM-DD'));
+      props.setFrom(6);
+      props.setTo(8);
+      props.setDeliveries('1');
     }, 880000);
     getData();
     document.body.scrollTop = 0; // For Safari
@@ -112,7 +122,7 @@ const Search = (props) => {
 
   const getData = async () => {
     try {
-      const filters = props.location.state.filters;
+      const filters = props.filters;
       let volume =
         filters.volume === 1
           ? 'small'
@@ -195,6 +205,16 @@ const Search = (props) => {
     return NewRate;
   };
 
+  function checkVehicle(item) {
+    let last = item[item.length - 1];
+    last = last.replace('/ ', '');
+
+    let newitem = item;
+    newitem[newitem.length - 1] = last;
+    console.log(newitem);
+    return newitem.map((ite) => ite);
+  }
+
   return loading ? (
     <Loader.PageProgress />
   ) : (
@@ -204,13 +224,13 @@ const Search = (props) => {
         <div className={classes.filtersRow}>
           {Object.values(filters).map((i) => (
             <div key={i} className={classes.filter}>
-              {i}
+              {Array.isArray(i) ? checkVehicle(i) : i}
             </div>
           ))}
         </div>
         <TableButton
           color="black"
-          onClick={() => props.history.goBack()}
+          onClick={() => props.setPage(1)}
           text="Modifier"
         />
       </div>
@@ -261,4 +281,4 @@ const Search = (props) => {
   );
 };
 
-export default Search;
+export default Result;

@@ -107,18 +107,18 @@ const Profile = (props) => {
   const documentSteps = [
     {
       id: 1,
-      title: 'Justificatif d’identité en cours de validité *',
+      title: 'Justificatif d’identité en cours de validité*',
       description: 'CNI Recto/Verso, Passeport ou titre de séjour',
     },
     {
       id: 2,
-      title: 'Kbis de moins de 3 mois *',
+      title: 'Kbis de moins de 3 mois*',
       description:
         'Kbis version électronique ou version papier numérisée (300dpi minimum)',
     },
     {
       id: 3,
-      title: 'Selfie *',
+      title: 'Selfie*',
       description: 'Prenez un selfie où l’on voit clairement votre visage',
     },
     {
@@ -140,12 +140,12 @@ const Profile = (props) => {
   const documentSteps2 = [
     {
       id: 1,
-      title: 'Permis de conduire *',
+      title: 'Permis de conduire*',
       description: 'Obligatoire si sélection d’un véhicule motorisé.',
     },
     {
       id: 2,
-      title: 'Preuve d’achat du véhicule *',
+      title: 'Preuve d’achat du véhicule*',
       description: 'Obligatoire si sélection d’un véhicule motorisé.',
     },
   ];

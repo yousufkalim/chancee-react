@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Hidden from '@material-ui/core/Hidden';
 import MenuIcon from '@material-ui/icons/Menu';
 
-import Logo from '../assets/images/Logo.png';
+import Logo from '../assets/images/Logo.svg';
 import * as actionTypes from '../store/actions/actionTypes';
 import ProfileImage from '../assets/images/Profile.svg';
 
