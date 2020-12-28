@@ -10,6 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 700,
+    [theme.breakpoints.down('md')]: {
+      minWidth: 0,
+    },
   },
   table: {
     '& .MuiTableHead-root': {
@@ -21,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
           fontWeight: 'bold',
           whiteSpace: 'nowrap',
           color: theme.palette.common.white,
+          [theme.breakpoints.down('md')]: {
+            fontSize: 12,
+          },
         },
       },
     },
@@ -33,6 +39,9 @@ const useStyles = makeStyles((theme) => ({
           fontSize: 16,
           fontWeight: 500,
           whiteSpace: 'nowrap',
+          [theme.breakpoints.down('md')]: {
+            fontSize: 12,
+          },
         },
       },
     },

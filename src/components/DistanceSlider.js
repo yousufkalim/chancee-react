@@ -95,7 +95,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     float: 'right',
     color: '#8B9AFC',
-    marginBottom: -10,
+    marginTop: -9,
+    marginBottom: -21,
     fontWeight: 'bold',
   },
 }));

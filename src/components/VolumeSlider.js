@@ -121,6 +121,7 @@ const Profile = (props) => {
           <User2step23
             onClick={() => props.onChange('', 3)}
             className={classes.sliderIcon}
+            style={{ marginTop: '-25px' }}
           />
         </Grid>
       </Grid>

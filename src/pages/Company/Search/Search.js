@@ -19,6 +19,28 @@ const useStyles = makeStyles((theme) => ({
   content: {
     padding: 30,
     paddingBottom: 100,
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 20,
+    },
+  },
+  svg: {
+    [theme.breakpoints.down('lg')]: {
+      width: 332,
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 332,
+      marginLeft: -51,
+    },
+    [theme.breakpoints.up('xs')]: {
+      width: 280,
+      marginLeft: -51,
+    },
+  },
+  rate: {
+    fontSize: '3.5rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2.5rem',
+    },
   },
   subHeading: {
     fontFamily: 'Roboto',
@@ -68,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
     '&::placeholder': {
       color: '#000',
     },
+    [theme.breakpoints.down('sm')]: {
+      width: 225,
+    },
   },
   select: {
     width: 281,
@@ -80,6 +105,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'transparent',
     '&::placeholder': {
       color: '#000',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 225,
     },
   },
   center: {
@@ -174,11 +202,11 @@ const Search = (props) => {
             <div id="rating" style={{ marginBottom: '20px' }}>
               <div className={classes.subHeading}>NOTE MINIMUM :</div>
               <Rating
+                className={classes.rate}
                 value={props.rating}
                 onChange={(event, newValue) => {
                   newValue && props.setRating(newValue);
                 }}
-                style={{ fontSize: '3.5rem' }}
                 name="ratging"
               />
             </div>
@@ -301,7 +329,7 @@ const Search = (props) => {
           </Grid>
           <Grid item xs={12} xl={6}>
             <div className={classes.center}>
-              <SearchAvatar />
+              <SearchAvatar className={classes.svg} />
               <TableButton
                 fullWidth
                 text="RECHERCHER"

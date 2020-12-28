@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: 90,
     minHeight: '100vh',
     backgroundColor: '#F5F7FB',
+    [theme.breakpoints.down('md')]: {
+      paddingLeft: 0,
+    },
   },
 }));
 

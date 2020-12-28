@@ -8,7 +8,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
+import Hidden from '@material-ui/core/Hidden';
 import { ReactComponent as Logo } from '../assets/images/fan.svg';
 import { ReactComponent as Home } from '../assets/images/home.svg';
 import { ReactComponent as Search } from '../assets/images/Search.svg';
@@ -88,6 +88,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     textDecoration: 'none',
     marginRight: 10,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   profileImage: {
     width: 45,
@@ -108,7 +111,10 @@ const Header = (props) => {
   const classes = useStyles();
   const store = useSelector((state) => state);
   const [anchorEl, setAnchorEl] = useState(null);
-
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -121,9 +127,9 @@ const Header = (props) => {
     <div id="header">
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
-          <NavLink to="/" className={classes.logoContainer}>
+          <div className={classes.logoContainer} onClick={handleDrawerToggle}>
             <Logo className={classes.logo} />
-          </NavLink>
+          </div>
           <div className={classes.profile}>
             <span className={classes.profileName}>
               Hello,{' '}
@@ -161,7 +167,86 @@ const Header = (props) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
+
+      <Hidden mdDown implementation="css">
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          <ul className={classes.list}>
+            <NavLink
+              to="/"
+              exact
+              onClick={handleDrawerToggle}
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Home className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/search"
+              onClick={handleDrawerToggle}
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Search className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/profile"
+              onClick={handleDrawerToggle}
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Users className={classes.listItemIcon} />
+            </NavLink>
+          </ul>
+        </Drawer>
+      </Hidden>
+      <Hidden mdDown implementation="css">
+        <Drawer
+          className={classes.drawer}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+        >
+          <ul className={classes.list}>
+            <NavLink
+              to="/"
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Home className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/search"
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Search className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/profile"
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Users className={classes.listItemIcon} />
+            </NavLink>
+          </ul>
+        </Drawer>
+      </Hidden>
+
+      {/* <Drawer
         variant="permanent"
         className={classes.drawer}
         classes={{
@@ -193,7 +278,7 @@ const Header = (props) => {
             <Users className={classes.listItemIcon} />
           </NavLink>
         </ul>
-      </Drawer>
+      </Drawer> */}
     </div>
   );
 };

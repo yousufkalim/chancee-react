@@ -48,16 +48,26 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'space-between',
     margin: '20px 0',
     padding: '0px 15px',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 14,
+    },
   },
   tableHeaderLeft: {
     color: '#000',
     fontSize: 22,
     fontWeight: 'bold',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 14,
+    },
   },
   tableHeaderRight: {
     color: '#4DA1FF',
     fontSize: 22,
     fontWeight: 'bold',
+    [theme.breakpoints.down('md')]: {
+      fontSize: 14,
+      marginLeft: 20,
+    },
   },
   row: {
     display: 'flex',

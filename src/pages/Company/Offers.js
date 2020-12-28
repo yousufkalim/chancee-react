@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     paddingLeft: '15px',
     margin: '20px 0',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: 16,
+    },
   },
   row: {
     display: 'flex',
@@ -84,9 +87,11 @@ const Offers = (props) => {
   const [userModal, setUserModal] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };

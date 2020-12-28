@@ -157,7 +157,7 @@ export default function Profile(props) {
                 <Grid
                   item
                   xs={12}
-                  sm={6}
+                  sm={12}
                   md={3}
                   key={row.from + row.to}
                   className={classes.chips}
@@ -212,25 +212,6 @@ export default function Profile(props) {
           <>
             <TableButton
               fullWidth
-              onClick={() => {
-                if (timeslots[selectedDay - 1].slots.length > 0) {
-                  let newSlots = timeslots;
-                  newSlots[selectedDay - 1].checked = true;
-                  setTimeSlots(newSlots);
-                } else {
-                  let newSlots = timeslots;
-                  newSlots[selectedDay - 1].checked = false;
-                  setTimeSlots(newSlots);
-                }
-                setDayModal(false);
-                setEndHour('');
-                setStartHour('');
-              }}
-              text="Terminé"
-            />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <TableButton
-              fullWidth
               disabled={timeslots[selectedDay - 1].slots.length >= 3}
               onClick={() => {
                 if (
@@ -274,6 +255,25 @@ export default function Profile(props) {
                   ? 'Max 3 permis!'
                   : 'Ajouter un horodatage'
               }
+            />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <TableButton
+              fullWidth
+              onClick={() => {
+                if (timeslots[selectedDay - 1].slots.length > 0) {
+                  let newSlots = timeslots;
+                  newSlots[selectedDay - 1].checked = true;
+                  setTimeSlots(newSlots);
+                } else {
+                  let newSlots = timeslots;
+                  newSlots[selectedDay - 1].checked = false;
+                  setTimeSlots(newSlots);
+                }
+                setDayModal(false);
+                setEndHour('');
+                setStartHour('');
+              }}
+              text="Terminé"
             />
           </>
         }

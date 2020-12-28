@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import API from '../../../globals/API';
 import Constants from '../../../globals/Constants';
 import moment from 'moment';
-
+import Hidden from '@material-ui/core/Hidden';
 import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
 import PageHeading from '../../../components/PageHeading';
@@ -99,7 +101,15 @@ const Result = (props) => {
   const [loading, setLoading] = useState(true);
   const [inviteLoading, setInviteLoading] = useState(false);
   const [invitedUsers, setInvitedUsers] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   useEffect(() => {
     const timeout = setTimeout(() => {
       props.setPage(1);
@@ -137,9 +147,9 @@ const Result = (props) => {
       filters.vehicles.has(5) && vehicles.push('Truck');
       filters.vehicles.has(6) && vehicles.push('Large volume permit');
       setFilters({
-        time: `${filters.day || '--:--:----'}, ${filters.from || '00'}h - ${
-          filters.to || '00'
-        }h`,
+        time: `${moment(filters.day).format('DD/MM/YYYY') || '--:--:----'}, ${
+          filters.from || '00'
+        }h - ${filters.to || '00'}h`,
         KM: `${filters.KM} km`,
         weight: `${volume} taille`,
         vehicles:
@@ -221,13 +231,37 @@ const Result = (props) => {
     <div className={classes.content}>
       <PageHeading left="RESULTATS DE LA RECHERCHE" />
       <div className={classes.filters}>
-        <div className={classes.filtersRow}>
-          {Object.values(filters).map((i) => (
-            <div key={i} className={classes.filter}>
-              {Array.isArray(i) ? checkVehicle(i) : i}
-            </div>
-          ))}
-        </div>
+        <Hidden mdDown implementation="css">
+          <div className={classes.filtersRow}>
+            {Object.values(filters).map((i) => (
+              <div key={i} className={classes.filter}>
+                {Array.isArray(i) ? checkVehicle(i) : i}
+              </div>
+            ))}
+          </div>
+        </Hidden>
+        <Hidden lgUp implementation="css">
+          <div>
+            <KeyboardArrowDownIcon
+              className={classes.link}
+              onClick={handleClick}
+            />
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              {console.log(filters)}
+              {Object.values(filters).map((i) => (
+                <MenuItem key={i}>
+                  {Array.isArray(i) ? checkVehicle(i) : i}
+                </MenuItem>
+              ))}
+            </Menu>
+          </div>
+        </Hidden>
         <TableButton
           color="black"
           onClick={() => props.setPage(1)}

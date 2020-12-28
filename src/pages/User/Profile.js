@@ -404,7 +404,7 @@ const Profile = (props) => {
           <Grid item xs={12} xl={8}>
             <Card>
               <Grid container>
-                <Grid item xs={8}>
+                <Grid item xs={12} lg={8}>
                   <VehicleSelector
                     checkbox={false}
                     values={vehicles}
@@ -416,7 +416,7 @@ const Profile = (props) => {
                     }}
                   />
                 </Grid>
-                <Grid item xs={4}>
+                <Grid item xs={12} lg={4}>
                   {!vehicles.has(1) && !vehicles.has(3) && (
                     <DocumentUploading
                       justCheckbox={true}

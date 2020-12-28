@@ -16,7 +16,7 @@ import LoginBG from '../assets/images/login.png';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    width: '100vw',
+    width: '100%',
     backgroundImage: `url(${LoginBG})`,
     backgroundRepeat: 'no-repeat',
     backgroundColor:
@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 40,
   },
   form: {
-    width: 280,
+    width: '100%',
+    maxWidth: '280px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',

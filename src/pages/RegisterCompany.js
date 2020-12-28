@@ -16,7 +16,7 @@ import TableButton from '../components/TableButton';
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    width: '100vw',
+    width: '100%',
     backgroundColor: '#634294',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -24,15 +24,29 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    padding: '0 20px',
+    paddingTop: '20px',
+    '@media (max-width: 1440px)': {
+      width: '100%',
+      height: '120vh',
+      paddingTop: '0px',
+    },
+    '@media (max-width: 1024px)': {
+      width: '100%',
+      height: '120vh',
+      paddingTop: '10px',
+    },
   },
   header: {
     color: '#fff',
     fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 15,
+    textAlign: 'center',
   },
   form: {
-    width: 350,
+    width: '100%',
+    maxWidth: '350px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -64,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
   submitButton: {
     width: '100%',
     marginTop: 10,
-    marginBottom: 40,
+    marginBottom: 5,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
@@ -73,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   forgotText: {
     color: '#7D76BA',
     fontSize: 10,
-    margin: '5px 0',
+    margin: '0',
     textDecoration: 'none',
   },
   forgotTextWhite: {

@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-
+import Hidden from '@material-ui/core/Hidden';
 import { ReactComponent as Logo } from '../assets/images/fan.svg';
 import { ReactComponent as Home } from '../assets/images/home.svg';
 import { ReactComponent as Calendar } from '../assets/images/calendar.svg';
@@ -42,6 +42,13 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
+    // [theme.breakpoints.down('md')]: {
+    //   display: 'none',
+    // },
+    // [theme.breakpoints.up('sm')]: {
+    //   width: drawerWidth,
+    //   flexShrink: 0,
+    // },
   },
   drawerPaper: {
     width: drawerWidth,
@@ -87,6 +94,9 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
     textDecoration: 'none',
     marginRight: 10,
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   profileImage: {
     width: 45,
@@ -107,6 +117,11 @@ const Header = (props) => {
   const store = useSelector((state) => state);
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -120,9 +135,9 @@ const Header = (props) => {
     <div id="header">
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar className={classes.toolbar}>
-          <NavLink to="/" className={classes.logoContainer}>
+          <div className={classes.logoContainer} onClick={handleDrawerToggle}>
             <Logo className={classes.logo} />
-          </NavLink>
+          </div>
           <div className={classes.profile}>
             <span className={classes.profileName}>
               Hello,{' '}
@@ -160,32 +175,69 @@ const Header = (props) => {
           </div>
         </Toolbar>
       </AppBar>
-      <Drawer
-        variant="permanent"
-        className={classes.drawer}
-        classes={{
-          paper: classes.drawerPaper,
-        }}
-      >
-        <ul className={classes.list}>
-          <NavLink
-            to="/"
-            exact
-            className={classes.listItem}
-            activeClassName={classes.listItemActive}
-          >
-            <Home className={classes.listItemIcon} />
-          </NavLink>
-          <NavLink
-            to="/invitations"
-            exact
-            className={classes.listItem}
-            activeClassName={classes.listItemActive}
-          >
-            <Calendar className={classes.listItemIcon} />
-          </NavLink>
-        </ul>
-      </Drawer>
+
+      <Hidden mdDown implementation="css">
+        <Drawer
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true,
+          }}
+        >
+          <ul className={classes.list}>
+            <NavLink
+              to="/"
+              onClick={handleDrawerToggle}
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Home className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/invitations"
+              onClick={handleDrawerToggle}
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Calendar className={classes.listItemIcon} />
+            </NavLink>
+          </ul>
+        </Drawer>
+      </Hidden>
+      <Hidden mdDown implementation="css">
+        <Drawer
+          className={classes.drawer}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+        >
+          <ul className={classes.list}>
+            <NavLink
+              to="/"
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Home className={classes.listItemIcon} />
+            </NavLink>
+            <NavLink
+              to="/invitations"
+              exact
+              className={classes.listItem}
+              activeClassName={classes.listItemActive}
+            >
+              <Calendar className={classes.listItemIcon} />
+            </NavLink>
+          </ul>
+        </Drawer>
+      </Hidden>
     </div>
   );
 };

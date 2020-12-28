@@ -21,14 +21,25 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     '& :nth-child(1)': {
       borderTopLeftRadius: 6,
+      [theme.breakpoints.down('lg')]: {
+        borderTopRightRadius: 6,
+        // borderBottom: 0,
+      },
     },
-    '& :nth-child(2)': {
+    '& > :nth-child(even)': {
       borderTopRightRadius: 6,
       borderLeft: 0,
+      [theme.breakpoints.down('md')]: {
+        borderLeft: '1px solid rgba(186,197,205,1)',
+        borderTopRightRadius: 0,
+      },
     },
-    '& :nth-child(3)': {
+    '& > :nth-child(3)': {
       borderTop: 0,
       borderBottom: 0,
+      [theme.breakpoints.down('md')]: {
+        borderBottom: '1px solid rgba(186,197,205,1)',
+      },
     },
     '& :nth-child(4)': {
       borderTop: 0,
@@ -37,10 +48,17 @@ const useStyles = makeStyles((theme) => ({
     },
     '& :nth-child(5)': {
       borderBottomLeftRadius: 6,
+      [theme.breakpoints.down('md')]: {
+        borderBottomLeftRadius: 0,
+        // borderBottom: 0,
+      },
     },
     '& :nth-child(6)': {
       borderBottomRightRadius: 6,
       borderLeft: 0,
+      [theme.breakpoints.down('md')]: {
+        borderBottomLeftRadius: 6,
+      },
     },
   },
   step1Section: {
@@ -166,6 +184,7 @@ const VehicleSelector = (props) => {
             <Grid
               item
               md={6}
+              sm={12}
               xs={12}
               container
               key={item.id}

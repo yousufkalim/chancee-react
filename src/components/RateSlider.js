@@ -90,6 +90,9 @@ const useStyles = makeStyles((theme) => ({
   },
   sliderInfo: {
     padding: '20px',
+    [theme.breakpoints.down('sm')]: {
+      padding: 0,
+    },
   },
   sliderInfoText: {
     color: 'red',
@@ -196,15 +199,15 @@ const RateSlider = (props) => {
             <Grid item xs={12} className={classes.sliderInfo} container>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MINIMUM PAR LES AUTRES LIVREURS:</span>
-                <span style={{ fontWeight: 'bold' }}>{props.minimum} €</span>
+                <span style={{ fontWeight: 'bold' }}>{props.minimum}€</span>
               </Grid>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MOYEN PAR LES AUTRES LIVREURS:</span>
-                <span style={{ fontWeight: 'bold' }}>{props.average} €</span>
+                <span style={{ fontWeight: 'bold' }}>{props.average}€</span>
               </Grid>
               <Grid item xs={12} md={9} className={classes.sliderInfoText}>
                 <span>TARIF MAXIMAL PAR LES AUTRES LIVREURS:</span>
-                <span style={{ fontWeight: 'bold' }}>{props.maximum} €</span>
+                <span style={{ fontWeight: 'bold' }}>{props.maximum}€</span>
               </Grid>
             </Grid>
           )}

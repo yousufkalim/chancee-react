@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
   actions: {
     display: 'flex',
     padding: '20px 0px',
-    flexDirection: 'row',
+    flexDirection: 'column',
     alignItems: 'center',
   },
 }));
