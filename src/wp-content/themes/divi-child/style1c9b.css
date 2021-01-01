@@ -1,0 +1,176 @@
+/*
+ Theme Name:     Divi Child
+ Theme URI:      https://www.elegantthemes.com/gallery/divi/
+ Description:    Divi Child Theme
+ Author:         Elegant Themes
+ Author URI:     https://www.elegantthemes.com
+ Template:       Divi
+ Version:        1.0.0
+*/
+ 
+ 
+/* =Theme customization starts here
+------------------------------------------------------- 
+*/
+/*** COLONNE DROITE SIMULATION EMPRUNT ***/
+.et_pb_column .et_pb_column_1_3 .et_pb_column_1 .et_pb_css_mix_blend_mode_passthrough .et_pb_column_single 
+    {
+min-width:292px !important;
+}
+
+h5.et_pb_toggle_title
+{
+    font-size:18px;
+    line-height:19px;
+}
+.et_pb_toggle_open:before {
+    content: '';
+    width: 100px;
+    height: 5px;
+    background: #ed6e2e;
+    position: absolute;
+    top: -15px;
+    left: 0;
+}
+
+.et_pb_toggle_open:after {
+    content: '';
+    width: 100px;
+    height: 5px;
+    background: #ed6e2e;
+    position: absolute;
+    bottom: -15px;
+    left: 0;
+}
+.et_pb_toggle_open {
+    padding:0;
+}
+.et_pb_toggle {
+    border: none;
+}
+
+
+.simulateur_minwidth {max-width:100% !important;}
+#AltoSCr { vertical-align:top; max-width:100%; margin-left: auto; margin-right: auto; text-align:left; }
+#AltoSCr table { border-collapse:separate; border-spacing:0px; }
+#AltoSCr tr, td {margin:0;padding:0;border:0;}
+#AltoSCr .Bloc  { display:inline-table; border: none; margin:4px 2px 0px 2px; height:84px; text-align:left; vertical-align:top; }
+#AltoSCr .BlocG { background-color: transparent; width:100%; }
+#AltoSCr .BlocD { background-color:transparent; width:100%; }
+#AltoSCr .ibloc { display:table-cell; vertical-align:middle; }
+#AltoSCr .tab1 { border-spacing:1px; padding:2px; }
+#AltoSCr .blc { text-align:center; padding-top:12px; padding-bottom:12px; }
+#AltoSCr .td1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 14px; color: #666666; padding:6px; min-width:110px;}
+#AltoSCr .wg1 { min-width: none !important}
+#AltoSCr .titre1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 18px; font-weight: bold; color: #ed6e2e; }
+#AltoSCr input[type=text] {    
+    background: #f4f4f4;
+    padding: 5px;
+    color: #000000;
+    border-radius: 15px;
+    text-align:center;
+     }
+
+#AltoSCr .btn-lien {
+    background: #ed6e2e;
+    padding: 5px 15px;
+    color: #ffffff;
+    border-radius: 15px;
+    font-weight: 600;
+    border-width: 0;
+}
+
+@media only screen and (max-width:360px){
+#AltoSCr .BlocD { height:50px; }
+#AltoSCr .titre1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 18px; font-weight: bold; color: #ed6e2e; }
+}
+
+
+
+/*** NOTAIRES ***/
+
+#fraisnotaires { max-width:100%; }
+#fraisnotaires .tab1 { border: none; }
+#fraisnotaires .put1{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; border-width: 0px; border-style: solid; border-color: #7F9DB9; border-radius: 15px ; padding:5px 15px;}
+#fraisnotaires .td0 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #FFFFFF; font-weight: bold; display:none;}
+#fraisnotaires .td1 { padding:4px 0px !important; font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: transparent; }
+#fraisnotaires .td2 { padding:2px; font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: transparent; text-align:right; }
+#fraisnotaires .td1r{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 18px; color: #ed6e2e; font-weight: bold; }
+#fraisnotaires .td3 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: #FFFFFF; width:auto;}
+#fraisnotaires .tdg { background-color: transparent; }
+#fraisnotaires .titre1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 18px; font-weight: bold; color: #ed6e2e; }
+#fraisnotaires .fn_me {
+    padding:2px; font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: transparent; text-align: center;  
+}
+.td2 td{text-align: right ;}
+.entry-content tr td {
+    padding:2px !important;
+}
+#fraisnotaires select {    
+    border-radius:15px;
+    width:250px;
+     }
+     #fraisnotaires input {    
+        text-align:center;
+         }
+#fraisnotaires input[type=text] {    
+    background: #f4f4f4;
+    padding: 5px;
+    color: #000000;
+    border-radius: 15px;
+     }
+     .tableleftfloat {
+        float: left;
+    }
+    .tablerightfloat {
+        float: right;
+    }
+ @media (max-width: 450px){
+    #fraisnotaires .td1 {
+        width:180px;
+    } 
+    .tableleftfloat {
+        float: none;
+    }
+    .tablerightfloat {
+        float: none;
+    }
+ }
+
+
+ /****** TAUX ZERO ****/
+
+ #AltoPtz { vertical-align:top; margin-top:25px; max-width:632px; }
+  #PtzTitre { margin-bottom:10px; }
+  #PtzInput { display:inline-table; margin-left:2px; margin-right:2px; margin-bottom:8px; width:330px }
+  #PtzResult { display:inline-table; margin-left:2px; margin-right:2px; width:280px }
+  #PtzInfoRFR { margin-left:2px; margin-right:2px; }
+  #PtzInfoRFR { font-family: Arial; font-size: 10pt; color: #000044; text-align:left; margin-top:10px; margin-bottom:10px; }
+  #PtzIdNbPersMenage {color: #000000 !important;}
+  
+  #AltoPtz .HideIfOnlyNeuf { display:; /* none + supprimez egalement dans la liste de choix les choix autres que "Neuf" */ }
+  
+  #AltoPtz table { border-collapse:separate; border-spacing:6px; background-color: #f4f4f4; }
+  #AltoPtz .tab1 { border: solid #355B95 0px; border-spacing:1px; }
+
+  #AltoPtz .put1{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; border-width: 0; border-style: solid; border-color: #ffffff; border-radius: 15px;}
+  #AltoPtz .td0 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 15px; color: #ed6e2e; background-color: #ffffff; font-weight: bold; padding:4px; }
+  #AltoPtz .td1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #000000; padding-left: 6px; }
+  #AltoPtz .td1f{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #000000; background-color: #ffffff; padding:1px; }
+  #AltoPtz .td1t{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: #ffffff; padding:2px 3px !important; }
+  #AltoPtz .td1p{ font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #000000; background-color: #f4f4f4; }
+  #AltoPtz .td2 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; color: #666666; background-color: #ffffff; padding:3px; }
+  #AltoPtz .tdg { background-color: #ffffff; padding:4px 0px; }
+  #AltoPtz .tdg table { border-spacing:0px; }
+  #AltoPtz .titre1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 18px; font-weight: bold; color: #ed6e2e; }
+  #AltoPtz .titre2 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 13px; font-weight: bold; color: #ed6e2e; }
+  #AltoPtz .note0 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 10px; }
+  #AltoPtz .note1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 10px; font-style: italic; color: #909090; }
+  #AltoPtz a.note1 { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 10px; font-style: italic; color: #909090; text-decoration:none; }
+  #AltoPtz a.note1:visited { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 10px; font-style: italic; color: #909090; text-decoration:none; }
+  #AltoPtz a.note1:hover { font-family: 'Roboto',Helvetica,Arial,Lucida,sans-serif; font-size: 10px; font-style: italic; color: #909090; text-decoration:underline; background-color:#FFFFFF; }
+ .btn-lien {padding: 5px 15px !important; border-width: 0;}
+
+ #AltoPtz td,  #AltoSCr td,  #fraisnotaires td {
+    border-top: 0px solid #eee;
+ }

@@ -348,7 +348,7 @@ export default function Register(props) {
       <div className={classes.forgotRow}>
         <div className={classes.forgotText}>Vous avez déjà un compte ?</div>
         &nbsp;&nbsp;&nbsp;
-        <Link to="/" className={classes.forgotTextWhite}>
+        <Link to="/login" className={classes.forgotTextWhite}>
           Connexion
         </Link>
       </div>

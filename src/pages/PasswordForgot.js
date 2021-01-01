@@ -148,7 +148,7 @@ export default function PasswordForgot(props) {
       <div className={classes.forgotRow}>
         <div className={classes.forgotText}>Vous ave d j un compte ?</div>
         &nbsp;&nbsp;&nbsp;
-        <Link to="/" className={classes.forgotTextWhite}>
+        <Link to="/login" className={classes.forgotTextWhite}>
           Conne ion
         </Link>
       </div>
