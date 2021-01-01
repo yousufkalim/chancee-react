@@ -413,6 +413,8 @@ const Profile = (props) => {
                       newVehicles.clear();
                       newVehicles.add(value);
                       setVehicles(newVehicles);
+                      setVehicleProof('');
+                      setLicense('');
                     }}
                   />
                 </Grid>

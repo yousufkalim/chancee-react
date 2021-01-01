@@ -346,6 +346,7 @@ const Personal = () => {
                                 >
                                   <a
                                     style={{ cursor: 'pointer' }}
+                                    href="www.google.com"
                                     onclick="window.__tcfapi('displayConsentUi', 2, function() {} );"
                                   >
                                     Modifiez ou retirez votre consentement
@@ -484,13 +485,13 @@ const Personal = () => {
                                   consentement ci-dessus.
                                 </p>
                               </div>
-                            </div>{' '}
+                            </div>
                             {/* .et_pb_text */}
-                          </div>{' '}
+                          </div>
                           {/* .et_pb_column */}
-                        </div>{' '}
+                        </div>
                         {/* .et_pb_row */}
-                      </div>{' '}
+                      </div>
                       {/* .et_pb_section */}
                     </div>
                     {/* .et_builder_inner_content */}
@@ -498,17 +499,17 @@ const Personal = () => {
                   {/* .et-l */}
                 </div>
                 {/* #et-boc */}
-              </div>{' '}
+              </div>
               {/* .entry-content */}
-            </article>{' '}
+            </article>
             {/* .et_pb_post */}
-          </div>{' '}
+          </div>
           {/* #main-content */}
           <Footer />
           {/* #main-footer */}
-        </div>{' '}
+        </div>
         {/* #et-main-area */}
-      </div>{' '}
+      </div>
       {/* #page-container */}
     </div>
   );

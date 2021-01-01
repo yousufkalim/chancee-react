@@ -69,6 +69,7 @@ const useStyles = makeStyles((theme) => ({
     width: 30,
     height: 30,
     color: 'rgba(166,229,15,1)',
+    minWidth: 30,
   },
   stepperIcon: {
     width: 18,

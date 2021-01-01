@@ -74,19 +74,19 @@ const Home = () => {
                           <div className="et_pb_fullwidth_header_overlay" />
                           <div className="et_pb_fullwidth_header_scroll" />
                         </section>
-                      </div>{' '}
-                      {/* .et_pb_section */}{' '}
+                      </div>
+                      {/* .et_pb_section */}
                     </div>
                     {/* .et_builder_inner_content */}
                   </div>
                   {/* .et-l */}
                 </div>
                 {/* #et-boc */}
-              </div>{' '}
+              </div>
               {/* .entry-content */}
-            </article>{' '}
+            </article>
             {/* .et_pb_post */}
-          </div>{' '}
+          </div>
           {/* #main-content */}
           <footer id="main-footer" style={{ backgroundColor: '#032d3c' }}>
             <div id="et-footer-nav">
@@ -124,33 +124,34 @@ const Home = () => {
                       Données personnelles
                     </a>
                   </li>
-                </ul>{' '}
+                </ul>
               </div>
             </div>
             <div id="footer-bottom">
               <div className="container clearfix">
                 <ul className="et-social-icons">
                   <li className="et-social-icon et-social-facebook">
-                    <a href="#" className="icon">
+                    <a href="www.facebook.com" className="icon">
                       <span>Facebook</span>
                     </a>
                   </li>
                   <li className="et-social-icon et-social-twitter">
-                    <a href="#" className="icon">
+                    <a href="www.twitter.com" className="icon">
                       <span>Twitter</span>
                     </a>
                   </li>
                 </ul>
                 <div id="footer-info" style={{ color: '#f1f1f1' }}>
-                  © Réalisé avec précision par{' '}
+                  © Réalisé avec précision par
                   <a
                     href="https://www.valdoisecommunication.fr/"
                     target="_blank"
+                    rel="noreferrer"
                     style={{ color: '#f1f1f1' }}
                   >
                     Val d'Oise Communication
                   </a>
-                </div>{' '}
+                </div>
               </div>
             </div>
           </footer>

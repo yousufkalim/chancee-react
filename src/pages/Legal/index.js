@@ -631,13 +631,13 @@ const Legal = () => {
                                   du 6 janvier 1978).
                                 </p>
                               </div>
-                            </div>{' '}
+                            </div>
                             {/* .et_pb_text */}
-                          </div>{' '}
+                          </div>
                           {/* .et_pb_column */}
-                        </div>{' '}
+                        </div>
                         {/* .et_pb_row */}
-                      </div>{' '}
+                      </div>
                       {/* .et_pb_section */}
                     </div>
                     {/* .et_builder_inner_content */}
@@ -645,17 +645,17 @@ const Legal = () => {
                   {/* .et-l */}
                 </div>
                 {/* #et-boc */}
-              </div>{' '}
+              </div>
               {/* .entry-content */}
-            </article>{' '}
+            </article>
             {/* .et_pb_post */}
-          </div>{' '}
+          </div>
           {/* #main-content */}
           <Footer />
           {/* #main-footer */}
-        </div>{' '}
+        </div>
         {/* #et-main-area */}
-      </div>{' '}
+      </div>
       {/* #page-container */}
     </div>
   );
