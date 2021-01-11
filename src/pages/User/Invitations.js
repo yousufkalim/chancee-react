@@ -13,7 +13,6 @@ import Constants from '../../globals/Constants';
 import StatusInFrench from '../../globals/StatusInFr';
 import Texts from '../../globals/Texts';
 
-import Header from '../../components/Header2';
 import Table from '../../components/Table';
 import Loader from '../../components/Loader';
 import TableButton from '../../components/TableButton';

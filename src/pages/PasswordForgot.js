@@ -34,9 +34,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 'bold',
   },
   subHeading: {
-    color: '#fff',
     fontSize: 16,
+    color: '#fff',
     marginBottom: 40,
+    textAlign: 'center',
   },
   form: {
     width: 280,
