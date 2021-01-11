@@ -206,7 +206,7 @@ export default function Register(props) {
           <Input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Nom d’utilisateur"
             value={values.email}
             onChange={(event) => {
               const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
@@ -258,7 +258,7 @@ export default function Register(props) {
           <Input
             type="password"
             name="confirmPassword"
-            placeholder="Confirmation du mot de pass"
+            placeholder="Confirmation du mot de passe"
             value={values.confirmPassword}
             onChange={(event) => {
               if (event.target.value !== values.password) {

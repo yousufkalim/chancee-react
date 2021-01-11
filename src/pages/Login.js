@@ -157,7 +157,7 @@ export default function Login(props) {
             type="password"
             name="password"
             color="#4C4686"
-            placeholder="Password"
+            placeholder="Mot de passe"
             value={values.password}
             onChange={(event) => {
               if (event.target.value.length < 8) {
