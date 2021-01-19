@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
     },
     '& .MuiSlider-valueLabel': {
       marginTop: 38,
-      marginLeft: -104,
+      marginLeft: 55,
       color: 'transparent',
       fontSize: 20,
       '&::after': {
@@ -124,7 +124,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 16,
     float: 'right',
     color: '#FC917C',
-    marginBottom: -10,
+    marginTop: -9,
+    marginBottom: -21,
     fontWeight: 'bold',
   },
 }));
