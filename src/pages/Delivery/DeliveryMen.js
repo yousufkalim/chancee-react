@@ -43,13 +43,6 @@ const DeliveryMen = () => {
                                   Inscrivez-vous, gérez votre profil, vos
                                   missions et vos plannings.
                                 </span>
-                                <div className="et_pb_header_content_wrapper">
-                                  <p>
-                                    <strong>
-                                      Rendez-vous le 1er décembre 2020 !
-                                    </strong>
-                                  </p>
-                                </div>
                                 <Link
                                   to="/register"
                                   className="et_pb_button et_pb_more_button et_pb_button_one"

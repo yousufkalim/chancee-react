@@ -64,6 +64,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    cursor: 'pointer',
     border: '1px solid rgba(208,215,221,1)',
     borderRadius: 4,
     width: 30,
@@ -156,7 +157,13 @@ export default function DocumentUploading(props) {
                   {item.title}
                 </div>
               </div>
-              <div className={classes.stepperDesc}>{item.description}</div>
+              {typeof props.getStep(item.id).name !== 'object' ? (
+                <div className={classes.stepperDesc}>{item.description}</div>
+              ) : (
+                <div className={classes.stepperDesc}>
+                  {props.getStep(item.id).name.name}
+                </div>
+              )}
             </div>
           ))}
         </Grid>

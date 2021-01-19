@@ -5,6 +5,8 @@ import { ReactComponent as Star } from '../assets/images/star.svg';
 import { ReactComponent as Rocket } from '../assets/images/rocket.svg';
 import { ReactComponent as Pencil } from '../assets/images/pencil.svg';
 
+import Texts from '../globals/Texts';
+
 const useStyles = makeStyles((theme) => ({
   card: {
     height: '100%',
@@ -132,7 +134,7 @@ const Profile = (props) => {
           </div>
           <div className={classes.profileText}>{props.phone}</div>
           <div className={classes.profileEmail} style={{ marginTop: 15 }}>
-            NUMERO DE SIRET
+            {Texts.labelSIRET2}
           </div>
           <div className={classes.profileText}>{props.siret}</div>
         </div>
@@ -145,7 +147,9 @@ const Profile = (props) => {
             <Star className={classes.profileRatingIcon} />
             {props.rating}
           </div>
-          <div className={classes.profileRating}>({props.notes} notes)</div>
+          <div className={classes.profileRating}>
+            ({props.notes} {Texts.notes})
+          </div>
         </div>
       </div>
     </div>

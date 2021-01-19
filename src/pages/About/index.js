@@ -43,13 +43,6 @@ const About = () => {
                                   Découvrez le concept de notre nouvelle
                                   plateforme responsable !{' '}
                                 </span>
-                                <div className="et_pb_header_content_wrapper">
-                                  <p>
-                                    <strong>
-                                      Rendez-vous le 1er décembre 2020 !
-                                    </strong>
-                                  </p>
-                                </div>
                                 <Link
                                   className="et_pb_button et_pb_more_button et_pb_button_one"
                                   to="delivery"
@@ -58,7 +51,7 @@ const About = () => {
                                 </Link>
                                 <Link
                                   className="et_pb_button et_pb_more_button et_pb_button_two"
-                                  to="/resturent"
+                                  to="/restaurant"
                                 >
                                   Je suis restaurateur
                                 </Link>

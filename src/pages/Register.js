@@ -12,19 +12,25 @@ import Texts from '../globals/Texts';
 
 import Input from '../components/Input';
 import TableButton from '../components/TableButton';
+import LoginBG from '../assets/images/login.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     height: '100vh',
-    width: '100vw',
-    backgroundColor: '#634294',
+    width: '100%',
+    backgroundImage: `url(${LoginBG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: '0px 20px',
+    padding: '20px 20px',
   },
   header: {
     color: '#fff',
@@ -75,13 +81,13 @@ const useStyles = makeStyles((theme) => ({
   },
   forgotText: {
     color: '#7D76BA',
-    fontSize: 10,
+    fontSize: 14,
     margin: '5px 0',
     textDecoration: 'none',
   },
   forgotTextWhite: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 14,
     margin: '5px 0',
     textDecoration: 'none',
   },

@@ -47,7 +47,7 @@ const Legal = () => {
                                 </Link>
                                 <Link
                                   className="et_pb_button et_pb_more_button et_pb_button_two"
-                                  to="/resturent"
+                                  to="/restaurant"
                                 >
                                   Je suis restaurateur
                                 </Link>

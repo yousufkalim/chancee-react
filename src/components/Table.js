@@ -7,6 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
+import Texts from '../globals/Texts';
+
 const useStyles = makeStyles((theme) => ({
   tableContainer: {
     minWidth: 700,
@@ -71,7 +73,7 @@ const Search = (props) => {
           {props.values.length === 0 ? (
             <TableRow>
               <TableCell align="center" colSpan={props.headers.length}>
-                Nous sommes montés vides!
+                {props.emptyText || Texts.emptyTable}
               </TableCell>
             </TableRow>
           ) : (
@@ -95,7 +97,7 @@ const Search = (props) => {
                         {i}
                         {show && (
                           <div className={classes.error}>
-                            (Inclut tarif de nuit)
+                            ({Texts.nightHour})
                           </div>
                         )}
                       </TableCell>

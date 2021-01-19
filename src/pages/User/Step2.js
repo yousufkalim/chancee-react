@@ -212,27 +212,24 @@ export default function Profile(props) {
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
-          head="Votre profil a été"
-          head2="validé Anne-Gabrielle !"
-          buttonText="JE ME LANCE"
-          description="Votre espace personnel a été activé, encore quelques informations
-          et vous recevrez les offres de nos 2300+ restaurants partenaires"
+          head={Texts.userStep2Head}
+          head2={Texts.userStep2Head2}
+          buttonText={Texts.userStep2ButtonText}
+          description={Texts.userStep1Description}
         />
       </section>
       <Container maxWidth="xl">
         <section id="Steps">
           <Steps
             steps={[
-              { id: 1, name: 'SAISIE DE VOS INFORMATIONS', active: false },
-              { id: 2, name: 'VALIDATION DE VOS INFORMATIONS', active: false },
-              { id: 3, name: 'ACTIVATION DU COMPTE', active: true },
+              { id: 1, name: Texts.step1, active: false },
+              { id: 2, name: Texts.step2, active: false },
+              { id: 3, name: Texts.step3, active: true },
             ]}
           />
         </section>
         <section id="form" className={classes.formContainer}>
-          <div className={classes.formHeader}>
-            Plus qu’une étape avant de démarrer !
-          </div>
+          <div className={classes.formHeader}>{Texts.userStep2Heading}</div>
           <section id="vehicle">
             <Grid container spacing={6}>
               <Grid item xs={12} lg={8}>
@@ -294,8 +291,7 @@ export default function Profile(props) {
             />
           </section>
           <span className={classes.incrementText}>
-            Pour les missions de nuit (entre 20h et 8h), les tarifs sont
-            automatiquement augmentés de 10%
+            {Texts.userStep2HourIncrement}
           </span>
           <div style={{ marginTop: 30 }}>
             <Checkbox
@@ -308,9 +304,9 @@ export default function Profile(props) {
               onChange={(event) => setConditions((st) => !st)}
             />
             <span className={classes.step5CheckboxText}>
-              Je suis d’accord avec les{' '}
+              {Texts.userStep2Conditions1}{' '}
               <Link to="/" className={classes.link}>
-                Conditions d’utilisation
+                {Texts.userStep2Conditions2}
               </Link>
             </span>
           </div>
@@ -319,7 +315,7 @@ export default function Profile(props) {
               type="submit"
               onClick={onSubmit}
               disabled={loading}
-              text={loading ? 'Loading...' : 'Soumettre mon dossier'}
+              text={loading ? Texts.loading : Texts.submitDocuments}
             >
               <Flash style={{ marginRight: 10 }} />
             </Button>

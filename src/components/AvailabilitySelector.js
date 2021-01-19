@@ -10,8 +10,8 @@ import { ReactComponent as Unchecked } from '../assets/images/unchecked.svg';
 
 import Modal from './Modal';
 import TableButton from './TableButton';
-import Input from './ProfileInput';
 import Heading from './FormStepHeader';
+import Texts from '../globals/Texts';
 
 const useStyles = makeStyles((theme) => ({
   text: {
@@ -37,12 +37,61 @@ const useStyles = makeStyles((theme) => ({
   marginVertical: {
     margin: '10px 0',
   },
+  subHeading: {
+    fontFamily: 'Roboto',
+    fontWeight: 'bold',
+    fontSize: '12px',
+    color: 'rgba(186,197,205,1)',
+    letterSpacing: '0.41666671752929685px',
+    textTransform: 'uppercase',
+  },
+  select: {
+    width: '100%',
+    height: 45,
+    outline: 0,
+    color: '#000',
+    borderRadius: 4,
+    padding: '14px 12px',
+    border: '2px solid #ccc',
+    backgroundColor: 'transparent',
+    '&::placeholder': {
+      color: '#000',
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: 225,
+    },
+  },
+  slotList: {
+    listStyle: 'none',
+  },
 }));
+
+const Select = (props) => {
+  const classes = useStyles();
+  return (
+    <>
+      <p className={classes.subHeading}>{props.label}</p>
+      <select
+        name={props.name}
+        value={props.value}
+        selected={props.value}
+        onChange={props.onChange}
+        className={classes.select}
+      >
+        {props.values.map((item) => (
+          <option key={item} value={item}>
+            {item}
+          </option>
+        ))}
+      </select>
+    </>
+  );
+};
 
 export default function Profile(props) {
   const classes = useStyles();
-  const [endHour, setEndHour] = useState('');
-  const [startHour, setStartHour] = useState('');
+  const [endHour, setEndHour] = useState(23);
+  const [startHour, setStartHour] = useState(1);
   const [selectedDay, setSelectedDay] = useState(1);
   const [getUpdate, setGetUpdate] = useState(false);
   const [dayModal, setDayModal] = React.useState(false);
@@ -61,37 +110,30 @@ export default function Profile(props) {
     {
       id: 1,
       name: 'Lundi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 2,
       name: 'Mardi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 3,
       name: 'Mercredi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 4,
       name: 'Jeudi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 5,
       name: 'Vendredi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 6,
       name: 'Samedi',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
     {
       id: 7,
       name: 'Dimanche',
-      description: 'A partir de 8h00, pendant 10 heures',
     },
   ];
 
@@ -142,14 +184,22 @@ export default function Profile(props) {
               />
               <span className={classes.text}>{day.name}</span>
             </div>
-            <span className={classes.text2}>{day.description}</span>
+            <span className={classes.text2}>
+              <ul className={classes.slotList}>
+                {timeslots[day.id - 1].slots.map((slot) => (
+                  <li>
+                    {slot.from}h à {slot.to}h
+                  </li>
+                ))}
+              </ul>
+            </span>
           </Grid>
         ))}
       </Grid>
       <Modal
         open={dayModal}
         onClose={() => setDayModal((st) => !st)}
-        title="Ajouter la disponibilité"
+        title={Texts.addTimeslot}
         body={
           <>
             <Grid container>
@@ -163,7 +213,7 @@ export default function Profile(props) {
                   className={classes.chips}
                 >
                   <Chip
-                    label={'start:' + row.from + ' ↔️ end:' + row.to}
+                    label={'Début:' + row.from + 'h ↔️ Fin:' + row.to + 'h'}
                     onDelete={() => {
                       let arry = timeslots;
                       let newArray = arry[selectedDay - 1].slots.filter(
@@ -179,31 +229,75 @@ export default function Profile(props) {
               ))}
             </Grid>
             <div>
-              <Input
-                fullWidth
-                type="number"
+              <Select
+                label={Texts.searchHourStart}
                 value={startHour}
-                label="Heure de début"
-                placeholder="Heure de début"
-                onChange={(e) => {
-                  if (e.target.value >= 0 && e.target.value < 23) {
-                    setStartHour(e.target.value);
-                  }
-                }}
-                valid={startHour !== '' && startHour <= 23}
+                onChange={({ target: { name, value } }) =>
+                  Number(value) >= Number(0) &&
+                  Number(value) <= Number(23) &&
+                  setStartHour(value)
+                }
+                values={[
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18,
+                  19,
+                  20,
+                  21,
+                  22,
+                  23,
+                ]}
               />
-              <Input
-                fullWidth
-                type="number"
+              <Select
+                label={Texts.searchHourStart}
                 value={endHour}
-                label="Heure de fin"
-                placeholder="Heure de fin"
-                onChange={(e) => {
-                  if (e.target.value >= 0 && e.target.value < 24) {
-                    setEndHour(e.target.value);
-                  }
-                }}
-                valid={endHour !== '' && endHour <= 23}
+                onChange={({ target: { name, value } }) =>
+                  Number(value) >= Number(0) &&
+                  Number(value) <= Number(23) &&
+                  setEndHour(value)
+                }
+                values={[
+                  0,
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18,
+                  19,
+                  20,
+                  21,
+                  22,
+                  23,
+                ]}
               />
             </div>
           </>

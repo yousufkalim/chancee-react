@@ -12,12 +12,18 @@ import Texts from '../globals/Texts';
 
 import Input from '../components/Input';
 import TableButton from '../components/TableButton';
+import LoginBG from '../assets/images/login.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minHeight: '100vh',
     width: '100%',
-    backgroundColor: '#634294',
+    backgroundImage: `url(${LoginBG})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundColor:
+      theme.palette.type === 'light'
+        ? theme.palette.grey[50]
+        : theme.palette.grey[900],
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     display: 'flex',
@@ -25,17 +31,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '20px 20px',
-    // paddingTop: '20px',
-    '@media (max-width: 1440px)': {
-      width: '100%',
-      // height: '120vh',
-      // paddingTop: '0px',
-    },
-    '@media (max-width: 1024px)': {
-      width: '100%',
-      // height: '120vh',
-      // paddingTop: '10px',
-    },
   },
   header: {
     color: '#fff',
@@ -86,13 +81,13 @@ const useStyles = makeStyles((theme) => ({
   },
   forgotText: {
     color: '#7D76BA',
-    fontSize: 10,
+    fontSize: 14,
     margin: '0',
     textDecoration: 'none',
   },
   forgotTextWhite: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 14,
     margin: '5px 0',
     textDecoration: 'none',
   },

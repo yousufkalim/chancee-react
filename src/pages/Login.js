@@ -63,13 +63,13 @@ const useStyles = makeStyles((theme) => ({
   },
   forgotText: {
     color: '#7D76BA',
-    fontSize: 10,
+    fontSize: 14,
     margin: '5px 0',
     textDecoration: 'none',
   },
   forgotTextWhite: {
     color: '#FFF',
-    fontSize: 10,
+    fontSize: 14,
     margin: '5px 0',
     textDecoration: 'none',
   },

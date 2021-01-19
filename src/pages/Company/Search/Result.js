@@ -12,6 +12,7 @@ import Table from '../../../components/Table';
 import Loader from '../../../components/Loader';
 import PageHeading from '../../../components/PageHeading';
 import TableButton from '../../../components/TableButton';
+import Texts from '../../../globals/Texts';
 
 const useStyles = makeStyles((theme) => ({
   content: {
@@ -151,7 +152,12 @@ const Result = (props) => {
           filters.from || '00'
         }h - ${filters.to || '00'}h`,
         KM: `${filters.KM} km`,
-        weight: `${volume} taille`,
+        weight:
+          volume === 'small'
+            ? 'Petite taille'
+            : volume === 'medium'
+            ? 'Moyenne'
+            : 'Grande',
         vehicles:
           vehicles.length > 0
             ? vehicles.map((veh) => veh + ' / ')
@@ -218,10 +224,8 @@ const Result = (props) => {
   function checkVehicle(item) {
     let last = item[item.length - 1];
     last = last.replace('/ ', '');
-
     let newitem = item;
     newitem[newitem.length - 1] = last;
-    console.log(newitem);
     return newitem.map((ite) => ite);
   }
 
@@ -229,7 +233,7 @@ const Result = (props) => {
     <Loader.PageProgress />
   ) : (
     <div className={classes.content}>
-      <PageHeading left="RESULTATS DE LA RECHERCHE" />
+      <PageHeading left={Texts.resultTitle} />
       <div className={classes.filters}>
         <Hidden mdDown implementation="css">
           <div className={classes.filtersRow}>
@@ -253,7 +257,6 @@ const Result = (props) => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              {console.log(filters)}
               {Object.values(filters).map((i) => (
                 <MenuItem key={i}>
                   {Array.isArray(i) ? checkVehicle(i) : i}
@@ -265,7 +268,7 @@ const Result = (props) => {
         <TableButton
           color="black"
           onClick={() => props.setPage(1)}
-          text="Modifier"
+          text={Texts.resultModify}
         />
       </div>
       <Table
@@ -278,11 +281,12 @@ const Result = (props) => {
           'NOTE MOYENNE',
           'ACTION',
         ]}
+        emptyText={Texts.emptySearch}
         values={data.users.map((item) => [
           <Row>
             <img
               src={Constants.BASE_URL + '/' + item.proofs.profile}
-              alt="Profile"
+              alt="Profil"
               className={classes.avatar}
             />
             {item.firstName} {item.lastName}
@@ -305,8 +309,8 @@ const Result = (props) => {
             }
             text={
               invitedUsers.some((item2) => String(item2) === String(item._id))
-                ? 'INVITED'
-                : 'INVITER'
+                ? Texts.resultInvited
+                : Texts.resultInviter
             }
           />,
         ])}

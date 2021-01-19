@@ -210,12 +210,10 @@ export default function Profile(props) {
       <section id="Jumbo">
         <Jumbotron
           image={JumboImage}
-          head="Bienvenue sur"
-          head2="Chancee !"
-          buttonText="DÉMARRER"
-          description="Nous configurons votre espace personnel, plus que quelques étapes et
-          votre profil sera disponible auprès de nos 2300+ restaurants
-          partenaires"
+          head={Texts.companyStep1Head}
+          head2={Texts.companyStep1Head1}
+          buttonText={Texts.companyStep1ButtonText}
+          description={Texts.companyStep1Description}
           icons={[Chat, Microphone]}
         />
       </section>
@@ -223,17 +221,15 @@ export default function Profile(props) {
         <section id="Steps">
           <Steps
             steps={[
-              { id: 1, name: 'SAISIE DE VOS INFORMATIONS', active: true },
-              { id: 2, name: 'VALIDATION DE VOS INFORMATIONS', active: false },
+              { id: 1, name: Texts.step1, active: true },
+              { id: 2, name: Texts.step2, active: false },
             ]}
           />
         </section>
         <section id="form" className={classes.formContainer}>
-          <div className={classes.formHeader}>
-            Validons ensemble vos informations
-          </div>
+          <div className={classes.formHeader}>{Texts.step1Heading}</div>
           <section id="formStep1">
-            <Heading icon={Point} heading="ADRESSE POSTALE" />
+            <Heading icon={Point} heading={Texts.labelAddressHeading} />
             <Grid container className={classes.form}>
               <Grid item xs={12} md={6} className={classes.formItem}>
                 <Autocomplete
@@ -258,7 +254,7 @@ export default function Profile(props) {
                   renderInput={(params) => (
                     <Input
                       valid={postal !== ''}
-                      label="N° DE RUE ET RUE *"
+                      label={Texts.labelAddress}
                       ref={params.InputProps.ref}
                       spreadProps={params.inputProps}
                     />
@@ -269,7 +265,7 @@ export default function Profile(props) {
                 <Input
                   disabled
                   value={postal}
-                  label="CODE POSTAL *"
+                  label={Texts.labelPostal}
                   valid={postal !== ''}
                 />
               </Grid>
@@ -277,7 +273,7 @@ export default function Profile(props) {
                 <Input
                   value={complement}
                   valid={complement !== ''}
-                  label="COMPLÉMENT D’ADRESSE"
+                  label={Texts.labelComplement}
                   onChange={({ target: { name, value } }) =>
                     setComplement(value)
                   }
@@ -287,7 +283,7 @@ export default function Profile(props) {
                 <Input
                   disabled
                   value={city}
-                  label="VILLE *"
+                  label={Texts.labelCity}
                   valid={city !== ''}
                 />
               </Grid>
@@ -296,7 +292,7 @@ export default function Profile(props) {
                   type="number"
                   value={phone}
                   valid={phone.length === 10}
-                  label="NUMÉRO DE TÉLÉPHONE *"
+                  label={Texts.labelPhone}
                   onChange={(e) => {
                     e.target.value.length <= 10 && setPhone(e.target.value);
                   }}
@@ -316,7 +312,7 @@ export default function Profile(props) {
                   type="number"
                   value={SIRET}
                   valid={SIRET.length === 14}
-                  label="NUMERO DE SIRET *"
+                  label={Texts.labelSIRET2}
                   onChange={(e) => {
                     e.target.value.length <= 14 && setSIRET(e.target.value);
                   }}
@@ -344,7 +340,7 @@ export default function Profile(props) {
               onClick={onSubmit}
               disabled={loading}
               className={classes.submitButton}
-              text={loading ? 'Loading...' : 'Soumettre mon dossier'}
+              text={loading ? Texts.loading : Texts.submitDocuments}
             >
               <Flash style={{ marginRight: 10 }} />
             </Button>

@@ -13,7 +13,7 @@ const SearchIndex = (props) => {
   const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
   const [from, setFrom] = useState(6);
   const [to, setTo] = useState(8);
-  const [deliveries, setDeliveries] = useState('1');
+  const [deliveries, setDeliveries] = useState(1);
 
   return (
     <>

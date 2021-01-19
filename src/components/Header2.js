@@ -14,6 +14,7 @@ import { ReactComponent as Home } from '../assets/images/home.svg';
 import { ReactComponent as Calendar } from '../assets/images/calendar.svg';
 import * as actionTypes from '../store/actions/actionTypes';
 import Constants from '../globals/Constants';
+import Texts from '../globals/Texts';
 
 const drawerWidth = 90;
 const useStyles = makeStyles((theme) => ({
@@ -140,7 +141,7 @@ const Header = (props) => {
           </div>
           <div className={classes.profile}>
             <span className={classes.profileName}>
-              Hello,{' '}
+              {Texts.hello},{' '}
               <NavLink to="/" className={classes.link}>
                 {store.user.firstName + ' ' + store.user.lastName}
               </NavLink>
@@ -163,12 +164,12 @@ const Header = (props) => {
                 onClose={handleClose}
               >
                 <MenuItem component={NavLink} to="/profile">
-                  Profile
+                  {Texts.profile}
                 </MenuItem>
                 <MenuItem
                   onClick={() => dispatch({ type: actionTypes.LOGOUT })}
                 >
-                  Logout
+                  {Texts.logout}
                 </MenuItem>
               </Menu>
             </div>

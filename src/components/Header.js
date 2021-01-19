@@ -15,6 +15,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Logo from '../assets/images/Logo.svg';
 import * as actionTypes from '../store/actions/actionTypes';
 import ProfileImage from '../assets/images/Profile.svg';
+import Texts from '../globals/Texts';
 
 const useStyles = makeStyles((theme) => ({
   toolBar: {
@@ -94,16 +95,16 @@ export default function Login(props) {
           </Link>
           <nav>
             <Link className={classes.link} to="/product">
-              Product
+              {Texts.productPage}
             </Link>
             <Link className={classes.link} to="/pricing">
-              Pricing
+              {Texts.pricingPage}
             </Link>
             <Link className={classes.link} to="/contacts">
-              Contacts
+              {Texts.contactsPage}
             </Link>
             <Link className={classes.link} to="/team">
-              Team
+              {Texts.teamPage}
             </Link>
           </nav>
         </Hidden>
@@ -154,11 +155,8 @@ export default function Login(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem component={Link} to="/profile">
-              Profile
-            </MenuItem>
             <MenuItem onClick={() => dispatch({ type: actionTypes.LOGOUT })}>
-              Logout
+              {Texts.logout}
             </MenuItem>
           </Menu>
         </div>

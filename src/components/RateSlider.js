@@ -138,7 +138,9 @@ const RateSlider = (props) => {
         icon={CoinStack}
         heading={props.heading ? props.heading : 'FIXE TES TARIFS'}
         subHeading={
-          props.subHeading ? props.subHeading : 'QUEL EST TON TARIF PAR HEURE ?'
+          props.subHeading
+            ? props.subHeading
+            : 'QUEL EST TON TARIF MAX PAR HEURE ?'
         }
       />
       <Grid container>

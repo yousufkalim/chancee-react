@@ -108,7 +108,7 @@ const Header = () => {
                 textAlign: 'center',
                 marginLeft: '-100px',
               }}
-              to="/resturent"
+              to="/restaurant"
             >
               Je suis restaurateur
             </Link>
@@ -126,7 +126,7 @@ const Header = () => {
                   id="menu-item-24"
                   className="transparent-menu menu-item menu-item-type-post_type menu-item-object-page menu-item-24"
                 >
-                  <Link to="/resturent">Je suis restaurateur</Link>
+                  <Link to="/restaurant">Je suis restaurateur</Link>
                 </li>
               </ul>{" "}
               

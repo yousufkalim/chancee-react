@@ -13,7 +13,7 @@ import UserHeader from '../components/Header2';
 import CompanyHeader from '../components/HeaderCompany';
 
 const Home = lazy(() => import('../pages/Home/Home'));
-const Resturent = lazy(() => import('../pages/Resturent/Resturent'));
+const Restaurent = lazy(() => import('../pages/Restaurent/Restaurent'));
 const DeliveryMen = lazy(() => import('../pages/Delivery/DeliveryMen'));
 const Legal = lazy(() => import('../pages/Legal/index'));
 const About = lazy(() => import('../pages/About/index'));
@@ -215,7 +215,7 @@ const Chancee = () => {
         <Route exact path="/register" component={Register} />
         <Route exact path="/register-company" component={RegisterCompany} />
         <Route exact path="/password-forgot" component={PasswordForgot} />
-        <Route path="/resturent" exact component={Resturent} />
+        <Route path="/restaurant" exact component={Restaurent} />
         <Route path="/delivery" exact component={DeliveryMen} />
         <Route path="/legal" exact component={Legal} />
         <Route path="/about" exact component={About} />

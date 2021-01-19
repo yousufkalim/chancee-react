@@ -290,7 +290,7 @@ const Profile = (props) => {
         >
           <TableButton
             color="black"
-            text={'UPDATE'}
+            text={Texts.update}
             disabled={loading}
             onClick={onSubmit}
             style={{ width: 150, fontSize: 18 }}
@@ -305,7 +305,7 @@ const Profile = (props) => {
           <Grid container>
             <Grid item xs={12} md={6}>
               <Input
-                label="Prenom *"
+                label={Texts.labelFirstName}
                 value={firstName}
                 valid={firstName !== ''}
                 onChange={({ target: { name, value } }) => setFirstName(value)}
@@ -313,7 +313,7 @@ const Profile = (props) => {
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
-                label="Nom *"
+                label={Texts.labelLastName}
                 value={lastName}
                 valid={lastName !== ''}
                 onChange={({ target: { name, value } }) => setLastName(value)}
@@ -349,7 +349,7 @@ const Profile = (props) => {
                   <Input
                     inputValue={street}
                     valid={street !== ''}
-                    label="N° DE RUE ET RUE *"
+                    label={Texts.labelAddress}
                     ref={params.InputProps.ref}
                     spreadProps={params.inputProps}
                   />
@@ -360,7 +360,7 @@ const Profile = (props) => {
               <Input
                 disabled
                 value={postal}
-                label="CODE POSTAL *"
+                label={Texts.labelPostal}
                 valid={postal !== ''}
               />
             </Grid>
@@ -368,7 +368,7 @@ const Profile = (props) => {
               <Input
                 value={complement}
                 valid={complement !== ''}
-                label="COMPLÉMENT D’ADRESSE"
+                label={Texts.labelComplement}
                 onChange={({ target: { name, value } }) => setComplement(value)}
               />
             </Grid>
@@ -376,7 +376,7 @@ const Profile = (props) => {
               <Input
                 disabled
                 value={city}
-                label="VILLE *"
+                label={Texts.labelCity}
                 valid={city !== ''}
               />
             </Grid>
@@ -385,7 +385,7 @@ const Profile = (props) => {
                 type="number"
                 value={phone}
                 valid={String(phone).length === 10}
-                label="NUMÉRO DE TÉLÉPHONE *"
+                label={Texts.labelPhone}
                 onChange={(e) => {
                   e.target.value.length <= 10 && setPhone(e.target.value);
                 }}
@@ -401,7 +401,7 @@ const Profile = (props) => {
                 type="number"
                 value={SIRET}
                 valid={String(SIRET).length === 14}
-                label="SIRET *"
+                label={Texts.labelSIRET}
                 onChange={(e) => {
                   e.target.value.length <= 14 && setSIRET(e.target.value);
                 }}
@@ -412,7 +412,7 @@ const Profile = (props) => {
         actions={
           <TableButton
             fullWidth
-            text="Done"
+            text={Texts.done}
             onClick={() => {
               if (
                 firstName === '' ||

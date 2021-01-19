@@ -11,6 +11,7 @@ import VolumeSlider from '../../../components/VolumeSlider';
 import DistanceSlider from '../../../components/DistanceSlider';
 import VehicleSelector from '../../../components/VehicleSelector';
 import TableButton from '../../../components/TableButton';
+import Texts from '../../../globals/Texts';
 
 import { ReactComponent as Calendar } from '../../../assets/images/calendar.svg';
 import { ReactComponent as SearchAvatar } from '../../../assets/images/searchavatar.svg';
@@ -159,24 +160,15 @@ const Select = (props) => {
 
 const Search = (props) => {
   const classes = useStyles();
-  // const [KM, setKM] = useState(60);
-  // const [rate, setRate] = useState(18);
-  // const [volume, setVolume] = useState(2);
-  // const [rating, setRating] = useState(3);
-  // const [vehicles, setVehicles] = useState(new Set([4]));
-  // const [day, setDay] = useState(moment().format('YYYY-MM-DD'));
-  // const [from, setFrom] = useState(6);
-  // const [to, setTo] = useState(8);
-  // const [deliveries, setDeliveries] = useState('1');
 
   useEffect(() => {
-    document.body.scrollTop = 0; // For Safari
-    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
   }, [props.page]);
 
   return (
     <div className={classes.content}>
-      <PageHeading left="RECHERCHER UN LIVREUR" />
+      <PageHeading left={Texts.searchTitle} />
       <Card>
         <Grid container spacing={8}>
           <Grid item xs={12} xl={6}>
@@ -200,7 +192,7 @@ const Search = (props) => {
           </Grid>
           <Grid item xs={12} xl={6}>
             <div id="rating" style={{ marginBottom: '20px' }}>
-              <div className={classes.subHeading}>NOTE MINIMUM :</div>
+              <div className={classes.subHeading}>{Texts.searchRating} :</div>
               <Rating
                 className={classes.rate}
                 value={props.rating}
@@ -216,7 +208,7 @@ const Search = (props) => {
                   <Calendar className={classes.sliderHeaderIconSVG} />
                 </div>
                 <div className={classes.sliderHeaderText}>
-                  DATE ET HEURE DE LA MISSION:
+                  {Texts.searchDate}:
                 </div>
               </div>
 
@@ -224,12 +216,12 @@ const Search = (props) => {
                 type="date"
                 name="day"
                 value={props.day}
-                label="JOUR :"
+                label={Texts.searchDay}
                 min={moment().format('YYYY-MM-DD')}
                 onChange={({ target: { name, value } }) => props.setDay(value)}
               />
               <Select
-                label="HEURE DE DEMARRAGE :"
+                label={Texts.searchHourStart}
                 value={props.from}
                 onChange={({ target: { name, value } }) =>
                   Number(value) >= Number(0) &&
@@ -264,7 +256,7 @@ const Search = (props) => {
                 ]}
               />
               <Select
-                label="HEURE DE FIN :"
+                label={Texts.searchHourEnd}
                 value={props.to}
                 onChange={({ target: { name, value } }) =>
                   Number(value) >= Number(0) &&
@@ -298,16 +290,46 @@ const Search = (props) => {
                   23,
                 ]}
               />
-              <Input
-                label="NOMBRE DE LIVREURS SOUHAITES :"
-                type="number"
-                name="deliveries"
+              <Select
+                label={Texts.searchDeliveries}
                 value={props.deliveries}
                 onChange={({ target: { name, value } }) =>
-                  Number(value) > Number(0) &&
-                  Number(value) <= 50 &&
+                  Number(value) >= Number(1) &&
+                  Number(value) <= Number(30) &&
                   props.setDeliveries(value)
                 }
+                values={[
+                  1,
+                  2,
+                  3,
+                  4,
+                  5,
+                  6,
+                  7,
+                  8,
+                  9,
+                  10,
+                  11,
+                  12,
+                  13,
+                  14,
+                  15,
+                  16,
+                  17,
+                  18,
+                  19,
+                  20,
+                  21,
+                  22,
+                  23,
+                  24,
+                  25,
+                  26,
+                  27,
+                  28,
+                  29,
+                  30,
+                ]}
               />
             </div>
           </Grid>
@@ -332,12 +354,9 @@ const Search = (props) => {
               <SearchAvatar className={classes.svg} />
               <TableButton
                 fullWidth
-                text="RECHERCHER"
+                text={Texts.searchStart}
                 style={{ marginTop: 20 }}
-                onClick={() =>
-                  // props.history.push(`${props.match.url}/result`,
-                  props.setPage(2)
-                }
+                onClick={() => props.setPage(2)}
               />
             </div>
           </Grid>

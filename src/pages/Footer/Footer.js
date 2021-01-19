@@ -9,7 +9,7 @@ const Footer = () => {
   $('#delivery').on('click', () => {
     $(window).scrollTop(0);
   });
-  $('#resturent').on('click', () => {
+  $('#restaurant').on('click', () => {
     $(window).scrollTop(0);
   });
   $('#legal').on('click', () => {
@@ -46,7 +46,11 @@ const Footer = () => {
                 id="menu-item-235"
                 className="menu-item menu-item-type-post_type menu-item-object-page menu-item-235"
               >
-                <Link id="resturent" to="/resturent" style={{ color: '#fff' }}>
+                <Link
+                  id="restaurant"
+                  to="/restaurant"
+                  style={{ color: '#fff' }}
+                >
                   Restaurateur
                 </Link>
               </li>

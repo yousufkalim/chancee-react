@@ -318,7 +318,7 @@ const Offers = (props) => {
             `${StatusInFrench(person.status)}`,
             <TableButton
               color="error"
-              text="ANNULER"
+              text={Texts.cancel}
               disabled={acceptRejectLoading}
               onClick={() => cancelOffer(item._id, person.userId._id)}
             />,
@@ -431,7 +431,7 @@ const Offers = (props) => {
                 </Menu>
               </>
             ) : person.status === 'rejected' ? (
-              'Pas d’action'
+              Texts.noAction
             ) : person.personId.rating &&
               person.personId.rating.rating.some(
                 (rating) => rating.offerId === item._id,
@@ -457,7 +457,7 @@ const Offers = (props) => {
                 />
                 <TableButton
                   color="black"
-                  text="NOTER"
+                  text={Texts.noter}
                   type="submit"
                   disabled={acceptRejectLoading}
                   style={{ marginLeft: 5, height: 25 }}
@@ -478,9 +478,7 @@ const Offers = (props) => {
       ) : (
         <div className={classes.content}>
           <section id="table">
-            <div className={classes.tableHeader}>
-              INVITED: TOUTES LES MISSIONS
-            </div>
+            <div className={classes.tableHeader}>{Texts.invitations}</div>
             <div className={classes.tableContainer}>
               <Table
                 headers={[
@@ -492,25 +490,7 @@ const Offers = (props) => {
                   'STATUS',
                   'ACTION',
                 ]}
-                values={renderData()}
-                dateItem={2}
-              />
-            </div>
-            <div className={classes.tableHeader}>
-              DELIVERERS: TOUTES LES MISSIONS
-            </div>
-            <div className={classes.tableContainer}>
-              <Table
-                headers={[
-                  'DATE',
-                  'HEURE',
-                  'NOM DU LIVREUR',
-                  'TYPE DE VEHICULE',
-                  'MONTANT TOTAL',
-                  'STATUS',
-                  'ACTION',
-                ]}
-                values={renderData2()}
+                values={renderData().concat(renderData2())}
                 dateItem={2}
               />
             </div>
@@ -521,7 +501,7 @@ const Offers = (props) => {
         <ProfileCardModal
           open={userModal}
           onClose={() => setUserModal((st) => !st)}
-          title="Utilisateur Profil"
+          title={Texts.userProfile}
           isUser={true}
           image={Constants.BASE_URL + '/' + userSelectData.proofs.profile}
           name={userSelectData.firstName + ' ' + userSelectData.lastName}

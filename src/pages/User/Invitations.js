@@ -237,9 +237,11 @@ const Profile = (props) => {
     <div className={classes.content}>
       <section id="invitations">
         <div className={classes.tableHeader}>
-          <div className={classes.tableHeaderLeft}>INVITATIONS RECUES</div>
+          <div className={classes.tableHeaderLeft}>
+            {Texts.invitationsHeading}
+          </div>
           <div className={classes.tableHeaderRight}>
-            MONTANT TOTAL ACQUIS : {store.user.totalEaring}€
+            {Texts.totalEarning} : {store.user.totalEaring}€
           </div>
         </div>
         <div className={classes.tableContainer}>
@@ -257,7 +259,7 @@ const Profile = (props) => {
               <Row key={item._id}>
                 <img
                   src={Constants.BASE_URL + '/' + item.company.proofs.profile}
-                  alt="Profile"
+                  alt="Profil"
                   className={classes.avatar}
                 />
                 {item.company.company.companyName}
@@ -292,7 +294,7 @@ const Profile = (props) => {
       </section>
       <section id="offers">
         <div className={classes.tableHeader}>
-          <div className={classes.tableHeaderLeft}>MISSIONS VALIDÉES</div>
+          <div className={classes.tableHeaderLeft}>{Texts.missions}</div>
         </div>
         <div className={classes.tableContainer}>
           <Table
@@ -333,7 +335,7 @@ const Profile = (props) => {
                   (rating) => rating.offerId === item._id,
                 ) ? (
                   <div>
-                    Noté{' '}
+                    {Texts.note}{' '}
                     {
                       item.company.rating.rating.filter(
                         (rating) => rating.offerId === item._id,
@@ -353,7 +355,7 @@ const Profile = (props) => {
                     />
                     <TableButton
                       color="black"
-                      text="NOTER"
+                      text={Texts.noter}
                       type="submit"
                       disabled={acceptRejectLoading}
                       style={{ marginLeft: 5, height: 25 }}
@@ -363,12 +365,12 @@ const Profile = (props) => {
               ) : checkStatus(item) === 'pending' ? (
                 <TableButton
                   color="error"
-                  text="ANNULER"
+                  text={Texts.cancel}
                   disabled={acceptRejectLoading}
                   onClick={() => cancelOffer(item._id)}
                 />
               ) : (
-                'Pas d’action'
+                Texts.noAction
               ),
             ])}
             dateItem={3}
