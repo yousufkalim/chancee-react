@@ -66,8 +66,6 @@ const SearchIndex = (props) => {
           setDeliveries={setDeliveries}
         />
       )}
-      {/* <Route exact path={props.match.url + '/'} component={Search} />
-    <Route exact path={props.match.url + '/result'} component={Result} /> */}
     </>
   );
 };

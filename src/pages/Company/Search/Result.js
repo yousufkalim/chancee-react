@@ -27,12 +27,15 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  filtersRowHidden: {
+    width: '100%',
+  },
   filtersRow: {
-    width: '85%',
-    display: 'flex',
+    width: '95%',
+    gridGap: '5px',
+    display: 'grid',
     overflowX: 'auto',
-    flexDirection: 'row',
-    alignItems: 'center',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(40px, 1fr))',
     '&::-webkit-scrollbar': {
       height: '3px',
     },
@@ -47,15 +50,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   filter: {
-    maxWidth: 170,
-    display: 'grid',
     borderRadius: 6,
     minWidth: '20px',
     overflowX: 'auto',
     overflowY: 'hidden',
     marginRight: '10px',
-    placeItems: 'center',
-    padding: '20px 25px',
+    textAlign: 'center',
+    padding: '20px 20px',
     whiteSpace: 'nowrap',
     backgroundColor: '#fff',
     '&::-webkit-scrollbar': {
@@ -235,7 +236,11 @@ const Result = (props) => {
     <div className={classes.content}>
       <PageHeading left={Texts.resultTitle} />
       <div className={classes.filters}>
-        <Hidden mdDown implementation="css">
+        <Hidden
+          mdDown
+          implementation="css"
+          className={classes.filtersRowHidden}
+        >
           <div className={classes.filtersRow}>
             {Object.values(filters).map((i) => (
               <div key={i} className={classes.filter}>
