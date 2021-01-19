@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
+import FilterListIcon from '@material-ui/icons/FilterList';
 import API from '../../../globals/API';
 import Constants from '../../../globals/Constants';
 import moment from 'moment';
@@ -251,10 +251,7 @@ const Result = (props) => {
         </Hidden>
         <Hidden lgUp implementation="css">
           <div>
-            <KeyboardArrowDownIcon
-              className={classes.link}
-              onClick={handleClick}
-            />
+            <FilterListIcon className={classes.link} onClick={handleClick} />
             <Menu
               id="simple-menu"
               anchorEl={anchorEl}
