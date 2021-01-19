@@ -293,7 +293,7 @@ const Profile = (props) => {
             text={Texts.update}
             disabled={loading}
             onClick={onSubmit}
-            style={{ width: 150, fontSize: 18 }}
+            style={{ minWidth: 150, fontSize: 18 }}
           />
         </div>
       </div>

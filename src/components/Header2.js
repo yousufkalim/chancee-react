@@ -105,11 +105,13 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 50,
     marginRight: 10,
     objectFit: 'cover',
+    cursor: 'pointer',
   },
   link: {
     color: '#00A1FF',
     textDecoration: 'none',
     fontWeight: 'light',
+    cursor: 'pointer',
   },
 }));
 
@@ -150,6 +152,7 @@ const Header = (props) => {
               src={Constants.BASE_URL + '/' + store.user.proofs.profile}
               alt="profileImage"
               className={classes.profileImage}
+              onClick={handleClick}
             />
             <div>
               <KeyboardArrowDownIcon

@@ -81,9 +81,11 @@ const useStyles = makeStyles((theme) => ({
     color: 'rgba(166,229,15,1)',
     fontFamily: 'Roboto',
     fontSize: '16px',
+    cursor: 'pointer',
   },
   stepperTitleDone: {
     color: '#000',
+    cursor: 'pointer',
   },
   stepperDesc: {
     marginTop: 4,
@@ -153,6 +155,9 @@ export default function DocumentUploading(props) {
                       ? classes.stepperTitleDone
                       : ''
                   }`}
+                  onClick={() => {
+                    document.getElementById(`fileinput${item.title}`).click();
+                  }}
                 >
                   {item.title}
                 </div>
