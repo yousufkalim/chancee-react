@@ -375,40 +375,9 @@ const Offers = (props) => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
+                  
+               
                   {person.status === 'pending' && (
-                    <>
-                      <MenuItem
-                        disabled={acceptRejectLoading}
-                        onClick={() =>
-                          !acceptRejectLoading &&
-                          activeOffer(item._id, person.personId._id)
-                        }
-                      >
-                        {Texts.active}
-                      </MenuItem>
-                      <MenuItem
-                        disabled={acceptRejectLoading}
-                        onClick={() =>
-                          !acceptRejectLoading &&
-                          startOffer(item._id, person.personId._id)
-                        }
-                      >
-                        {Texts.start}
-                      </MenuItem>
-                    </>
-                  )}
-                  {person.status === 'active' && (
-                    <MenuItem
-                      disabled={acceptRejectLoading}
-                      onClick={() =>
-                        !acceptRejectLoading &&
-                        startOffer(item._id, person.personId._id)
-                      }
-                    >
-                      {Texts.start}
-                    </MenuItem>
-                  )}
-                  {person.status === 'started' && (
                     <MenuItem
                       disabled={acceptRejectLoading}
                       onClick={() =>

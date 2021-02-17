@@ -1,4 +1,5 @@
 import React from 'react';
+import './Register.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
@@ -13,6 +14,10 @@ import Texts from '../globals/Texts';
 import Input from '../components/Input';
 import TableButton from '../components/TableButton';
 import LoginBG from '../assets/images/login.png';
+
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import * as moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -148,6 +153,8 @@ export default function Register(props) {
         setErrors({ ...errors, confirmPassword: true });
       } else {
         setLoading(true);
+        const formatteddate = moment(values.date).format('YYYY-MM-DD')
+        
         const data = await API({
           method: 'POST',
           uri: Constants.REGISTER_COMPANY,
@@ -155,7 +162,7 @@ export default function Register(props) {
             firstName: values.firstName,
             lastName: values.lastName,
             email: values.email,
-            dob: values.date,
+            dob: formatteddate,
             password: values.password,
             company: {
               companyName: values.compName,
@@ -273,7 +280,7 @@ export default function Register(props) {
           <Input
             type="email"
             name="email"
-            placeholder="Nom d’utilisateur"
+            placeholder="Addresse e-mail"
             value={values.email}
             onChange={(event) => {
               const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
@@ -287,9 +294,9 @@ export default function Register(props) {
             error={errors.email && 'Something'}
           />
         </div>
-        <div className={classes.formItem}>
+        {/* <div className={classes.formItem}>
           <Input
-            type="text"
+            type="date"
             name="date"
             placeholder="Date de naissance"
             value={values.date}
@@ -303,7 +310,18 @@ export default function Register(props) {
               }
             }}
           />
-        </div>
+        </div> */}
+         <DatePicker 
+           showPopperArrow={true}
+           dateFormat="yyyy-MM-dd"
+           selected={values.date}
+           popperPlacement="top-start"
+           showYearDropdown
+           onChange={(date) => {
+            setValues({ ...values, date: date });
+          }}
+          placeholderText="Date de naissance"
+           />
         <div className={classes.formItem}>
           <Input
             type="password"

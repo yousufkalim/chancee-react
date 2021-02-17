@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './Register.css';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
-
 import API from '../globals/API';
 import Constants from '../globals/Constants';
 import * as actionTypes from '../store/actions/actionTypes';
@@ -13,6 +13,10 @@ import Texts from '../globals/Texts';
 import Input from '../components/Input';
 import TableButton from '../components/TableButton';
 import LoginBG from '../assets/images/login.png';
+
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+import * as moment from 'moment'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -101,6 +105,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Register(props) {
   const classes = useStyles();
+  const [startDate, setStartDate] = useState()
   const dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
   const [values, setValues] = React.useState({
@@ -137,6 +142,8 @@ export default function Register(props) {
       } else {
         setLoading(true);
 
+        const formatteddate = moment(values.date).format('YYYY-MM-DD')
+        
         const data = await API({
           method: 'POST',
           uri: Constants.REGISTER_USER,
@@ -144,10 +151,11 @@ export default function Register(props) {
             firstName: values.firstName,
             lastName: values.lastName,
             email: values.email,
-            dob: values.date,
+            dob: formatteddate,
             password: values.password,
           }),
         });
+        console.log("date format", data.body.dob);
         alert(Texts.registerSuccess);
         dispatch({
           type: actionTypes.LOGIN,
@@ -212,7 +220,7 @@ export default function Register(props) {
           <Input
             type="email"
             name="email"
-            placeholder="Nom d’utilisateur"
+            placeholder="Addresse e-mail"
             value={values.email}
             onChange={(event) => {
               const re = /^\w+([.-]?\w+)@\w+([.-]?\w+)(\.\w{2,3})+$/;
@@ -226,7 +234,7 @@ export default function Register(props) {
             error={errors.email && 'Something'}
           />
         </div>
-        <div className={classes.formItem}>
+        {/* <div className={classes.formItem}>
           <Input
             type="text"
             name="date"
@@ -238,11 +246,24 @@ export default function Register(props) {
             onFocus={(e) => (e.target.type = 'date')}
             onBlur={(e) => {
               if (e.target.value === '') {
-                e.target.type = 'text';
+                e.target.type = 'text'
               }
             }}
           />
-        </div>
+        </div> */}
+        
+          <DatePicker 
+           showPopperArrow={true}
+           dateFormat="yyyy-MM-dd"
+           selected={values.date}
+           showYearDropdown
+           popperPlacement="top-start"
+           onChange={(date) => {
+            setValues({ ...values, date: date });
+          }}
+          placeholderText="Date de naissance"
+           />
+        
         <div className={classes.formItem}>
           <Input
             type="password"
